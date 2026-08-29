@@ -100,10 +100,12 @@ export async function isNewsPublicationSlugTaken(
  * @returns Public summaries sorted by name.
  */
 export async function listPublicationsWithPublishedNews(): Promise<NewsPublicationSummary[]> {
-  const publicationIds = await newsPostCollection().distinct('publicationId', {
-    status: 'published',
-    publicationId: { $exists: true, $nin: [null, ''] },
-  });
+  const publicationIds = (
+    await newsPostCollection().distinct('publicationId', {
+      status: 'published',
+      publicationId: { $exists: true, $ne: '' },
+    })
+  ).filter((publicationId): publicationId is string => Boolean(publicationId));
 
   if (publicationIds.length === 0) {
     return [];

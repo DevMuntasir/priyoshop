@@ -84,8 +84,8 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
             }
           />
           <p className=' text-ps-md'>
-            <strong className="font-bold text-ps-black">By integrating renewable energy sources </strong>
-            {item1Body}
+            <strong className="font-bold text-ps-black">{item0Title} </strong>
+            {item0Body}
           </p>
         </div>
 

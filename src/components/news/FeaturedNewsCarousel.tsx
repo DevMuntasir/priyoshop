@@ -10,53 +10,6 @@ export type FeaturedNewsCarouselProps = {
   readLabel: string;
 };
 
-function LeadFeaturedCard(props: {
-  post: NewsPostCard;
-  locale: string;
-  readLabel: string;
-}) {
-  return (
-    <Link
-      href={`/news/${props.post.slug}`}
-      className="group grid h-full overflow-hidden rounded-ps-xl bg-ps-black no-underline ring-1 ring-ps-black/10 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft lg:grid-cols-[1.25fr_0.95fr]"
-    >
-      <div className="min-h-72 overflow-hidden bg-ps-grey-100">
-        {props.post.coverImage && (
-          // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
-          <img
-            src={props.post.coverImage}
-            alt={props.post.coverImageAlt ?? props.post.title}
-            className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        )}
-      </div>
-      <div className="flex flex-col justify-between gap-6 bg-ps-black p-6 text-white sm:p-8">
-        <span className="font-body text-ps-xs font-semibold text-white/70">
-          {formatPostDate(props.post.publishedAt, props.locale)}
-        </span>
-        <div className="space-y-6">
-          {props.post.publication && (
-            <div className="inline-flex w-fit rounded-ps-sm bg-white px-3 py-2">
-              {/* oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns */}
-              <img
-                src={props.post.publication.logo}
-                alt={props.post.publication.logoAlt ?? props.post.publication.name}
-                className="h-7 w-auto object-contain"
-              />
-            </div>
-          )}
-          <h2 className="m-0 max-w-sm font-display text-ps-h6 leading-snug font-bold text-white sm:text-ps-h5">
-            {props.post.title}
-          </h2>
-          <span className="inline-flex w-fit items-center rounded-full bg-white px-5 py-3 font-body text-ps-sm font-semibold text-ps-black transition-colors group-hover:bg-ps-grey-100">
-            {props.readLabel}
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
 function CompactFeaturedCard(props: { post: NewsPostCard; locale: string }) {
   return (
     <Link

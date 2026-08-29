@@ -86,7 +86,7 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
     });
   };
 
-  const handlePlay = (index: number, videoPath: string) => {
+  const handlePlay = (index: number) => {
     // Pause any currently playing video
     if (playingIndex !== null) {
       const prev = videoRefs.current.get(playingIndex);
@@ -206,7 +206,7 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
                     type="button"
                     onClick={() => {
                       if (isActive) {
-                        handlePlay(index, videoPath);
+                        handlePlay(index);
                       } else {
                         scrollToIndex(index);
                       }

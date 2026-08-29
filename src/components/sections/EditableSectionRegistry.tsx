@@ -46,7 +46,6 @@ import { Ecosystems } from '@/components/sections/ecosystems/Ecosystems';
 import { HeroOne } from '@/components/sections/hero/Hero-one';
 import { ImpactGreenHub } from '@/components/impact/ImpactGreenHub';
 import { ImpactHero } from '@/components/impact/ImpactHero';
-import { ImpactInitiative } from '@/components/impact/ImpactInitiative';
 import { ImpactNetwork } from '@/components/impact/ImpactNetwork';
 import { ImpactPartnerBanner } from '@/components/impact/ImpactPartnerBanner';
 import { ImpactSustainability } from '@/components/impact/ImpactSustainability';
