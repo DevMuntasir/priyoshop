@@ -1,0 +1,399 @@
+Revise the current Phase 0 ExecPlan.
+
+Do not implement anything.
+Do not create application code.
+Do not install dependencies.
+Do not scaffold Medusa or Next.js.
+
+Use the previous review findings as mandatory revision requirements.
+
+The revised ExecPlan must resolve every P1 issue and the relevant P2 planning gaps before approval.
+
+Make the following changes explicitly.
+
+1. Add future cell-based scaling compatibility
+
+Document the future scaling boundary without implementing cell infrastructure.
+
+The plan must define:
+
+- stable Tenant identity independent of physical database placement
+- a future tenant placement concept such as cell_id / placement metadata
+- trusted tenant-to-cell routing as a future control-plane responsibility
+- tenant data being cell-local after migration
+- no cross-cell transactional dependency as a design goal
+- tenant migration expectations
+- extraction/sharding triggers based on measured scale, not assumptions
+
+Make it explicit that:
+
+- V1 uses one shared multi-tenant database
+- V1 does NOT implement cells
+- the V1 model must not block future cell migration
+
+Add or update the appropriate ADR.
+
+2. Fix Medusa ownership vs Tenant ownership modeling
+
+Do not classify entities using a single mutually-exclusive category such as:
+
+global
+tenant-owned
+Medusa-owned
+
+Instead document TWO independent dimensions:
+
+Dimension A — System of Record
+- Platform / Retail OS module
+- Medusa module
+
+Dimension B — Tenancy Scope
+- Global
+- Tenant-owned
+
+Create a complete ownership/enforcement matrix for at least:
+
+- Medusa Store
+- Product
+- Variant
+- Customer
+- Cart
+- Order
+- Return
+- Fulfillment
+- Stock Location
+- Inventory Item
+- Inventory Level
+- Reservation
+- Sales Channel
+
+For every tenant-owned Medusa resource, document how the system can deterministically and safely resolve it back to exactly one Retail OS Tenant.
+
+The plan does not need to implement the linkage yet, but it must decide and document the intended enforcement strategy.
+
+Do not rely on frontend-supplied tenant_id.
+
+3. Make the V1/V2/Long-Term scope matrix decision-complete
+
+The revised ExecPlan must explicitly assign each major capability to one of:
+
+- V1
+- V1.x / post-pilot hardening
+- V2
+- Long-term
+
+At minimum classify:
+
+- custom domains
+- basic themes
+- advanced theme builder
+- custom fields
+- vertical profiles
+- reports
+- subscription enforcement
+- automated subscription billing
+- customer baki payments
+- supplier payments
+- courier integration
+- multiple couriers
+- online payment gateway
+- offline POS
+- offline returns/exchanges
+- offline baki collection
+- offline cash sessions
+- offline stock adjustments
+- multi-outlet
+- warehouse
+- public API
+- automation engine
+- loyalty / CRM
+- AI
+
+Do not leave these decisions to future document authors.
+
+4. Add an explicit Offline V1 Support Matrix
+
+V1 offline mode must NOT imply full offline feature parity.
+
+Define exact support status for each operation.
+
+Use categories such as:
+
+- Supported offline
+- Read-only from cached data
+- Online-only
+- Deferred to Offline V2
+
+At minimum classify:
+
+- product lookup
+- barcode lookup
+- normal sale
+- cash sale
+- manual payment
+- customer baki sale
+- customer creation
+- customer baki collection
+- return
+- exchange
+- refund
+- cash-session open
+- cash-session close
+- stock adjustment
+- purchase
+- goods receiving
+- expense entry
+- order history lookup
+- report access
+
+Prefer a deliberately small Offline V1.
+
+The default recommendation should be:
+
+Supported Offline V1:
+- cached product/variant lookup
+- barcode lookup
+- normal sale
+- cash payment
+- optionally previously cached existing customer attachment if safe
+- local receipt
+- queued sale synchronization
+
+Online-only in V1 unless a strong reason exists:
+- returns
+- exchanges
+- refunds
+- baki collection
+- purchase
+- goods receiving
+- stock adjustment
+- expenses
+- reports
+- administrative configuration
+
+If customer-baki sale is kept offline, explicitly justify the authorization and ledger risks.
+Otherwise move offline baki sale to V1.x or V2.
+
+5. Correct the offline acceptance invariant
+
+Replace any absolute rule such as:
+
+"Completed offline sales are accepted once"
+
+with a safer invariant.
+
+The plan must distinguish:
+
+- client-visible locally completed operation
+- server acceptance
+- server quarantine/rejection
+
+A retried operation with the same valid idempotency key must never create duplicate financial or inventory effects.
+
+The server may quarantine or reject an offline operation if it is:
+
+- tampered
+- malformed
+- unauthorized
+- from a revoked/expired device
+- outside allowed policy
+- inconsistent with required integrity checks
+
+The system must preserve an auditable recovery path and must not silently lose the cashier-visible transaction.
+
+Define this concept at architecture level only; do not prematurely design a complex protocol.
+
+6. Resolve negative-stock / offline oversell architecture at planning level
+
+Document a Medusa-compatible strategy.
+
+Requirements:
+
+- Medusa remains the inventory source of truth
+- do not introduce a second authoritative inventory balance
+- do not use unsafe direct database writes into Medusa internals
+- server reconciliation must go through supported service/workflow boundaries
+- legitimate offline oversells must produce an explicit exception/reconciliation state
+- define whether V1 permits negative available stock, records an inventory discrepancy, or uses another supported mechanism
+- if exact Medusa behavior requires later technical validation, mark it as a blocking implementation research task before Offline POS coding
+
+The ADR must state the invariant even if the exact API/workflow is validated later.
+
+7. Split oversized documentation milestones
+
+Do not keep ARCHITECTURE, TENANCY, DATA_MODEL, and SECURITY in one large milestone.
+
+Use smaller reviewable milestones, for example:
+
+Milestone 1:
+Product scope and glossary
+
+Milestone 2:
+Core architecture and ADR framework
+
+Milestone 3:
+Tenancy and ownership model
+
+Milestone 4:
+Data model and inventory/ledger invariants
+
+Milestone 5:
+Security and threat model
+
+Milestone 6:
+UX and product flows
+
+Milestone 7:
+Roadmap and V1/V2 matrix
+
+Milestone 8:
+ADR review and cross-document validation
+
+You may improve the split if justified.
+
+8. Add ADR governance
+
+Define ADR statuses:
+
+- Proposed
+- Accepted
+- Superseded
+- Deprecated
+
+Every ADR must contain:
+
+- Status
+- Date
+- Context
+- Decision
+- Alternatives Considered
+- Consequences
+- Migration Implications
+- Follow-up / Review Trigger where relevant
+
+State which ADRs must be Accepted before Phase 1 starts.
+
+9. Add docs/adr/README.md or equivalent ADR index
+
+The index must list:
+
+- ADR number
+- title
+- status
+- date
+- related roadmap/plan
+- superseded-by relationship if applicable
+
+10. Improve no-code validation
+
+Do not rely only on:
+
+git diff --name-only -- apps packages
+
+because untracked files may exist.
+
+The plan should validate both tracked and untracked files.
+
+Use repository-appropriate checks such as:
+
+git status --short
+
+and inspection ensuring no application scaffold, migration, dependency manifest change, or generated app code was introduced during Phase 0.
+
+Use actual commands suitable for the repository state.
+
+11. Subscription scope decision
+
+For V1:
+
+- subscription plans and entitlements may be part of product architecture
+- automated recurring billing must NOT block pilot launch
+- define a manual/admin operational fallback for subscription status during V1 pilot
+- automated billing provider integration should be V1.x or V2 unless a validated provider and commercial model are selected
+
+Document this explicitly.
+
+12. Compliance decision deadlines
+
+ROADMAP must include explicit pre-release validation tasks for:
+
+- Bangladesh VAT / fiscal receipt requirements
+- privacy / personal-data requirements
+- payment/settlement regulatory implications
+- invoice/receipt terminology
+
+Do not invent legal conclusions.
+
+Define them as professional-validation gates before relevant production rollout.
+
+13. Authentication ADR
+
+Do not silently lock authentication to Medusa Auth.
+
+The authentication ADR must evaluate:
+
+- Medusa Auth with custom actor/platform identity
+- separate platform identity layer
+- relevant coupling and operational consequences
+
+It may still choose Medusa Auth if justified, but the decision must be explicit.
+
+14. Add glossary
+
+Define at minimum:
+
+- Tenant
+- Merchant
+- Medusa Store
+- Outlet
+- Stock Location
+- Sales Channel
+- User
+- Membership
+- Role
+- Permission
+- Plan
+- Entitlement
+- Subscription
+- Provider
+- Ledger
+- Vertical Profile
+
+15. Add traceability
+
+The revised ExecPlan should require a final traceability matrix mapping:
+
+Acceptance Criterion
+→ Document section
+→ ADR if applicable
+→ validation evidence
+
+16. Preserve Phase 0 scope
+
+Phase 0 remains documentation-only.
+
+No:
+
+- application code
+- schemas
+- migrations
+- dependency installation
+- infrastructure
+- Medusa scaffold
+- Next.js scaffold
+
+After revising the plan:
+
+- present the changed milestone structure
+- list every P1 finding and where it was resolved
+- list any remaining P2/P3 findings
+- list unresolved decisions that are intentionally deferred
+- give one verdict:
+
+READY FOR APPROVAL
+
+or
+
+REVISION STILL REQUIRED
+
+Do not execute the revised plan.

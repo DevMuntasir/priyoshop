@@ -1,0 +1,298 @@
+{
+  "RootLayout": {
+    "home_link": "Home",
+    "about_link": "About",
+    "portfolio_link": "Portfolio",
+    "sign_in_link": "Sign in",
+    "sign_up_link": "Sign up"
+  },
+  "BaseTemplate": {
+    "description": "Starter code for your Nextjs Boilerplate with Tailwind CSS",
+    "footer_text": "© {year} {name}. Made with <author></author>.",
+    "main_navigation_label": "Main navigation"
+  },
+  "Index": {
+    "meta_title": "PriyoShop — Bangladesh's #1 B2B commerce platform",
+    "meta_description": "PriyoShop connects 5 million MSMEs to leading brands through a tech-driven distribution platform — fair prices, next-day restocking and a smarter supply chain.",
+    "sponsors_title": "Sponsors",
+    "zap_emoji_label": "Zap"
+  },
+  "About": {
+    "meta_title": "About",
+    "meta_description": "Learn about PriyoShop — how we connect Bangladesh's retailers directly with brands and distributors.",
+    "about_paragraph": "PriyoShop is an AI-powered B2B marketplace using EV logistics & embedded finance to transform MSME retail, simplify  supply chains, & boost financial inclusion across Bangladesh.",
+    "translation_powered_by": "Translation powered by"
+  },
+  "Business": {
+    "meta_title": "Business",
+    "meta_description": "Explore PriyoShop's business lines — how we power retail, distribution and commerce across Bangladesh.",
+    "title": "Business",
+    "intro": "PriyoShop builds the infrastructure that connects retailers, brands and distributors into one efficient supply chain.",
+    "commerce_link": "Commerce"
+  },
+  "Commerce": {
+    "meta_title": "Commerce",
+    "meta_description": "PriyoShop's commerce platform connects retailers with brands for fair prices, faster restocking and a smarter supply chain.",
+    "title": "Commerce",
+    "intro": "Our commerce platform gives retailers direct access to brands with transparent pricing, next-day restocking and embedded finance.",
+    "breadcrumb_business": "Business"
+  },
+  "Distribution": {
+    "meta_title": "Distribution",
+    "meta_description": "Expand your FMCG brand with PriyoShop's reliable nationwide distribution network of hubs, routes and retailers.",
+    "title": "Distribution",
+    "breadcrumb_business": "Business"
+  },
+  "RetailFinance": {
+    "meta_title": "Retail Finance",
+    "meta_description": "Unlock growth with PriyoShop's embedded credit solutions, enabling retailers to offer flexible financing options to customers.",
+    "title": "Retail Finance",
+    "breadcrumb_business": "Business"
+  },
+  "Dipty": {
+    "meta_title": "Dipty",
+    "meta_description": "Dipty is PriyoShop's private label FMCG brand, giving Bangladeshi retailers premium everyday staples with better margins and stable pricing.",
+    "title": "Dipty",
+    "breadcrumb_business": "Business"
+  },
+  "Media": {
+    "meta_title": "Media & blogs",
+    "meta_description": "Discover how PriyoShop is revolutionizing MSME retail and supply chains in Bangladesh — explore our latest articles and insights.",
+    "title": "Media",
+    "hero_pill": "Media",
+    "hero_title": "Discover How PriyoShop is Revolutionizing MSME Retail and Supply Chains in Bangladesh",
+    "hero_description": "Explore our latest articles and insights to stay updated and inspired.",
+    "read_full_blog": "Read Full Blog",
+    "recent_blogs_title": "Recent Blogs",
+    "recent_blogs_description": "Check out our latest posts and insights in the Recent Blog section.",
+    "all_blogs_chip": "All Blog",
+    "load_more": "Load More",
+    "go_to_slide": "Go to featured post",
+    "breadcrumb_home": "Home"
+  },
+  "MediaSlug": {
+    "not_found_title": "Post not found",
+    "similar_blogs_title": "Similar Blogs",
+    "previous_slide": "Previous blogs",
+    "next_slide": "Next blogs"
+  },
+  "News": {
+    "meta_title": "News and events",
+    "meta_description": "Grab the latest PriyoShop news, press coverage and event announcements.",
+    "title": "News",
+    "hero_pill": "Media",
+    "hero_title": "News And Events",
+    "hero_description": "Grab the latest news and announcements",
+    "read_full_blog": "Read Full Blog",
+    "publications_title": "Featured in top publications",
+    "publications_description": "Browse the newspapers and media outlets that have covered PriyoShop news and announcements.",
+    "all_news_title": "All News",
+    "all_news_description": "Explore all the latest updates, stories, and announcements in our All News section.",
+    "all_news_chip": "All",
+    "load_more": "Load More",
+    "go_to_slide": "Go to featured post",
+    "breadcrumb_home": "Home"
+  },
+  "NewsPublication": {
+    "meta_title": "{publication} news coverage",
+    "meta_description": "Explore every PriyoShop news story published by {publication}.",
+    "not_found_title": "Publication not found",
+    "breadcrumb_publications": "Publications",
+    "back_to_news": "Back to all news",
+    "page_description": "Explore PriyoShop news stories that appeared in {publication}.",
+    "latest_update": "Latest update: {date}",
+    "all_posts_title": "All posts from this publication"
+  },
+  "NewsSlug": {
+    "not_found_title": "Post not found",
+    "similar_news_title": "Similar News",
+    "previous_slide": "Previous news",
+    "next_slide": "Next news"
+  },
+  "Career": {
+    "meta_title": "Careers",
+    "meta_description": "Explore open positions at PriyoShop and find your next career move in Bangladesh's leading MSME retail and distribution platform.",
+    "title": "Careers",
+    "hero_title": "Build Your Future With PriyoShop",
+    "hero_description": "Explore exciting career opportunities and become part of a team transforming Bangladesh’s retail ecosystem through technology, innovation, and impact.",
+    "explore_positions": "Explore All Open Positions",
+    "video_play_label": "Play video",
+    "why_work_title": "Why you might love to work here?",
+    "why_work_description": "At PriyoShop, we offer a fantastic workplace Experience a friendly atmosphere, get recognized for your efforts, and enjoy a world-class culture. We are all about your career growth and development, providing opportunities for learning and advancement. Join us for a rewarding journey where your passion meets profession. PriyoShop is not just a workplace; it's where your aspirations come to life!",
+    "benefits_eyebrow": "Employee Benefits",
+    "benefits_title": "Best of Benefits",
+    "benefit_health_title": "Health & Wellbeing",
+    "benefit_health_description": "Supporting employee wellness through a healthy, positive, and caring workplace environment.",
+    "benefit_financial_title": "Financial Benefits",
+    "benefit_financial_description": "Providing competitive financial benefits and support designed to recognize employees' contributions.",
+    "benefit_learning_title": "Learning & Growth",
+    "benefit_learning_description": "Creating continuous opportunities to learn, develop new skills, and grow professionally.",
+    "benefit_recognition_title": "Recognition & Rewards",
+    "benefit_recognition_description": "Celebrating performance, achievements, and meaningful contributions across the organization.",
+    "benefit_career_title": "Career Opportunities",
+    "benefit_career_description": "Empowering employees to take on new challenges, expand their capabilities, and progress in their careers.",
+    "benefit_perks_title": "Special Employee Perks",
+    "benefit_perks_description": "Making work more rewarding through celebrations, engagement activities, special recognition, and employee-focused initiatives.",
+    "values_eyebrow": "What PriyoShop Believe",
+    "stories_eyebrow": "Meet Our People",
+    "stories_title": "Inspiring Stories",
+    "story_sharmin_name": "Sharmin Akter",
+    "story_sharmin_description": "Sharmin consistently cultivates a positive and supportive office culture by organizing wellness programs and encouraging open communication. She creates a caring environment where every team member feels valued, motivated, and empowered to contribute their best work.",
+    "story_arafat_name": "Arafat Shimanto",
+    "story_arafat_description": "Arafat turns ambitious ideas into thoughtful solutions through curiosity, collaboration, and a willingness to keep learning. His energy helps the team approach every challenge with confidence.",
+    "story_amlan_name": "Amlan Saha",
+    "story_amlan_description": "Amlan brings clarity and ownership to every project while making space for the people around him to grow. His collaborative approach helps the team achieve meaningful results together.",
+    "values_title": "Our Values",
+    "value_products": "Thousands of Products",
+    "value_products_description": "All groceries essentials are available on one platform.",
+    "value_quality": "Best in Quality",
+    "value_quality_description": "Eliminating intermediaries, connecting 296+ brands to last-mile retailers.",
+    "value_pricing": "Wholesale Pricing",
+    "value_pricing_description": "Retailers get clear, low prices without bargaining or hidden charges.",
+    "value_delivery": "Delivery across Bangladesh",
+    "value_delivery_description": "Retail grocery products are delivered directly to store locations.",
+    "value_credit": "Easy Credit Access",
+    "value_credit_description": "Restock confidently with our hassle-free credit facilities for retailers.",
+    "value_support": "Helpful Support",
+    "value_support_description": "Our dedicated support team is always available to answer your questions.",
+    "life_title": "Life at PriyoShop",
+    "location_label": "Location",
+    "job_type_label": "Job Type",
+    "level_label": "Level",
+    "compensation_label": "Compensation",
+    "open_positions_title": "Open Positions",
+    "category_all_label": "Category All",
+    "vacancy_label": "Vacancy",
+    "deadline_label": "Deadline",
+    "apply_label": "Apply Now",
+    "load_more": "Load More",
+    "breadcrumb_home": "Home"
+  },
+  "CareerSlug": {
+    "not_found_title": "Job not found",
+    "others_heading": "Others",
+    "experience_label": "Experience Requirements",
+    "employment_type_label": "Employment Type",
+    "salary_label": "Salary",
+    "benefits_heading": "Compensation & Other Benefits",
+    "apply_callout": "Interested candidates are requested to email their resume to <a>{email}</a> with the subject line Must Be: ({title}).",
+    "application_deadline_label": "Application Deadline: {date}"
+  },
+  "Contact": {
+    "meta_title": "Contact us",
+    "meta_description": "Reach out to the PriyoShop team with any questions or feedback — contact our Dhaka or Singapore office by form, email or phone.",
+    "title": "Contact us",
+    "breadcrumb_home": "Home",
+    "hero_title": "Let's Start a Conversation",
+    "hero_description": "Have questions? Reach out to our team anytime—we're here to help!",
+    "form_eyebrow": "Support",
+    "form_title": "Contact Us",
+    "form_description": "Reach out to us with any questions or feedback you have.",
+    "name_label": "What's your name?",
+    "name_placeholder": "Enter your name",
+    "email_label": "What's your email address",
+    "email_placeholder": "Enter your email address",
+    "message_label": "Write your message",
+    "message_placeholder": "Write your message here",
+    "submit_label": "Submit Your Message",
+    "terms_prefix": "By clicking, you agree to our",
+    "terms_link": "Terms & Conditions,",
+    "privacy_link": "Privacy and Data Protection Policy",
+    "error_message": "The message could not be sent.",
+    "success_title": "Form submitted successfully!",
+    "success_description": "Thank you! The form has been submitted successfully. We will reply to you soon!",
+    "offices_eyebrow": "Our Offices",
+    "offices_title": "Get In Touch with PriyoShop",
+    "offices_description": "Reach out to us with any questions or feedback you have.",
+    "sg_overlay": "Find us on Singapore",
+    "email_card_label": "Email",
+    "email_value": "sales@priyoshop.com",
+    "phone_card_label": "Phone",
+    "phone_value": "+8809610989922",
+    "bd_office_label": "Bangladesh Office",
+    "bd_office_address": "31/A, Dhanmondi-8, Dhaka 1209, Bangladesh",
+    "sg_office_label": "Singapore Office",
+    "sg_office_address": "160, Robinson Road #24-09, Singapore 068914"
+  },
+  "Impact": {
+    "meta_title": "Impact",
+    "meta_description": "From electric vehicles to sustainable green hubs, PriyoShop pioneers eco-friendly logistics in Bangladesh to meet global Sustainable Development Goals.",
+    "title": "Impact"
+  },
+  "Opportunity": {
+    "meta_title": "Opportunity",
+    "meta_description": "Five million retailers, one unstoppable economy. PriyoShop digitizes supply chains to unlock the massive potential of Bangladesh's MSMEs.",
+    "title": "Opportunity"
+  },
+  "Portfolio": {
+    "meta_title": "Portfolio",
+    "meta_description": "Explore a carefully curated collection of PriyoShop's work and accomplishments.",
+    "presentation": "Welcome to my portfolio page! Here you will find a carefully curated collection of my work and accomplishments. Through this portfolio, I'm to showcase my expertise, creativity, and the value I can bring to your projects.",
+    "portfolio_name": "Portfolio {name}"
+  },
+  "PortfolioSlug": {
+    "meta_title": "Portfolio {slug}",
+    "meta_description": "Portfolio {slug} description",
+    "header": "Portfolio {slug}",
+    "content": "Created a set of promotional materials and branding elements for a corporate event. Crafted a visually unified theme, encompassing a logo, posters, banners, and digital assets. Integrated the client's brand identity while infusing it with a contemporary and innovative approach.",
+    "code_review_powered_by": "Code review powered by"
+  },
+  "SignIn": {
+    "meta_title": "Sign in",
+    "meta_description": "Seamlessly sign in to your account with our user-friendly login process."
+  },
+  "SignUp": {
+    "meta_title": "Sign up",
+    "meta_description": "Effortlessly create an account through our intuitive sign-up process."
+  },
+  "AuthForm": {
+    "name_label": "Name",
+    "email_label": "Email",
+    "password_label": "Password",
+    "sign_in_title": "Sign in",
+    "sign_in_button": "Sign in",
+    "sign_up_title": "Create account",
+    "sign_up_button": "Create account",
+    "pending": "Please wait…",
+    "error_invalid": "Invalid email or password",
+    "error_generic": "Something went wrong",
+    "to_sign_up": "Need an account? Sign up",
+    "to_sign_in": "Already have an account? Sign in"
+  },
+  "Dashboard": {
+    "hello_message": "Hello {email}!",
+    "alternative_message": "Need advanced features? Multi-tenancy & Teams, Roles & Permissions, Shadcn UI, End-to-End Typesafety with oRPC, Stripe Payment, Light / Dark mode. Try <url></url>.",
+    "max_message": "Or, need a Self-hosted auth stack (Better Auth)? Try <url></url>."
+  },
+  "DashboardLayout": {
+    "meta_title": "Dashboard",
+    "meta_description": "Manage your account from the dashboard.",
+    "dashboard_link": "Dashboard",
+    "user_profile_link": "Manage your account",
+    "sign_out": "Sign out"
+  },
+  "LocaleSwitcher": {
+    "change_language": "Change language"
+  },
+  "HeroOnePage": {
+    "badge": "Bangladesh's #1 B2B Commerce Platform",
+    "title": "Sourcing, simplified for every <shop>shop</shop>",
+    "description": "We connect retailers directly with brands and distributors — fair prices, next-day restocking and a smarter supply chain for 100,000+ MSMEs.",
+    "cta_primary": "Join Us",
+    "cta_secondary": "Watch Our Story",
+    "image_alt": "PriyoShop storefront"
+  },
+  "DistributionPage": {
+    "title": "Distribution",
+    "description": "Grow your retail business with the best nMCG wholesale distributor. nMCG's one-stop platform for bulk nMCG supplies connects with top brands, access quality products, and get fast delivery right to the retail doorstep.",
+    "cta_learn_more": "Learn More",
+    "digitalisation_title": "Digitalisation",
+    "digitalisation_description": "Helping MSMEs manage sourcing and inventory with a fully digital platform.",
+    "sales_booster_title": "Sales Booster",
+    "sales_booster_description": "Empower your sales team with real-time insights and analytics.",
+    "time_saver_title": "Time Saver",
+    "time_saver_description": "Automate routine tasks and save valuable time for strategic growth.",
+    "price_transparency_title": "Price Transparency",
+    "price_transparency_description": "Clear pricing with no hidden charges for better decision-making."
+  }
+}
