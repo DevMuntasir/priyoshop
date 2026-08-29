@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
