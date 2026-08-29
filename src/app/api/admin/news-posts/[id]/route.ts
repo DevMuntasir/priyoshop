@@ -46,7 +46,9 @@ export async function PATCH(request: Request, context: Context) {
     ...rest
   } = parsed.data;
 
-  const updates: Partial<NewsPostDoc> & { publicationId?: string | null } = { ...rest };
+  const updates: Omit<Partial<NewsPostDoc>, 'publicationId'> & {
+    publicationId?: string | null;
+  } = { ...rest };
 
   if (slug !== undefined) {
     const slugError = validateNewsSlug(slug);
