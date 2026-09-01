@@ -74,6 +74,8 @@ function HeroCtas(props: { slide: SectionItem; defaultTone: 'light' | 'dark'; ac
 
 function HeroSlide(props: { slide: SectionItem; active: boolean }) {
   const hasImage = Boolean(props.slide.slideBackgroundImage);
+  const backgroundBlur = props.slide.slideBackgroundBlur ?? 0;
+  const backgroundOpacity = props.slide.slideBackgroundOpacity ?? 100;
   const background = resolveBackground(props.slide.slideBackgroundColor);
   const align = props.slide.slideAlign ?? 'left';
   const titleColor = props.slide.textColor ?? (hasImage ? 'text-white' : 'text-ps-ink-700');
@@ -88,13 +90,16 @@ function HeroSlide(props: { slide: SectionItem; active: boolean }) {
     <>
       <div className={`absolute inset-0 ${background.className}`} style={background.style} />
       {hasImage ? (
-        <>
+        <div className="absolute inset-0 overflow-hidden">
           <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${props.slide.slideBackgroundImage})` }}
+            className="absolute -inset-6 bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${props.slide.slideBackgroundImage})`,
+              filter: backgroundBlur > 0 ? `blur(${backgroundBlur}px)` : undefined,
+              opacity: backgroundOpacity / 100,
+            }}
           />
-          {/* <div className="absolute inset-0 bg-linear-to-r from-black/60 to-black/10" /> */}
-        </>
+        </div>
       ) : null}
 
       <div className="relative z-10 flex h-full items-center">

@@ -104,12 +104,17 @@ const INHERIT = '__inherit__';
 
 // Declarative item fields per kind: the editor renders one row from this config,
 // so a new section is a config entry rather than bespoke JSX.
-type ItemFieldType = 'text' | 'textarea' | 'color' | 'bool' | 'select';
+type ItemFieldType = 'text' | 'textarea' | 'color' | 'bool' | 'select' | 'range';
 type ItemFieldDef = {
   field: keyof SectionItem;
   label: string;
   type?: ItemFieldType;
   options?: readonly string[];
+  min?: number;
+  max?: number;
+  step?: number;
+  unit?: string;
+  defaultValue?: number;
   full?: boolean;
 };
 
@@ -186,6 +191,26 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
     { field: 'accentGradientTo', label: 'Gradient end', type: 'color' },
     { field: 'description', label: 'Description', type: 'textarea', full: true },
     { field: 'slideBackgroundImage', label: 'Background image path', full: true },
+    {
+      field: 'slideBackgroundBlur',
+      label: 'Background image blur',
+      type: 'range',
+      min: 0,
+      max: 20,
+      step: 1,
+      unit: 'px',
+      defaultValue: 0,
+    },
+    {
+      field: 'slideBackgroundOpacity',
+      label: 'Background image opacity',
+      type: 'range',
+      min: 0,
+      max: 100,
+      step: 1,
+      unit: '%',
+      defaultValue: 100,
+    },
     { field: 'slideBackgroundColor', label: 'Background color', type: 'color', full: true },
     { field: 'textColor', label: 'Heading color', type: 'color' },
     { field: 'descriptionColor', label: 'Description color', type: 'color' },
@@ -268,7 +293,12 @@ const SLIDE_FIELD_GROUPS: SlideFieldGroup[] = [
   },
   {
     title: 'Background',
-    fields: ['slideBackgroundImage', 'slideBackgroundColor'],
+    fields: [
+      'slideBackgroundImage',
+      'slideBackgroundBlur',
+      'slideBackgroundOpacity',
+      'slideBackgroundColor',
+    ],
   },
   {
     title: 'Typography and layout',
@@ -303,6 +333,8 @@ function addItemTo(
       ? {
           title: 'New slide',
           slideBackgroundColor: 'bg-hero-gradient',
+          slideBackgroundBlur: 0,
+          slideBackgroundOpacity: 100,
           textColor: 'text-ps-ink-700',
           descriptionColor: 'text-ps-ink-700',
           textSize: 'text-ps-display',
@@ -431,7 +463,7 @@ function HeadingInput(props: {
 function ItemField(props: {
   def: ItemFieldDef;
   item: SectionItem;
-  onChange: (value: string | boolean) => void;
+  onChange: (value: string | number | boolean) => void;
 }) {
   const raw = props.item[props.def.field];
   if (props.def.type === 'bool') {
@@ -518,6 +550,32 @@ function ItemField(props: {
       </label>
     );
   }
+  if (props.def.type === 'range') {
+    const value = typeof raw === 'number' ? raw : (props.def.defaultValue ?? props.def.min ?? 0);
+    return (
+      <label className={props.def.full ? 'col-span-2 block w-full' : 'block flex-1'}>
+        <span className="flex items-center justify-between gap-2">
+          <span className={labelClass}>{props.def.label}</span>
+          <output className="text-xs font-medium text-gray-700">
+            {value}
+            {props.def.unit}
+          </output>
+        </span>
+        <input
+          aria-label={props.def.label}
+          type="range"
+          className="mt-2 w-full accent-gray-900"
+          min={props.def.min}
+          max={props.def.max}
+          step={props.def.step}
+          value={value}
+          onChange={(event) => {
+            props.onChange(event.target.valueAsNumber);
+          }}
+        />
+      </label>
+    );
+  }
   return (
     <label className={props.def.full ? 'col-span-2 block w-full' : 'block flex-1'}>
       <span className={labelClass}>{props.def.label}</span>
@@ -537,7 +595,7 @@ function SlideItemEditor(props: {
   item: SectionItem;
   index: number;
   itemFields: ItemFieldDef[];
-  onField: (field: keyof SectionItem, value: string | boolean) => void;
+  onField: (field: keyof SectionItem, value: string | number | boolean) => void;
   onRemove: () => void;
 }) {
   const background = props.item.slideBackgroundColor ?? 'bg-gray-100';
@@ -633,7 +691,11 @@ function ContentPanelBody(props: {
   itemKind: ItemKind;
   onHeading: (field: keyof SectionHeadingContent, value: string) => void;
   onRotatingWords: (value: string) => void;
-  onItemField: (index: number, field: keyof SectionItem, value: string | boolean) => void;
+  onItemField: (
+    index: number,
+    field: keyof SectionItem,
+    value: string | number | boolean,
+  ) => void;
   onAddItem: () => void;
   onRemoveItem: (index: number) => void;
 }) {
@@ -886,7 +948,11 @@ export const SectionEditor = (props: { page: PageKey; sectionKey: SectionKey }) 
     patchContent({ ...content, heading: { ...content.heading, rotatingWords } });
   };
 
-  const patchItemField = (index: number, field: keyof SectionItem, value: string | boolean) => {
+  const patchItemField = (
+    index: number,
+    field: keyof SectionItem,
+    value: string | number | boolean,
+  ) => {
     const items = content.items.map((item, i) =>
       i === index ? { ...item, [field]: value } : item,
     );

@@ -156,6 +156,10 @@ export type SectionItem = {
   accentGradientTo?: string;
   /** Slide background image (overrides gradient). */
   slideBackgroundImage?: string;
+  /** Slide background image blur in pixels. */
+  slideBackgroundBlur?: number;
+  /** Slide background image opacity as a percentage. */
+  slideBackgroundOpacity?: number;
   /** Slide background color or utility class. */
   slideBackgroundColor?: string;
   /** Slide alignment (left/center). */

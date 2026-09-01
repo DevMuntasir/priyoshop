@@ -89,6 +89,8 @@ const itemSchema = z.object({
   accentGradientFrom: z.string().max(60).optional(),
   accentGradientTo: z.string().max(60).optional(),
   slideBackgroundImage: z.string().max(300).optional(),
+  slideBackgroundBlur: z.number().int().min(0).max(20).optional(),
+  slideBackgroundOpacity: z.number().int().min(0).max(100).optional(),
   slideBackgroundColor: z.string().max(60).optional(),
   slideAlign: z.enum(['left', 'center']).optional(),
 });
