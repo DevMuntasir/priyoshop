@@ -17,7 +17,7 @@ export function OpportunityStats(props: { data: ResolvedSection }) {
 
   return (
     <div className={`relative -mt-6 rounded-t-[35px] bg-white ${resolved.wrapperClass}`.trim()}>
-      <div className="container mx-auto px-4 py-14 sm:py-20">
+      <div className="container mx-auto px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <Reveal direction="up">
           <SectionHeading
             align={resolved.align}
@@ -31,7 +31,7 @@ export function OpportunityStats(props: { data: ResolvedSection }) {
         <RevealGroup
           stagger={0.12}
           delayChildren={0.1}
-          className="mx-auto mt-12 grid w-full max-w-4xl grid-cols-3 divide-x divide-ps-grey-100 sm:mt-16 gap-5"
+          className="mx-auto mt-12 grid w-full max-w-4xl grid-cols-1 gap-4 sm:mt-16 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3"
         >
           {stats.map((stat, i) => (
             <Reveal
@@ -70,7 +70,7 @@ export function OpportunityStats(props: { data: ResolvedSection }) {
                     alt=""
                     width={100}
                     height={100}
-                    className="size-12 sm:size-32"
+                    className="size-16 sm:size-24 lg:size-32"
                   />
                 )}
 

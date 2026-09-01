@@ -34,7 +34,7 @@ export function OpenPositions(props: OpenPositionsProps) {
 
   return (
     <section id="open-positions" className="rounded-t-4xl bg-section-gradient py-16 lg:py-20">
-      <div className="container mx-auto flex flex-col gap-6 px-4">
+      <div className="container mx-auto flex min-w-0 flex-col gap-6 px-4 sm:px-6 lg:px-8">
         <h2 className="m-0 font-display text-ps-h5 font-bold tracking-tight text-ps-black sm:text-ps-h4">
           {props.title}
         </h2>

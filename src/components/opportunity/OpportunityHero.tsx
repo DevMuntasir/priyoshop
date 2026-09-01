@@ -12,12 +12,12 @@ export function OpportunityHero(props: { data: ResolvedSection }) {
 
   return (
     <section
-      className={`bg-linear-to-b h-screen bg-ps-white ${resolved.wrapperClass}`.trim()}
+      className={`min-h-[100svh] bg-ps-white bg-linear-to-b lg:min-h-[100dvh] ${resolved.wrapperClass}`.trim()}
     >
       <div
-        className={`container relative mx-auto flex   ${alignClass} h-full  `}
+        className={`container relative mx-auto flex min-h-[100svh] overflow-hidden px-4 pt-28 pb-12 sm:px-6 lg:min-h-[100dvh] lg:px-8 ${alignClass}`}
       >
-        <div className="max-w-[700px]  w-full self-center z-10  ">
+        <div className="z-10 w-full max-w-[700px] self-center">
           <Reveal direction="up">
             <h1
               className={`m-0 font-display leading-[1.25] font-extrabold text-balance  ${resolved.titleSizeClass || 'text-ps-h4 sm:text-ps-h3 lg:text-ps-h2 xl:text-ps-h1 '
@@ -42,7 +42,7 @@ export function OpportunityHero(props: { data: ResolvedSection }) {
         {heading.backgroundImage
           ?
 
-          <Image src={heading.backgroundImage} alt="Bangladesh Map" className='absolute right-0 top-[50%] -translate-y-1/2' width={800} height={600} />
+          <Image src={heading.backgroundImage} alt="" className="absolute top-1/2 right-[-25%] w-[90%] max-w-[800px] -translate-y-1/2 object-contain opacity-25 sm:right-[-10%] sm:w-[70%] lg:right-0 lg:opacity-100" width={800} height={600} />
 
 
 

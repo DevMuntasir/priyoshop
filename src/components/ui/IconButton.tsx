@@ -5,7 +5,7 @@ import type * as React from 'react';
 type Tone = 'dark' | 'light' | 'brand';
 
 const DIM_CLASSES: Record<'sm' | 'md' | 'lg', string> = {
-  sm: 'size-9',
+  sm: 'size-11',
   md: 'size-11',
   lg: 'size-14',
 };

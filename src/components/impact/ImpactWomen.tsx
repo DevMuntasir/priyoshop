@@ -107,7 +107,7 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
   return (
     <section className="overflow-hidden py-16 lg:py-20">
       {/* Heading row with nav arrows */}
-      <div className="container mx-auto flex items-end justify-between gap-6 px-4">
+      <div className="container mx-auto flex flex-wrap items-end justify-between gap-6 px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow={heading.eyebrow}
           title={heading.title}
@@ -169,7 +169,7 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
       <div className="mt-10 py-10 lg:mt-14 lg:py-14">
         <div
           ref={trackRef}
-          className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-[10vw] scrollbar-none sm:px-[20vw]"
+          className="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth px-4 scrollbar-none sm:gap-5 sm:px-[20vw]"
         >
           {items.map((item, index) => {
             const isActive = activeIndex === index;
@@ -180,7 +180,7 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
             return (
               <div
                 key={`${item.title}-${index}`}
-                className={`relative w-[75vw] shrink-0 snap-center overflow-hidden rounded-2xl transition-all duration-500 sm:w-[55vw] ${isActive
+                className={`relative w-[calc(100vw-2rem)] max-w-4xl shrink-0 snap-center overflow-hidden rounded-2xl transition-all duration-500 sm:w-[55vw] ${isActive
                     ? 'scale-100 opacity-100'
                     : 'scale-[0.88] opacity-40 blur-[2px]'
                   }`}

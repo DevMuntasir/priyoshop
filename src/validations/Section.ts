@@ -68,6 +68,9 @@ const itemSchema = z.object({
   imageAlt: z.string().max(160).optional(),
   ctaLabel: z.string().max(80).optional(),
   href: z.string().max(300).optional(),
+  ctaSecondaryLabel: z.string().max(80).optional(),
+  ctaSecondaryHref: z.string().max(300).optional(),
+  ctaTone: z.enum(['auto', 'light', 'dark']).optional(),
   reverse: z.boolean().optional(),
   description: z.string().max(600).optional(),
   value: z.string().max(60).optional(),
@@ -77,14 +80,23 @@ const itemSchema = z.object({
   size: z.enum(['short', 'tall']).optional(),
   column: z.enum(['a', 'b']).optional(),
   textColor: z.string().max(60).optional(),
+  descriptionColor: z.string().max(60).optional(),
   textSize: z.string().max(60).optional(),
+  descriptionSize: z.string().max(60).optional(),
+  contentWidth: z.string().max(60).optional(),
+  accentWords: z.string().max(160).optional(),
+  accentColor: z.string().max(200).optional(),
+  accentGradientFrom: z.string().max(60).optional(),
+  accentGradientTo: z.string().max(60).optional(),
   slideBackgroundImage: z.string().max(300).optional(),
+  slideBackgroundColor: z.string().max(60).optional(),
   slideAlign: z.enum(['left', 'center']).optional(),
 });
 
 const contentSchema = z.object({
   heading: headingSchema,
   items: z.array(itemSchema).max(50),
+  format: z.literal('hero-slides-v2').optional(),
 });
 
 export const sectionReorderSchema = z.object({

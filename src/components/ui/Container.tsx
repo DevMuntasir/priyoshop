@@ -18,10 +18,10 @@ const BG_CLASSES: Record<string, string> = {
 };
 
 const PADDING_Y_CLASSES: Record<'sm' | 'md' | 'lg' | 'xl', string> = {
-  sm: 'py-6',
-  md: 'py-12',
-  lg: 'py-20',
-  xl: 'py-32',
+  sm: 'py-5 sm:py-6',
+  md: 'py-8 sm:py-10 lg:py-12',
+  lg: 'py-12 sm:py-16 lg:py-20',
+  xl: 'py-16 sm:py-24 lg:py-32',
 };
 
 const MAX_WIDTH_CLASSES: Record<'sm' | 'md' | 'lg' | 'xl' | 'full', string> = {
@@ -44,7 +44,8 @@ export function Container({
   const padyClass = paddingY ? PADDING_Y_CLASSES[paddingY] : '';
   const maxwClass = MAX_WIDTH_CLASSES[maxWidth];
 
-  const classes = `w-full mx-auto ${maxwClass} ${padyClass} ${bgClass} ${className}`.trim();
+  const gutterClass = maxWidth === 'full' ? '' : 'px-4 sm:px-6 lg:px-8';
+  const classes = `mx-auto min-w-0 w-full ${maxwClass} ${gutterClass} ${padyClass} ${bgClass} ${className}`.trim();
 
   return (
     <div className={classes} {...rest}>

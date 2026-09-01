@@ -34,7 +34,7 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
 
   return (
     <section
-      className={`container mx-auto px-4 py-12 lg:py-28 xl:py-32 ${resolved.wrapperClass}`.trim()}
+      className={`container mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-28 xl:py-32 ${resolved.wrapperClass}`.trim()}
     >
       {heading.eyebrow && (
         <div className="mb-10 lg:mb-14">
@@ -57,20 +57,20 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
         </div>
       )}
 
-      <div className="flex flex-wrap w-full  items-center">
+      <div className="grid w-full min-w-0 items-center gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(18rem,1fr)] lg:gap-10">
         {/* Top-Left: Green Hub Warehouse Illustration */}
         <Image
           src={mainImage}
           alt={heading.title || 'PriyoShop Green Hub Warehouse'}
           width={680}
           height={200}
-          className='h-[500px] rounded-ps-md'
+          className="h-auto max-h-[500px] w-full rounded-ps-md object-cover"
 
         />
 
 
         {/* Top-Right: Heading & First Point */}
-        <div className="flex  flex-col justify-center gap-4 lg:gap-6 max-w-[400px] pl-10 py-8">
+        <div className="flex min-w-0 max-w-[400px] flex-col justify-center gap-4 py-2 lg:gap-6 lg:py-8 lg:pl-10">
           <SectionHeading
             titleSize='h5'
             descriptionFontClass='!text-ps-body'
@@ -90,7 +90,7 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
         </div>
 
         {/* Bottom-Left: Two Key Feature Points */}
-        <div className="flex flex-col max-w-[680px] pr-10 justify-center gap-6 font-body text-ps-body leading-relaxed text-ps-black-400">
+        <div className="flex max-w-[680px] min-w-0 flex-col justify-center gap-6 font-body text-ps-body leading-relaxed text-ps-black-400 lg:pr-10">
           <p>
             <strong className="font-bold text-ps-black">{item1Title} </strong>
             {item1Body}
@@ -102,7 +102,7 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
         </div>
 
         {/* Bottom-Right: Video Thumbnail Container */}
-        <div className="w-full overflow-hidden rounded-ps-md max-w-[410px] h-[300px] shadow-xs">
+        <div className="aspect-video h-auto w-full max-w-[410px] overflow-hidden rounded-ps-md shadow-xs lg:h-[300px] lg:aspect-auto">
           <ClickToPlayVideo
             videoPath={videoPath}
             poster={videoPoster}
@@ -114,4 +114,3 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
     </section>
   );
 }
-

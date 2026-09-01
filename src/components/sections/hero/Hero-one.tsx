@@ -1,67 +1,58 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
-import GridBackground from '@/components/ui/grid-background';
-import { RotatingWords } from '@/components/ui/RotatingWords';
-import type { ResolvedSection, SectionHeadingContent, SectionItem } from '@/libs/cms/Sections';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
 import { Stats } from '../stats/Stats';
 
 const AUTOPLAY_MS = 6000;
+const DEFAULT_TITLE_SIZE = 'text-[clamp(2.25rem,10vw,4.375rem)]';
+const CONTENT_MAX_WIDTH: Record<string, string> = {
+  'max-w-xl': '36rem',
+  'max-w-2xl': '42rem',
+  'max-w-3xl': '48rem',
+  'max-w-4xl': '56rem',
+  'max-w-full': '100%',
+};
 
-const DEFAULT_TITLE_SIZE = 'text-[42px] sm:text-[58px] md:text-[60px] lg:text-[70px]';
+const resolveBackground = (value?: string) => {
+  const background = value ?? '';
+  const isCssColor = /^(#|rgb\(|hsl\(|oklch\(|var\()/u.test(background);
+  return {
+    className: isCssColor ? '' : background,
+    style: isCssColor ? { backgroundColor: background } : undefined,
+  };
+};
 
-// Resolves text color / size / alignment overrides into classes + inline style,
-// shared by the designed default slide and admin-authored slides.
-function resolveTextStyle(opts: {
-  textColor?: string;
-  textSize?: string;
-  slideAlign?: 'left' | 'center';
-  hasImage?: boolean;
-}) {
-  const isHex = Boolean(opts.textColor && opts.textColor.startsWith('#'));
-  const colorStyle = isHex ? { color: opts.textColor } : undefined;
-
-  let colorClass: string;
-  if (opts.textColor && !isHex) {
-    colorClass = opts.textColor;
-  } else if (opts.hasImage) {
-    colorClass = 'text-white';
-  } else {
-    colorClass = 'text-ps-ink-700';
-  }
-
-  const sizeClass = opts.textSize ?? DEFAULT_TITLE_SIZE;
-  const alignClass =
-    opts.slideAlign === 'center'
-      ? 'items-center text-center'
-      : 'items-center text-center md:items-start md:text-left';
-  return { colorStyle, colorClass, sizeClass, alignClass };
-}
-
-// Section-level CTAs, shared across every slide (sourced from the heading).
-function HeroCtas(props: { heading: SectionHeadingContent }) {
-  const { heading } = props;
-  if (!heading.ctaLabel && !heading.ctaSecondaryLabel) {
+function HeroCtas(props: { slide: SectionItem; defaultTone: 'light' | 'dark'; active: boolean }) {
+  if (!props.slide.ctaLabel && !props.slide.ctaSecondaryLabel) {
     return null;
   }
+
+  const tone =
+    props.slide.ctaTone && props.slide.ctaTone !== 'auto'
+      ? props.slide.ctaTone
+      : props.defaultTone;
   return (
-    <div className="z-10 mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap md:mt-14.5">
-      {heading.ctaLabel ? (
+    <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:flex-wrap md:mt-9">
+      {props.slide.ctaLabel ? (
         <Button
           size="lg"
-          tone="dark"
-          href={heading.ctaHref}
+          tone={tone}
+          href={props.slide.href}
+          tabIndex={props.active ? undefined : -1}
           className="w-full sm:w-fit"
           iconRight={
             // oxlint-disable-next-line next/no-img-element -- decorative inline icon; next/image is unnecessary for a static SVG glyph
             <img src="/icons/arrow.svg" alt="" />
           }
         >
-          {heading.ctaLabel}
+          {props.slide.ctaLabel}
         </Button>
       ) : null}
-      {heading.ctaSecondaryLabel ? (
+      {props.slide.ctaSecondaryLabel ? (
         <Button
           iconRight={
             // oxlint-disable-next-line next/no-img-element -- decorative inline icon; next/image is unnecessary for a static SVG glyph
@@ -69,107 +60,68 @@ function HeroCtas(props: { heading: SectionHeadingContent }) {
           }
           size="lg"
           variant="outlined"
-          tone="dark"
-          href={heading.ctaSecondaryHref}
+          tone={tone}
+          href={props.slide.ctaSecondaryHref}
+          tabIndex={props.active ? undefined : -1}
           className="w-full sm:w-fit"
         >
-          {heading.ctaSecondaryLabel}
+          {props.slide.ctaSecondaryLabel}
         </Button>
       ) : null}
     </div>
   );
 }
 
-// Slide 1 — the original, already-designed hero: grid background, rotating words
-// and the stats card. Markup kept identical to the pre-carousel version.
-function DefaultSlide(props: { heading: SectionHeadingContent }) {
-  const { heading } = props;
-  const { colorStyle, colorClass, sizeClass, alignClass } = resolveTextStyle({
-    textColor: heading.textColor,
-    textSize: heading.textSize,
-    slideAlign: heading.slideAlign,
-  });
-  return (
-    <>
-      <div className="absolute top-0 z-0 h-full w-full">
-        <GridBackground>
-          <div className={`flex flex-col gap-7 ${alignClass}`}>
-            <h1
-              className={`m-0 whitespace-pre-line font-display leading-[1.4] font-extrabold tracking-normal md:leading-[1.3] lg:leading-[1.4] ${sizeClass} ${colorClass}`}
-              style={colorStyle}
-            >
-              {heading.title}{' '}
-              {heading.rotatingWords && heading.rotatingWords.length > 0 ? (
-                <RotatingWords
-                  words={heading.rotatingWords}
-                  className="bg-linear-to-r from-ps-red-500 to-ps-gold-500 bg-clip-text text-transparent"
-                />
-              ) : null}
-            </h1>
-
-            <p
-              className={`mt-3 w-full font-body text-ps-sm leading-[1.55] font-semibold sm:text-ps-body lg:max-w-2xl ${colorClass}`}
-              style={colorStyle}
-            >
-              {heading.description}
-            </p>
-
-            <HeroCtas heading={heading} />
-          </div>
-        </GridBackground>
-      </div>
-      <Stats />
-    </>
-  );
-}
-
-// An admin-authored slide: its own background image, text color, size and
-// alignment. Falls back to the hero gradient when no image is set.
-function CustomSlide(props: { slide: SectionItem; heading: SectionHeadingContent }) {
-  const { slide, heading } = props;
-  const hasImage = Boolean(slide.slideBackgroundImage);
-  const { colorStyle, colorClass, sizeClass, alignClass } = resolveTextStyle({
-    textColor: slide.textColor,
-    textSize: slide.textSize,
-    slideAlign: slide.slideAlign,
-    hasImage,
-  });
+function HeroSlide(props: { slide: SectionItem; active: boolean }) {
+  const hasImage = Boolean(props.slide.slideBackgroundImage);
+  const background = resolveBackground(props.slide.slideBackgroundColor);
+  const align = props.slide.slideAlign ?? 'left';
+  const titleColor = props.slide.textColor ?? (hasImage ? 'text-white' : 'text-ps-ink-700');
+  const descriptionColor = props.slide.descriptionColor ?? titleColor;
+  const contentWidth = props.slide.contentWidth ?? 'max-w-3xl';
+  const accentColor =
+    props.slide.accentGradientFrom && props.slide.accentGradientTo
+      ? `linear-gradient(90deg, ${props.slide.accentGradientFrom}, ${props.slide.accentGradientTo})`
+      : props.slide.accentColor;
 
   return (
     <>
+      <div className={`absolute inset-0 ${background.className}`} style={background.style} />
       {hasImage ? (
         <>
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${slide.slideBackgroundImage})` }}
+            style={{ backgroundImage: `url(${props.slide.slideBackgroundImage})` }}
           />
-          <div className="absolute inset-0 bg-linear-to-r from-black/60 to-transparent" />
+          {/* <div className="absolute inset-0 bg-linear-to-r from-black/60 to-black/10" /> */}
         </>
-      ) : (
-        <div className="absolute inset-0 bg-hero-gradient" />
-      )}
+      ) : null}
 
       <div className="relative z-10 flex h-full items-center">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-0">
-          <div className={`flex flex-col gap-7 ${alignClass}`}>
-            <h1
-              className={`m-0 whitespace-pre-line font-display leading-[1.4] font-extrabold tracking-normal ${sizeClass} ${colorClass}`}
-              style={colorStyle}
-            >
-              {slide.title}
-            </h1>
-
-            {slide.description ? (
-              <p
-                className={`mt-3 w-full font-body text-ps-sm leading-[1.55] font-semibold sm:text-ps-body lg:max-w-2xl ${colorClass}`}
-                style={colorStyle}
-              >
-                {slide.description}
-              </p>
-            ) : null}
-
-            <HeroCtas heading={heading} />
-          </div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            as={props.active ? 'h1' : 'h2'}
+            title={props.slide.title ?? ''}
+            description={props.slide.description}
+            accentWords={props.slide.accentWords}
+            appendAccentWords
+            accentColor={accentColor}
+            align={align}
+            titleSize="custom"
+            titleColor={titleColor}
+            descriptionColor={descriptionColor}
+            titleClassName={`whitespace-pre-line font-extrabold ${props.slide.textSize ?? DEFAULT_TITLE_SIZE}`}
+            descriptionClassName={`max-w-full! ${props.slide.descriptionSize ?? 'text-ps-body'}`}
+            className={`w-full gap-7 ${align === 'center' ? 'mx-auto' : ''}`}
+            style={{ maxWidth: CONTENT_MAX_WIDTH[contentWidth] ?? CONTENT_MAX_WIDTH['max-w-3xl'] }}
+            action={
+              <HeroCtas
+                slide={props.slide}
+                defaultTone={hasImage ? 'light' : 'dark'}
+                active={props.active}
+              />
+            }
+          />
         </div>
       </div>
     </>
@@ -177,13 +129,11 @@ function CustomSlide(props: { slide: SectionItem; heading: SectionHeadingContent
 }
 
 export function HeroOne(props: { data: ResolvedSection }) {
-  const { heading, items } = props.data;
-  // Admin slides = items that carry slide content (title or a background image).
-  const adminSlides = items.filter((item) => item.title ?? item.slideBackgroundImage);
-  // Slide 0 is always the designed default; admin slides follow it.
-  const total = adminSlides.length + 1;
-
+  const t = useTranslations('HeroOnePage');
+  const slides = props.data.items;
+  const total = slides.length;
   const [current, setCurrent] = useState(0);
+  const activeIndex = total > 0 ? current % total : 0;
 
   useEffect(() => {
     if (total <= 1) {
@@ -199,48 +149,40 @@ export function HeroOne(props: { data: ResolvedSection }) {
     };
   }, [total]);
 
-  // No admin slides → render the designed hero exactly as before, no carousel chrome.
-  if (total <= 1) {
-    return (
-      <section className="relative mb-50 md:mb-0 flex min-h-[110vh]">
-        <DefaultSlide heading={heading} />
-      </section>
-    );
+  if (total === 0) {
+    return null;
   }
 
   return (
-    <section className="relative mb-50 md:mb-0 min-h-[110vh]">
-      {/* Slide 0: designed default */}
-      <div
-        className={`absolute inset-0 transition-opacity duration-700 ${current === 0 ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
-      >
-        <DefaultSlide heading={heading} />
-      </div>
-
-      {/* Admin slides */}
-      {adminSlides.map((slide, index) => (
+    <section className="relative mb-48 min-h-[100svh] sm:mb-24 lg:mb-0 lg:min-h-[100dvh]">
+      {slides.map((slide, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: slides are stored and ordered positionally
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-700 ${current === index + 1 ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+          aria-hidden={activeIndex !== index}
+          className={`absolute inset-0 transition-opacity duration-700 ${activeIndex === index ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
         >
-          <CustomSlide slide={slide} heading={heading} />
+          <HeroSlide slide={slide} active={activeIndex === index} />
         </div>
       ))}
 
-      {/* Dots */}
-      <div className="absolute bottom-52 left-1/2 z-50 flex -translate-x-1/2 gap-3 md:bottom-28">
-        {Array.from({ length: total }).map((_, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => {
-              setCurrent(index);
-            }}
-            aria-label={`Go to slide ${index + 1}`}
-            className={`h-2 rounded-full transition-all ${current === index ? 'w-8 bg-ps-red-500' : 'w-2 bg-ps-ink-700/30 hover:bg-ps-ink-700/50'}`}
-          />
-        ))}
-      </div>
+      {total > 1 ? (
+        <div className="absolute bottom-52 left-1/2 z-50 flex -translate-x-1/2 gap-1 sm:bottom-28 sm:gap-2">
+          {slides.map((_, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: slide controls follow positional slides
+            <button
+              key={index}
+              type="button"
+              onClick={() => {
+                setCurrent(index);
+              }}
+              aria-label={t('slide_label', { number: index + 1 })}
+              className={`relative min-h-11 min-w-11 rounded-full border-none bg-transparent after:absolute after:top-1/2 after:left-1/2 after:h-2 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:transition-all ${activeIndex === index ? 'after:w-8 after:bg-ps-red-500' : 'after:w-2 after:bg-ps-ink-700/30 hover:after:bg-ps-ink-700/50'}`}
+            />
+          ))}
+        </div>
+      ) : null}
+      <Stats />
     </section>
   );
 }

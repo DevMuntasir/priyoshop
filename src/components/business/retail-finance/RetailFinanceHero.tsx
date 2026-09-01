@@ -16,9 +16,9 @@ export function RetailFinanceHero(props: { data: ResolvedSection }) {
 
   return (
 
-    <section className="bg-[url(/retail/bg.png)] bg-cover bg-no-repeat bg-center h-screen py-20 mb-25">
-      <div className="container mx-auto flex flex-col justify-center h-full">
-        <div className='max-w-[600px]'>
+    <section className="flex min-h-[100svh] flex-col justify-center bg-[url(/retail/bg.png)] bg-cover bg-center bg-no-repeat pt-28 pb-12 lg:min-h-[100dvh] lg:pt-32">
+      <div className="container mx-auto flex min-h-[60svh] flex-col justify-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[600px]">
 
 
 
@@ -48,11 +48,11 @@ export function RetailFinanceHero(props: { data: ResolvedSection }) {
       </div>
 
 
-      <div className="z-10 container mx-auto flex gap-5 justify-center h-37.5">
+      <div className="container z-10 mx-auto grid w-full grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 lg:gap-5 lg:px-8">
         {items.map((item, i) => (
           <MetricStat
             key={i}
-            className="text-center bg-white py-4 px-10  rounded-ps-md"
+            className="rounded-ps-md bg-white px-4 py-5 text-center shadow-ps-soft sm:px-6 lg:px-10"
             value={statValue(item)}
             label={item.name ?? ''}
             size="lg"

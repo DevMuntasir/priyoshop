@@ -47,7 +47,7 @@ export function MetricStat({
           {icon}
         </span>
       )}
-      <div className="flex flex-col gap-0.5">
+      <div className="flex w-fit flex-col gap-0.5">
         <span
           className={`font-display leading-none font-bold tracking-tight text-ps-red-600 ${VALUE_TEXT_CLASSES[size]} ${className} bg-transparent`}
         >

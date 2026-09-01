@@ -605,30 +605,36 @@ export function DiptyProducts({
           OPTIONAL CTA
       ====================================== */}
 
-      <div className=' container py-10'>
+      <div className="container px-4 py-10 sm:px-6 lg:px-8">
         {(heading.ctaSecondaryLabel ||
           heading.ctaLabel) && (
             <div
               className="
             mt-[40px]
             flex
-           
+            flex-col
             items-center
-            justify-between
+            justify-center
             gap-4
-            px-20
-           
+            rounded-ps-md
+            px-5
+            py-8
             text-center
-            bg-[url(/dipty/CTA.png)] bg-cover bg-no-repeat bg-center h-[150px]
+            bg-[url(/dipty/CTA.png)] bg-cover bg-no-repeat bg-center
+            sm:px-8
+            lg:min-h-[150px]
+            lg:flex-row
+            lg:justify-between
+            lg:px-20
 
           "
 
 
             >
-              <h2 className=' text-ps-h3 font-semibold font-display text-white'>
+              <h2 className="font-display text-ps-h5 font-semibold text-white sm:text-ps-h4 lg:text-ps-h3">
                 Wants to place order?
               </h2>
-              <Button className='bg-white !text-black ' >
+              <Button className="bg-white !text-black" >
                 Install Our App Now
               </Button>
             </div>

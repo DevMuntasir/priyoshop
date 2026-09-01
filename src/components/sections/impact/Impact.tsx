@@ -6,7 +6,7 @@ export function Impact(props: { data: ResolvedSection }) {
   const { heading, style } = props.data;
 
   return (
-    <section className="relative  mt-10 overflow-hidden py-14 xl:aspect-[7/3.6] bg-[#fff6f6]">
+    <section className="relative mt-10 overflow-hidden bg-[#fff6f6] py-12 sm:py-14 xl:aspect-[7/3.6]">
       {/* Background */}
       <Image
         src="/impact/section.png"
@@ -16,7 +16,7 @@ export function Impact(props: { data: ResolvedSection }) {
         className="object-cover object-center"
       />
 
-      <div className="relative mx-auto content-center h-full min-h-[650px] max-w-[1400px] px-6 lg:min-h-full lg:px-12">
+      <div className="relative mx-auto h-full max-w-[1400px] px-4 sm:px-6 lg:min-h-full lg:content-center lg:px-12">
         {/* LEFT CONTENT */}
         <div className="relative z-20 ">
           <div className="w-full lg:w-[40%]  h-full">
@@ -32,7 +32,7 @@ export function Impact(props: { data: ResolvedSection }) {
         <div
           className="
             relative mx-auto mt-10
-            h-[520px] w-full max-w-[600px]
+            h-[clamp(380px,120vw,520px)] w-full max-w-[600px]
             lg:absolute lg:right-4 lg:top-1/2 lg:mt-0
             lg:h-[650px] lg:w-[52%]
             lg:-translate-y-1/2

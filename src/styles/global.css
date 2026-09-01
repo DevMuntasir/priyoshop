@@ -274,11 +274,30 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply font-body overflow-x-clip bg-background text-foreground;
-  }
   html {
-    @apply font-sans;
+    min-width: 320px;
+    scroll-padding-top: 6rem;
+    text-size-adjust: 100%;
+  }
+  body {
+    @apply min-h-dvh overflow-x-clip bg-background font-body text-foreground;
+    overflow-wrap: anywhere;
+  }
+  img,
+  video,
+  svg,
+  canvas {
+    max-width: 100%;
+  }
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    @apply outline-2 outline-offset-2 outline-ps-red-500;
   }
 }
 
@@ -288,6 +307,9 @@
   .container {
     @apply mx-auto w-full;
     max-width: var(--container-xl) !important;
+  }
+  .page-gutter {
+    @apply px-4 sm:px-6 lg:px-8;
   }
   .prose-blog {
     @apply font-body text-ps-sm leading-relaxed text-ps-ink-700 sm:text-ps-body;
@@ -319,6 +341,16 @@
   .prose-blog img {
     @apply my-6 h-auto w-full rounded-ps-md object-cover;
   }
+  .prose-blog table {
+    @apply my-6 block w-full max-w-full overflow-x-auto whitespace-nowrap;
+  }
+  .prose-blog pre {
+    @apply my-6 max-w-full overflow-x-auto rounded-ps-md bg-ps-ink-900 p-4 text-white;
+  }
+  .prose-blog iframe,
+  .prose-blog video {
+    @apply my-6 aspect-video h-auto w-full max-w-full rounded-ps-md;
+  }
   .gradient-text{
     @apply bg-linear-to-l from-ps-gold-500 via-ps-gold-500 to-ps-red-600  bg-clip-text text-transparent 
   }
@@ -332,4 +364,19 @@
     display: none !important;
   }
 
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

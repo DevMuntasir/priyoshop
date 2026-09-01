@@ -15,10 +15,10 @@ export function DistributionHero(props: { data: ResolvedSection }) {
   const { heading, items } = props.data;
 
   return (
-    <section className="bg-[url(/distribution/bg.png)] bg-cover bg-no-repeat bg-center h-screen py-20 mb-25">
-      <div className="container  flex flex-col justify-center h-full">
-        <div className='max-w-1/2'>
-          <h1 className="text-ps-display leading-[1.2] font-display font-extrabold ">
+    <section className="flex min-h-[100svh] flex-col justify-center bg-[url(/distribution/bg.png)] bg-cover bg-center bg-no-repeat pt-28 pb-12 lg:min-h-[100dvh] lg:pt-32">
+      <div className="container flex min-h-[60svh] flex-col justify-center px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-2xl lg:max-w-1/2">
+          <h1 className="font-display text-ps-h2 leading-[1.2] font-extrabold sm:text-ps-h1 lg:text-ps-display">
             <AccentedTitle text={heading.title} emClass="text-ps-gold-500" strongClass="text-ps-red-600" />
           </h1>
 
@@ -34,11 +34,11 @@ export function DistributionHero(props: { data: ResolvedSection }) {
         </div>
       </div>
 
-      <div className="z-10 container mx-auto flex gap-5 justify-center h-37.5">
+      <div className="container z-10 mx-auto grid w-full grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 lg:gap-5 lg:px-8">
         {items.map(item => (
           <MetricStat
             key={item.name}
-            className="text-center bg-white py-4 px-10  rounded-ps-md"
+            className="rounded-ps-md bg-white px-4 py-5 text-center shadow-ps-soft sm:px-6 lg:px-10"
             value={statValue(item)}
             label={item.name ?? ''}
             size="lg"

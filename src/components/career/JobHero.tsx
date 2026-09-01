@@ -28,7 +28,7 @@ export async function JobHero(props: {
 
   return (
     <div className="bg-black pt-32 pb-16 lg:pt-40 lg:pb-20">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="font-body text-ps-xs font-semibold text-white/60">
           {t('title')}
           {props.category && <> &gt; {props.category}</>}

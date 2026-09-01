@@ -30,7 +30,7 @@ export function DiptyQuality(props: { data: ResolvedSection }) {
 
   return (
     <section className="bg-white py-16 sm:py-20 lg:py-28">
-      <div className="container grid items-start gap-12 px-4 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-14 lg:gap-24">
+      <div className="container grid items-start gap-12 px-4 sm:px-6 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-14 lg:gap-24 lg:px-8">
         <div className="md:sticky md:top-28 max-w-[400px]">
           {heading.eyebrow && (
             <p className="m-0 inline-flex rounded-ps-pill border border-ps-black px-3 py-1 font-body text-xs leading-none font-semibold text-ps-black">

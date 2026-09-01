@@ -19,7 +19,7 @@ function Social({ path, label }: { path: string; label: string }) {
     <a
       href="#"
       aria-label={label}
-      className="inline-flex text-white transition-colors duration-150 ease-in-out hover:text-ps-red-500"
+      className="inline-flex size-11 items-center justify-center rounded-full text-white transition-colors duration-150 ease-in-out hover:bg-white/10 hover:text-ps-red-500"
     >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
         <path d={path} />
@@ -32,14 +32,14 @@ type ColumnLink = { label: string; href: string };
 
 function Column({ heading, links }: { heading: string; links: ColumnLink[] }) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="min-w-0 flex flex-col gap-4 sm:gap-6">
       <span className="font-body text-ps-h6 font-bold tracking-wide text-white">{heading}</span>
       <div className="flex flex-col gap-2.5">
         {links.map((l) => (
           <a
             key={l.label}
             href={l.href}
-            className="font-body text-ps-body font-normal text-white/78 no-underline"
+            className="inline-flex min-h-11 items-center font-body text-ps-sm font-normal text-white/78 no-underline transition-colors hover:text-white sm:text-ps-body"
           >
             {l.label}
           </a>
@@ -59,7 +59,7 @@ function OfficeCard({
   imagePath?: string;
 }) {
   return (
-    <div className="flex flex-1 items-center gap-4 bg-ps-ink-900 px-6 py-6 sm:gap-6 sm:px-10 sm:py-7">
+    <div className="flex min-w-0 flex-1 items-start gap-4 bg-ps-ink-900 px-5 py-6 sm:items-center sm:gap-6 sm:px-10 sm:py-7">
       {imagePath ? (
         <Image
           src={imagePath}
@@ -88,21 +88,21 @@ export type FooterProps = React.HTMLAttributes<HTMLElement>;
 export function Footer({ className = '', ...rest }: FooterProps) {
   return (
     <footer
-      className={`bg-black px-5 pt-14 pb-10 text-white sm:px-8 md:px-12 lg:px-20 xl:px-30 xl:pt-30 ${className}`.trim()}
+      className={`overflow-hidden bg-black px-4 pt-14 pb-[max(2.5rem,env(safe-area-inset-bottom))] text-white sm:px-6 md:px-8 lg:px-12 lg:pt-20 xl:px-16 xl:pt-28 ${className}`.trim()}
       {...rest}
     >
       <div className="container mx-auto">
-        <div className="flex flex-wrap justify-between gap-10 lg:gap-16">
-          <div className="flex flex-col">
-            <Logo width={220} tone="light" />
-            <div className="mt-8 flex gap-8 sm:mt-12 sm:gap-10">
+        <div className="grid gap-12 lg:grid-cols-[minmax(12rem,0.7fr)_minmax(0,1.8fr)] lg:gap-16">
+          <div className="flex min-w-0 flex-col">
+            <Logo width={220} tone="light" className="h-auto w-44 sm:w-55" />
+            <div className="mt-6 flex flex-wrap gap-2 sm:mt-10 sm:gap-4">
               <Social path={SOCIALS.x} label="X" />
               <Social path={SOCIALS.instagram} label="Instagram" />
               <Social path={SOCIALS.linkedin} label="LinkedIn" />
               <Social path={SOCIALS.facebook} label="Facebook" />
             </div>
           </div>
-          <div className="flex flex-wrap gap-10 sm:gap-16 lg:gap-24">
+          <div className="grid min-w-0 grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 md:grid-cols-3 lg:gap-12">
             <Column
               heading="ABOUT"
               links={[
@@ -129,11 +129,11 @@ export function Footer({ className = '', ...rest }: FooterProps) {
             />
           </div>
         </div>
-        <div className="md:-mb-14">
+        <div className="-mx-2 overflow-hidden md:-mb-14">
           <TextHoverEffect text="PriyoShop" />
         </div>
 
-        <div className="mb-14 flex h-fit flex-col overflow-hidden rounded-t-ps-xl rounded-b-ps-xl border-y-[2px] border-ps-line-dark md:flex-row">
+        <div className="mb-10 flex h-fit flex-col overflow-hidden rounded-ps-xl border-y-[2px] border-ps-line-dark sm:mb-14 md:flex-row">
           <OfficeCard
             imagePath="/footer/02.png"
             city="BANGLADESH"

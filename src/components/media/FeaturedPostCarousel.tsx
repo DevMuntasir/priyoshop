@@ -18,7 +18,7 @@ function FeaturedCard(props: { post: BlogPostCard; locale: string; readLabel: st
   const { post } = props;
 
   return (
-    <article className="grid h-full overflow-hidden rounded-ps-md bg-white shadow-ps-soft ring-1 ring-ps-grey-200 ring-inset sm:grid-cols-[1.15fr_1fr]">
+    <article className="grid h-full min-w-0 overflow-hidden rounded-ps-md bg-white shadow-ps-soft ring-1 ring-ps-grey-200 ring-inset sm:grid-cols-[1.15fr_minmax(0,1fr)]">
       <div className="aspect-16/10 overflow-hidden sm:aspect-auto sm:min-h-44">
         {post.coverImage && (
           // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
@@ -29,7 +29,7 @@ function FeaturedCard(props: { post: BlogPostCard; locale: string; readLabel: st
           />
         )}
       </div>
-      <div className="flex flex-col gap-4 p-6 sm:justify-center sm:gap-6 sm:p-8">
+      <div className="flex min-w-0 flex-col gap-4 p-5 sm:justify-center sm:gap-6 sm:p-8">
         <span className="font-body text-ps-xs font-semibold text-ps-ink-300">
           {formatPostDate(post.publishedAt, props.locale)}
         </span>
@@ -101,13 +101,13 @@ export function FeaturedPostCarousel(props: FeaturedPostCarouselProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 pb-16">
+    <div className="container mx-auto px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
       <div
         ref={trackRef}
-        className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2 scrollbar-none"
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 scrollbar-none sm:gap-6"
       >
         {props.posts.map((post) => (
-          <div key={post.slug} className="w-full max-w-3xl shrink-0 snap-center sm:mx-auto">
+          <div key={post.slug} className="w-full min-w-0 max-w-3xl shrink-0 snap-center sm:mx-auto">
             <FeaturedCard post={post} locale={props.locale} readLabel={props.readLabel} />
           </div>
         ))}

@@ -7,7 +7,7 @@ import { signIn } from '@/libs/auth/AuthClient';
 import { Link } from '@/libs/I18nNavigation';
 
 const fieldClass =
-  'w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900';
+  'min-h-12 w-full rounded-ps-md border border-ps-grey-300 bg-white px-4 py-3 text-base text-ps-ink-900 outline-none transition-shadow focus:border-ps-red-500 focus:ring-2 focus:ring-ps-red-500/20';
 
 export const SignInForm = () => {
   const t = useTranslations('AuthForm');
@@ -20,7 +20,7 @@ export const SignInForm = () => {
 
   return (
     <form
-      className="w-full max-w-sm space-y-4 rounded-lg border border-gray-200 bg-white p-6"
+      className="w-full max-w-sm space-y-5 rounded-ps-xl border border-ps-grey-200 bg-white p-5 shadow-ps-soft sm:p-7"
       onSubmit={async (event) => {
         event.preventDefault();
         setPending(true);
@@ -35,10 +35,10 @@ export const SignInForm = () => {
         router.refresh();
       }}
     >
-      <h1 className="text-xl font-semibold text-gray-900">{t('sign_in_title')}</h1>
+      <h1 className="font-display text-ps-h5 font-bold text-ps-ink-900">{t('sign_in_title')}</h1>
 
-      <label className="block text-sm">
-        <span className="mb-1 block text-gray-600">{t('email_label')}</span>
+      <label className="block font-body text-ps-sm">
+        <span className="mb-2 block font-semibold text-ps-ink-600">{t('email_label')}</span>
         <input
           type="email"
           required
@@ -52,8 +52,8 @@ export const SignInForm = () => {
         />
       </label>
 
-      <label className="block text-sm">
-        <span className="mb-1 block text-gray-600">{t('password_label')}</span>
+      <label className="block font-body text-ps-sm">
+        <span className="mb-2 block font-semibold text-ps-ink-600">{t('password_label')}</span>
         <input
           type="password"
           required
@@ -72,12 +72,12 @@ export const SignInForm = () => {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white disabled:opacity-60"
+        className="min-h-12 w-full rounded-full bg-ps-ink-900 px-4 py-3 font-body text-base font-semibold text-white transition-colors hover:bg-ps-ink-700 disabled:opacity-60"
       >
         {pending ? t('pending') : t('sign_in_button')}
       </button>
 
-      <Link href="/sign-up" className="block text-center text-sm text-gray-600 hover:text-gray-900">
+      <Link href="/sign-up" className="flex min-h-11 items-center justify-center text-center font-body text-ps-sm font-semibold text-ps-ink-600 hover:text-ps-black">
         {t('to_sign_up')}
       </Link>
     </form>

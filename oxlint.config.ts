@@ -33,4 +33,5 @@ export default defineConfig({
   options: {
     reportUnusedDisableDirectives: 'error',
   },
+  ignorePatterns: ['design-system/project/**'],
 });

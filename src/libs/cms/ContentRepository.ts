@@ -11,7 +11,7 @@ import type {
   SectionEditorHints,
   SectionKey,
 } from './Sections';
-import { getSectionDef, SECTION_KEYS } from './Sections';
+import { getSectionDef, normalizeSectionContent, SECTION_KEYS } from './Sections';
 import type { ResponsiveSectionStyle, SectionStyle } from './StyleTokens';
 import { normalizeStyle } from './StyleTokens';
 
@@ -40,7 +40,8 @@ const resolveContent = (
   doc: SectionDoc | null,
 ): SectionContent => {
   const def = getSectionDef(key);
-  return doc?.content?.[locale] ?? doc?.content?.en ?? def.defaultContent;
+  const content = doc?.content?.[locale] ?? doc?.content?.en ?? def.defaultContent;
+  return normalizeSectionContent(key, content);
 };
 
 const resolveSection = (

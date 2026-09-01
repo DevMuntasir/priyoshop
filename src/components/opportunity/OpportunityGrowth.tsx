@@ -11,10 +11,10 @@ export function OpportunityGrowth(props: { data: ResolvedSection }) {
 
   return (
     <section className={`bg-white py-14 sm:py-24 ${resolved.wrapperClass}`.trim()}>
-      <div className="container mx-auto ">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <Reveal
           direction="up"
-          className="flex flex-col justify-center py-20 items-center gap-5 text-center "
+          className="flex flex-col items-center justify-center gap-5 py-10 text-center sm:py-16 lg:py-20"
         >
           <SectionHeading
             align={resolved.align || 'center'}
@@ -27,11 +27,11 @@ export function OpportunityGrowth(props: { data: ResolvedSection }) {
         </Reveal>
 
         {items.length > 0 && (
-          <div className="grid grid-cols-3 gap-8 text-left max-w-[900px] mx-auto ">
+          <div className="mx-auto grid max-w-[900px] grid-cols-1 gap-4 text-left sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
             {items.map((stat) => (
               <div
                 key={`${stat.value}-${stat.name}`}
-                className=" px-6 py-10 bg-ps-white-600 border-[1px] rounded-ps-md "
+                className="rounded-ps-md border border-ps-grey-200 bg-ps-white-600 px-5 py-7 sm:px-6 sm:py-10"
 
               >
                 {stat.logo && stat.name && (

@@ -72,7 +72,7 @@ export default async function NewsPublicationPage(props: NewsPublicationPageProp
       <JsonLd data={breadcrumb} />
 
       <section className="bg-white pt-28 pb-16 lg:pt-36 lg:pb-20">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/news"
             className="font-body text-ps-sm font-semibold text-ps-red-600 underline underline-offset-4"
@@ -87,7 +87,7 @@ export default async function NewsPublicationPage(props: NewsPublicationPageProp
               alt={result.publication.logoAlt ?? result.publication.name}
               className="h-12 w-auto object-contain"
             />
-            <h1 className="mt-6 font-display text-ps-h4 font-bold tracking-tight text-ps-black">
+            <h1 className="mt-6 font-display text-ps-h4 font-bold tracking-tight wrap-break-word text-ps-black">
               {result.publication.name}
             </h1>
             <p className="mt-3 mb-0 max-w-2xl font-body text-ps-sm font-semibold text-ps-black-400">
@@ -103,7 +103,7 @@ export default async function NewsPublicationPage(props: NewsPublicationPageProp
       </section>
 
       <section className="rounded-t-4xl bg-white py-16 lg:py-20">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="m-0 font-display text-ps-h5 font-bold tracking-tight text-ps-black sm:text-ps-h4">
             {t('all_posts_title')}
           </h2>

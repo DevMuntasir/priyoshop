@@ -43,30 +43,30 @@ const StepBadge = ({ children }: {
 );
 export function CommerceHowWork(props: { data: ResolvedSection }) {
   const { heading } = props.data;
-  return (<div className="my-20">
+  return (<div className="my-12 px-4 sm:my-16 sm:px-6 lg:my-20 lg:px-8">
     <SectionHeading
       title={heading.title}
       description={heading.description}
       eyebrow={heading.eyebrow}
 
     />
-    <div className="max-w-4xl my-20 mx-auto ">
+    <div className="mx-auto my-12 max-w-4xl sm:my-16 lg:my-20">
       {steps.map((item, index) => {
         const reversed = index % 2 === 1;
 
         return (
           <div
             key={index}
-            className={`grid grid-cols-1 max-w-4xl mt-10 mx-auto  lg:grid-cols-2 gap-10  items-center ${reversed ? "lg:[&>div:first-child]:order-2" : ""
+            className={`mx-auto mt-10 grid max-w-4xl grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-10 ${reversed ? "lg:[&>div:first-child]:order-2" : ""
               }`}
           >
             {/* Image Container */}
-            <div className="flex relative after:bg-ps-white-700/50 after:-translate-x-[50%] after:left-[50%] after:w-[120%] after:h-[1px] after:absolute after:bottom-0 ">
-              <div className="border-2 !border-b-[0] p-5 rounded-t-ps-hero bg-ps-white-600">
+            <div className="relative flex min-w-0 after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-full after:-translate-x-1/2 after:bg-ps-white-700/50 sm:after:w-[110%]">
+              <div className="min-w-0 rounded-t-ps-xl border-2 border-b-0 bg-ps-white-600 p-3 sm:rounded-t-ps-hero sm:p-5">
                 <Image
                   src={item.image}
                   alt={`${item.title} screenshot`}
-                  className="w-full min-w-[400px] max-w-[430px]  h-auto object-contain"
+                  className="h-auto w-full max-w-[430px] object-contain"
                   width={430}
                   height={200}
                 />

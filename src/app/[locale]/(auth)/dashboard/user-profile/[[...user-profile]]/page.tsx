@@ -9,13 +9,13 @@ export default async function UserProfilePage(props: { params: Promise<{ locale:
   const session = await auth.api.getSession({ headers: await headers() });
 
   return (
-    <div className="my-6 space-y-2">
-      <p>
-        <span className="text-gray-500">Name: </span>
+    <div className="my-4 space-y-4 rounded-ps-lg border border-ps-grey-200 bg-white p-5 shadow-ps-soft sm:my-6 sm:p-8">
+      <p className="wrap-break-word">
+        <span className="text-ps-ink-400">Name: </span>
         {session?.user.name}
       </p>
-      <p>
-        <span className="text-gray-500">Email: </span>
+      <p className="wrap-break-word">
+        <span className="text-ps-ink-400">Email: </span>
         {session?.user.email}
       </p>
     </div>

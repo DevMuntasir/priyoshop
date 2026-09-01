@@ -60,14 +60,14 @@ export function Career(props: { data: ResolvedSection }) {
   const galleryItems = toGalleryItems(props.data.items, props.data.heading.title);
 
   return (
-    <section className={resolved.wrapperClass}>
-      <div className=" mx-auto">
-        <div className="relative overflow-hidden rounded-[2rem] bg-[#f4f6fa] px-6 py-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:px-8 sm:py-10 lg:px-14 lg:py-14">
+    <section className={`${resolved.wrapperClass} px-4 sm:px-6 lg:px-8`}>
+      <div className="container mx-auto min-w-0">
+        <div className="relative overflow-hidden rounded-ps-xl bg-[#f4f6fa] px-5 py-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:rounded-[2rem] sm:px-8 sm:py-10 lg:px-14 lg:py-14">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(221,210,255,0.85),rgba(221,210,255,0)_28%),radial-gradient(circle_at_84%_88%,rgba(208,229,246,0.95),rgba(208,229,246,0)_34%),linear-gradient(135deg,#f8fafc_0%,#f6f1f8_100%)]" />
           <div className="absolute -right-16 top-0 h-72 w-72 rounded-full border-[34px] border-[#d9c7ff]/50 lg:h-96 lg:w-96 lg:border-[42px]" />
           <div className="absolute bottom-[-10%] right-[-8%] h-72 w-72 rounded-full border-[40px] border-[#d7e7f5] lg:h-[26rem] lg:w-[26rem] lg:border-[56px]" />
           <div className="relative container grid items-center gap-10 lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)] lg:gap-12">
-            <div className="w-[550px]">
+            <div className="min-w-0 w-full max-w-[550px]">
               {props.data.heading.eyebrow ? (
                 <span className="inline-flex items-center rounded-full border border-black px-4 py-1 font-body text-ps-sm font-semibold text-ps-ink-700">
                   {props.data.heading.eyebrow}
@@ -75,7 +75,7 @@ export function Career(props: { data: ResolvedSection }) {
               ) : null}
 
               <h2
-                className={`mt-6 text-balance font-display text-ps-h2 font-bold leading-[1.2] tracking-tight sm:text-ps-h1 ${resolved.titleColorClass}`}
+                className={`mt-6 text-balance font-display text-ps-h3 font-bold leading-[1.2] tracking-tight sm:text-ps-h2 lg:text-ps-h1 ${resolved.titleColorClass}`}
               >
                 {props.data.heading.title}
               </h2>
@@ -98,12 +98,12 @@ export function Career(props: { data: ResolvedSection }) {
               ) : null}
             </div>
 
-            <div className="relative mx-auto  w-[500px]">
+            <div className="relative mx-auto w-full max-w-[500px]">
               <div className="grid auto-rows-[4.5rem] grid-cols-6 gap-3 sm:auto-rows-[5rem] lg:auto-rows-[4.25rem] lg:grid-cols-10 lg:gap-4">
                 {galleryItems.map((item) => (
                   <div
                     key={`${item.src}-${item.className}`}
-                    className={`${item.className} overflow-hidden rounded-[1.75rem] border-[7px] border-white bg-white shadow-[0_18px_45px_rgba(15,23,42,0.16)]`}
+                    className={`${item.className} overflow-hidden rounded-ps-md border-4 border-white bg-white shadow-[0_18px_45px_rgba(15,23,42,0.16)] sm:rounded-[1.75rem] sm:border-[7px]`}
                   >
                     {/* oxlint-disable-next-line next/no-img-element -- section images are managed in /public and can be overridden by CMS URLs */}
                     <img src={item.src} alt={item.alt} className="size-full object-cover" />

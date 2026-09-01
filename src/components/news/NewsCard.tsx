@@ -9,9 +9,9 @@ export function NewsCard(props: { post: NewsPostCardData; locale: string }) {
   return (
     <Link
       href={`/news/${post.slug}`}
-      className="group flex items-center gap-4 rounded-ps-md bg-white p-3 no-underline ring-1 ring-ps-grey-200 ring-inset transition-shadow hover:shadow-ps-soft"
+      className="group flex min-w-0 items-center gap-3 rounded-ps-md bg-white p-3 no-underline ring-1 ring-ps-grey-200 ring-inset transition-shadow hover:shadow-ps-soft sm:gap-4"
     >
-      <div className="aspect-square w-28 shrink-0 overflow-hidden rounded-ps-sm bg-ps-grey-100 sm:w-32">
+      <div className="aspect-square w-24 shrink-0 overflow-hidden rounded-ps-sm bg-ps-grey-100 min-[380px]:w-28 sm:w-32">
         {post.coverImage && (
           // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
           <img
@@ -24,15 +24,15 @@ export function NewsCard(props: { post: NewsPostCardData; locale: string }) {
       <div className="flex min-w-0 flex-col gap-2">
         {post.publication && (
           // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
-          <div className=' max-w-30'>
+          <div className="max-w-30">
             <img
               src={post.publication.logo}
               alt={post.publication.logoAlt ?? post.publication.name}
-              className="max-h-7 w-auto "
+              className="max-h-7 w-auto max-w-full"
             />
           </div>
         )}
-        <h3 className="m-0 line-clamp-2 font-body text-ps-sm leading-snug font-bold text-ps-black">
+        <h3 className="m-0 line-clamp-3 font-body text-ps-sm leading-snug font-bold wrap-break-word text-ps-black sm:line-clamp-2">
           {post.title}
         </h3>
         <span className="font-body text-ps-xs font-semibold text-ps-ink-300">

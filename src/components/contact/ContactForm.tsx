@@ -51,8 +51,8 @@ export function ContactForm() {
   };
 
   return (
-    <section className="bg-white py-20">
-      <div className="container mx-auto px-4">
+    <section className="bg-white py-12 sm:py-16 lg:py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow={t('form_eyebrow')}
           title={t('form_title')}
@@ -100,7 +100,7 @@ export function ContactForm() {
                 required
                 maxLength={5000}
                 placeholder={t('message_placeholder')}
-                className="w-full resize-y rounded-ps-md bg-white px-4.5 py-3.5 font-body text-ps-body font-normal text-ps-ink-700 ring-1 ring-ps-grey-300 outline-none transition-shadow duration-150 ease-in-out ring-inset focus:ring-[1.5px] focus:ring-ps-red-500"
+                className="w-full resize-y rounded-ps-md bg-white px-4.5 py-3.5 font-body text-base font-normal text-ps-ink-700 ring-1 ring-ps-grey-300 outline-none transition-shadow duration-150 ease-in-out ring-inset focus:ring-[1.5px] focus:ring-ps-red-500 sm:text-ps-body"
               />
             </label>
 

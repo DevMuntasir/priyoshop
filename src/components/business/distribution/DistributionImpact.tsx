@@ -30,8 +30,8 @@ export function DistributionImpact(props: { data: ResolvedSection }) {
 
   return (
     <section className="bg-[#020404] py-16 sm:py-20 lg:py-24">
-      <div className="container ">
-        <div className="grid relative overflow-hidden rounded-ps-lg border border-[#1b8390]/70 bg-[radial-gradient(circle_at_top_left,#0a3342_0%,#051b25_52%,#03131b_100%)]  lg:grid-cols-[52%_47%]">
+      <div className="container px-4 sm:px-6 lg:px-8">
+        <div className="relative grid overflow-hidden rounded-ps-lg border border-[#1b8390]/70 bg-[radial-gradient(circle_at_top_left,#0a3342_0%,#051b25_52%,#03131b_100%)] lg:grid-cols-[52%_48%]">
           <div className="flex flex-col justify-center  px-6 py-10 sm:px-10 sm:py-12 lg:min-h-155 lg:px-12 lg:py-14">
             {data.heading.eyebrow && (
               <span className="mb-5 w-fit rounded-full border border-[#a6d8df]/70 px-3 py-1 font-body text-[11px] leading-none font-semibold text-white sm:text-xs">
@@ -64,14 +64,14 @@ export function DistributionImpact(props: { data: ResolvedSection }) {
             )}
           </div>
 
-          <div className=" absolute right-0 rounded-tl-3xl bottom-0  min-h-90 overflow-hidden border-t border-[#9c7de8]/70  sm:min-h-120 lg:min-h-[530px] lg:border-t-0 lg:border-l">
+          <div className="relative min-h-72 overflow-hidden border-t border-[#9c7de8]/70 sm:min-h-96 lg:min-h-[530px] lg:rounded-tl-3xl lg:border-t-0 lg:border-l">
             <Image
               src={data.heading.backgroundImage ?? '/distribution/impact.png'}
               alt={data.heading.backgroundImage ?? data.heading.title}
               width={400}
               height={400}
               // sizes="(min-width: 1024px) 550px, 100vw"
-              className=" h-[530px] w-full"
+              className="absolute inset-0 size-full object-cover"
             />
           </div>
         </div>

@@ -47,8 +47,50 @@ type AdminSection = {
 
 type TokenField = keyof SectionStyleTokens;
 
-const inputClass = 'w-full rounded-md border border-gray-300 px-3 py-2 text-sm';
+const inputClass =
+  'w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-gray-500 focus:ring-2 focus:ring-gray-200';
 const labelClass = 'block text-xs font-medium text-gray-500';
+
+const OPTION_LABELS: Record<string, string> = {
+  'text-ps-h3': 'Small heading',
+  'text-ps-h2': 'Medium heading',
+  'text-ps-h1': 'Large heading',
+  'text-ps-display': 'Display',
+  'text-[clamp(2.25rem,10vw,4.375rem)]': 'Responsive display',
+  'text-ps-sm': 'Small body',
+  'text-ps-body': 'Body',
+  'text-ps-h6': 'Large body',
+  'text-ps-h5': 'Extra large body',
+  'max-w-xl': 'Narrow',
+  'max-w-2xl': 'Medium',
+  'max-w-3xl': 'Wide',
+  'max-w-4xl': 'Extra wide',
+  'max-w-full': 'Full width',
+  left: 'Left',
+  center: 'Center',
+  auto: 'Auto (match background)',
+  light: 'Light',
+  dark: 'Dark',
+};
+
+const COLOR_PREVIEWS: Record<string, string> = {
+  'text-white': '#ffffff',
+  'text-ps-white': '#ffffff',
+  'text-ps-ink-700': '#292a2e',
+  'text-ps-black': '#000000',
+  'bg-hero-gradient': '#fffcfa',
+};
+
+const resolvePickerValue = (value: string) => {
+  if (/^#[\da-f]{6}$/iu.test(value)) {
+    return value;
+  }
+  const shortHex = /^#([\da-f])([\da-f])([\da-f])$/iu.exec(value);
+  if (shortHex) {
+    return `#${shortHex[1]}${shortHex[1]}${shortHex[2]}${shortHex[2]}${shortHex[3]}${shortHex[3]}`;
+  }
+  return COLOR_PREVIEWS[value] ?? '#000000';
+};
 
 const DEVICE_LABELS: Record<Device, string> = {
   mobile: 'Mobile',
@@ -62,7 +104,7 @@ const INHERIT = '__inherit__';
 
 // Declarative item fields per kind: the editor renders one row from this config,
 // so a new section is a config entry rather than bespoke JSX.
-type ItemFieldType = 'text' | 'bool' | 'select';
+type ItemFieldType = 'text' | 'textarea' | 'color' | 'bool' | 'select';
 type ItemFieldDef = {
   field: keyof SectionItem;
   label: string;
@@ -137,12 +179,52 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
     { field: 'logo', label: 'Icon path' },
   ],
   slide: [
-    { field: 'title', label: 'Headline' },
-    { field: 'description', label: 'Description', full: true },
-    { field: 'slideBackgroundImage', label: 'Background image path' },
-    { field: 'textColor', label: 'Text color (hex/class)' },
-    { field: 'textSize', label: 'Text size class' },
+    { field: 'title', label: 'Heading', type: 'textarea', full: true },
+    { field: 'accentWords', label: 'Accent words', full: true },
+    { field: 'accentColor', label: 'Solid accent color', type: 'color', full: true },
+    { field: 'accentGradientFrom', label: 'Gradient start', type: 'color' },
+    { field: 'accentGradientTo', label: 'Gradient end', type: 'color' },
+    { field: 'description', label: 'Description', type: 'textarea', full: true },
+    { field: 'slideBackgroundImage', label: 'Background image path', full: true },
+    { field: 'slideBackgroundColor', label: 'Background color', type: 'color', full: true },
+    { field: 'textColor', label: 'Heading color', type: 'color' },
+    { field: 'descriptionColor', label: 'Description color', type: 'color' },
+    {
+      field: 'textSize',
+      label: 'Heading size',
+      type: 'select',
+      options: [
+        'text-ps-h3',
+        'text-ps-h2',
+        'text-ps-h1',
+        'text-ps-display',
+        'text-[clamp(2.25rem,10vw,4.375rem)]',
+      ],
+    },
+    {
+      field: 'descriptionSize',
+      label: 'Description size',
+      type: 'select',
+      options: ['text-ps-sm', 'text-ps-body', 'text-ps-h6', 'text-ps-h5'],
+    },
+    {
+      field: 'contentWidth',
+      label: 'Content width',
+      type: 'select',
+      options: ['max-w-xl', 'max-w-2xl', 'max-w-3xl', 'max-w-4xl', 'max-w-full'],
+    },
     { field: 'slideAlign', label: 'Alignment', type: 'select', options: ['left', 'center'] },
+    { field: 'ctaLabel', label: 'Primary label' },
+    { field: 'href', label: 'Primary link' },
+    { field: 'ctaSecondaryLabel', label: 'Secondary label' },
+    { field: 'ctaSecondaryHref', label: 'Secondary link' },
+    {
+      field: 'ctaTone',
+      label: 'Button tone',
+      type: 'select',
+      options: ['auto', 'light', 'dark'],
+      full: true,
+    },
   ],
   faq: [
     { field: 'title', label: 'Question', full: true },
@@ -168,6 +250,43 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
   ],
 };
 
+type SlideFieldGroup = {
+  title: string;
+  description?: string;
+  fields: (keyof SectionItem)[];
+};
+
+const SLIDE_FIELD_GROUPS: SlideFieldGroup[] = [
+  {
+    title: 'Content',
+    fields: ['title', 'description'],
+  },
+  {
+    title: 'Accent styling',
+    description: 'Use a solid color, or set both gradient colors to override it.',
+    fields: ['accentWords', 'accentColor', 'accentGradientFrom', 'accentGradientTo'],
+  },
+  {
+    title: 'Background',
+    fields: ['slideBackgroundImage', 'slideBackgroundColor'],
+  },
+  {
+    title: 'Typography and layout',
+    fields: [
+      'textColor',
+      'descriptionColor',
+      'textSize',
+      'descriptionSize',
+      'contentWidth',
+      'slideAlign',
+    ],
+  },
+  {
+    title: 'Calls to action',
+    fields: ['ctaTone', 'ctaLabel', 'href', 'ctaSecondaryLabel', 'ctaSecondaryHref'],
+  },
+];
+
 // Item add/remove helpers, kept above the component so they read clearly inline.
 function contentFor(section: AdminSection, locale: string): Content {
   return section.contentByLocale[locale] ?? { heading: { title: '' }, items: [] };
@@ -179,7 +298,21 @@ function addItemTo(
   locale: string,
 ) {
   const content = contentFor(section, locale);
-  const next = { ...content, items: [...content.items, {}] };
+  const item: SectionItem =
+    section.itemKind === 'slide'
+      ? {
+          title: 'New slide',
+          slideBackgroundColor: 'bg-hero-gradient',
+          textColor: 'text-ps-ink-700',
+          descriptionColor: 'text-ps-ink-700',
+          textSize: 'text-ps-display',
+          descriptionSize: 'text-ps-body',
+          contentWidth: 'max-w-3xl',
+          slideAlign: 'left',
+          ctaTone: 'dark',
+        }
+      : {};
+  const next = { ...content, items: [...content.items, item] };
   setSection({ ...section, contentByLocale: { ...section.contentByLocale, [locale]: next } });
 }
 
@@ -317,28 +450,76 @@ function ItemField(props: {
     );
   }
   if (props.def.type === 'select') {
+    let value = typeof raw === 'string' ? raw : '';
+    if (!value && props.def.field === 'ctaTone') {
+      value = 'auto';
+    }
     return (
-      <label className="block flex-1">
+      <label className={props.def.full ? 'col-span-2 block w-full' : 'block flex-1'}>
         <span className={labelClass}>{props.def.label}</span>
         <select
           aria-label={props.def.label}
           className={inputClass}
-          value={typeof raw === 'string' ? raw : ''}
+          value={value}
           onChange={(event) => {
             props.onChange(event.target.value);
           }}
         >
           {(props.def.options ?? []).map((option) => (
             <option key={option} value={option}>
-              {option}
+              {OPTION_LABELS[option] ?? option}
             </option>
           ))}
         </select>
       </label>
     );
   }
+  if (props.def.type === 'textarea') {
+    return (
+      <label className="col-span-2 block w-full">
+        <span className={labelClass}>{props.def.label}</span>
+        <textarea
+          aria-label={props.def.label}
+          className={`${inputClass} resize-y`}
+          rows={3}
+          value={typeof raw === 'string' ? raw : ''}
+          onChange={(event) => {
+            props.onChange(event.target.value);
+          }}
+        />
+      </label>
+    );
+  }
+  if (props.def.type === 'color') {
+    const value = typeof raw === 'string' ? raw : '';
+    const pickerValue = resolvePickerValue(value);
+    return (
+      <label className={props.def.full ? 'col-span-2 block w-full' : 'block flex-1'}>
+        <span className={labelClass}>{props.def.label}</span>
+        <span className="relative block">
+          <input
+            aria-label={`${props.def.label} picker`}
+            type="color"
+            className="absolute top-1/2 left-1.5 z-10 size-7 -translate-y-1/2 cursor-pointer rounded border-0 bg-transparent p-0.5"
+            value={pickerValue}
+            onChange={(event) => {
+              props.onChange(event.target.value);
+            }}
+          />
+          <input
+            aria-label={props.def.label}
+            className={`${inputClass} pl-11 font-mono text-xs`}
+            value={value}
+            onChange={(event) => {
+              props.onChange(event.target.value);
+            }}
+          />
+        </span>
+      </label>
+    );
+  }
   return (
-    <label className={props.def.full ? 'block w-full' : 'block flex-1'}>
+    <label className={props.def.full ? 'col-span-2 block w-full' : 'block flex-1'}>
       <span className={labelClass}>{props.def.label}</span>
       <input
         aria-label={props.def.label}
@@ -349,6 +530,92 @@ function ItemField(props: {
         }}
       />
     </label>
+  );
+}
+
+function SlideItemEditor(props: {
+  item: SectionItem;
+  index: number;
+  itemFields: ItemFieldDef[];
+  onField: (field: keyof SectionItem, value: string | boolean) => void;
+  onRemove: () => void;
+}) {
+  const background = props.item.slideBackgroundColor ?? 'bg-gray-100';
+  const hasCssBackground = /^(#|rgb\(|hsl\(|oklch\(|var\()/u.test(background);
+  let previewStyle: React.CSSProperties | undefined;
+  if (props.item.slideBackgroundImage) {
+    previewStyle = { backgroundImage: `url(${props.item.slideBackgroundImage})` };
+  } else if (hasCssBackground) {
+    previewStyle = { backgroundColor: background };
+  }
+  const previewClass = previewStyle ? '' : background;
+
+  return (
+    <details
+      open={props.index === 0}
+      className="group overflow-hidden rounded-lg border border-gray-200 bg-white"
+    >
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 bg-gray-50 px-4 py-3 hover:bg-gray-100">
+        <span className="flex min-w-0 items-center gap-3">
+          <span
+            className={`size-10 shrink-0 rounded-md border border-gray-200 bg-cover bg-center ${previewClass}`}
+            style={previewStyle}
+          />
+          <span className="min-w-0">
+            <span className="block text-sm font-semibold text-gray-900">
+              Slide {props.index + 1}
+            </span>
+            <span className="block truncate text-xs text-gray-500">
+              {props.item.title?.replaceAll(/\s+/gu, ' ') || 'Untitled slide'}
+            </span>
+          </span>
+        </span>
+        <span className="shrink-0 text-gray-400 transition-transform group-open:rotate-180">⌄</span>
+      </summary>
+
+      <div className="space-y-5 p-4">
+        {SLIDE_FIELD_GROUPS.map((group, groupIndex) => (
+          <section
+            key={group.title}
+            className={groupIndex === 0 ? 'space-y-3' : 'space-y-3 border-t border-gray-100 pt-5'}
+          >
+            <div>
+              <h3 className="text-xs font-semibold tracking-wide text-gray-700 uppercase">
+                {group.title}
+              </h3>
+              {group.description ? (
+                <p className="mt-1 text-xs leading-relaxed text-gray-400">{group.description}</p>
+              ) : null}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {group.fields.map((field) => {
+                const def = props.itemFields.find((candidate) => candidate.field === field);
+                return def ? (
+                  <ItemField
+                    key={field}
+                    def={def}
+                    item={props.item}
+                    onChange={(value) => {
+                      props.onField(field, value);
+                    }}
+                  />
+                ) : null;
+              })}
+            </div>
+          </section>
+        ))}
+
+        <div className="flex justify-end border-t border-gray-100 pt-4">
+          <button
+            type="button"
+            className="rounded-md px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 hover:text-red-700"
+            onClick={props.onRemove}
+          >
+            Remove slide
+          </button>
+        </div>
+      </div>
+    </details>
   );
 }
 
@@ -363,6 +630,7 @@ function ContentPanelBody(props: {
   heading: SectionHeadingContent;
   items: SectionItem[];
   itemFields: ItemFieldDef[];
+  itemKind: ItemKind;
   onHeading: (field: keyof SectionHeadingContent, value: string) => void;
   onRotatingWords: (value: string) => void;
   onItemField: (index: number, field: keyof SectionItem, value: string | boolean) => void;
@@ -395,142 +663,168 @@ function ContentPanelBody(props: {
 
   return (
     <>
-      <HeadingInput
-        label="Eyebrow"
-        value={heading.eyebrow ?? ''}
-        onChange={(value) => {
-          props.onHeading('eyebrow', value);
-        }}
-      />
-      <HeadingInput
-        label="Title (press Enter for a line break)"
-        multiline
-        value={heading.title}
-        onChange={(value) => {
-          props.onHeading('title', value);
-        }}
-      />
-      {hints.titleTrail ? (
-        <HeadingInput
-          label="Title trail (un-gradiented)"
-          value={heading.titleTrail ?? ''}
-          onChange={(value) => {
-            props.onHeading('titleTrail', value);
-          }}
-        />
-      ) : null}
-      <HeadingInput
-        label="Description"
-        value={heading.description ?? ''}
-        onChange={(value) => {
-          props.onHeading('description', value);
-        }}
-      />
-      {hints.rotatingWords ? (
-        <HeadingInput
-          label="Rotating words (comma-separated)"
-          value={(heading.rotatingWords ?? []).join(', ')}
-          onChange={props.onRotatingWords}
-        />
-      ) : null}
-      {hints.textStyle ? (
+      {hints.itemsOnly ? null : (
         <>
           <HeadingInput
-            label="Text color (hex e.g. #ffffff or a class)"
-            value={heading.textColor ?? ''}
+            label="Eyebrow"
+            value={heading.eyebrow ?? ''}
             onChange={(value) => {
-              props.onHeading('textColor', value);
+              props.onHeading('eyebrow', value);
             }}
           />
           <HeadingInput
-            label="Text size class (e.g. text-ps-h3)"
-            value={heading.textSize ?? ''}
+            label="Title (press Enter for a line break)"
+            multiline
+            value={heading.title}
             onChange={(value) => {
-              props.onHeading('textSize', value);
+              props.onHeading('title', value);
             }}
           />
-          <label className="block">
-            <span className={labelClass}>Alignment</span>
-            <select
-              aria-label="Alignment"
-              className={inputClass}
-              value={heading.slideAlign ?? 'left'}
-              onChange={(event) => {
-                props.onHeading('slideAlign', event.target.value);
+          {hints.titleTrail ? (
+            <HeadingInput
+              label="Title trail (un-gradiented)"
+              value={heading.titleTrail ?? ''}
+              onChange={(value) => {
+                props.onHeading('titleTrail', value);
               }}
-            >
-              <option value="left">Left</option>
-              <option value="center">Center</option>
-            </select>
-          </label>
-        </>
-      ) : null}
-      {hints.sectionCta ? cta('CTA', 'ctaLabel', 'ctaHref') : null}
-      {hints.secondaryCta ? cta('Secondary CTA', 'ctaSecondaryLabel', 'ctaSecondaryHref') : null}
-      {hints.backgroundImage ? (
-        <HeadingInput
-          label="Background image path"
-          value={heading.backgroundImage ?? ''}
-          onChange={(value) => {
-            props.onHeading('backgroundImage', value);
-          }}
-        />
-      ) : null}
-      {hints.video ? (
-        <>
+            />
+          ) : null}
           <HeadingInput
-            label="YouTube video id"
-            value={heading.videoId ?? ''}
+            label="Description"
+            value={heading.description ?? ''}
             onChange={(value) => {
-              props.onHeading('videoId', value);
+              props.onHeading('description', value);
             }}
           />
-          <HeadingInput
-            label="Local video path"
-            value={heading.videoPath ?? ''}
-            onChange={(value) => {
-              props.onHeading('videoPath', value);
-            }}
-          />
+          {hints.rotatingWords ? (
+            <HeadingInput
+              label="Rotating words (comma-separated)"
+              value={(heading.rotatingWords ?? []).join(', ')}
+              onChange={props.onRotatingWords}
+            />
+          ) : null}
+          {hints.textStyle ? (
+            <>
+              <HeadingInput
+                label="Text color (hex e.g. #ffffff or a class)"
+                value={heading.textColor ?? ''}
+                onChange={(value) => {
+                  props.onHeading('textColor', value);
+                }}
+              />
+              <HeadingInput
+                label="Text size class (e.g. text-ps-h3)"
+                value={heading.textSize ?? ''}
+                onChange={(value) => {
+                  props.onHeading('textSize', value);
+                }}
+              />
+              <label className="block">
+                <span className={labelClass}>Alignment</span>
+                <select
+                  aria-label="Alignment"
+                  className={inputClass}
+                  value={heading.slideAlign ?? 'left'}
+                  onChange={(event) => {
+                    props.onHeading('slideAlign', event.target.value);
+                  }}
+                >
+                  <option value="left">Left</option>
+                  <option value="center">Center</option>
+                </select>
+              </label>
+            </>
+          ) : null}
+          {hints.sectionCta ? cta('CTA', 'ctaLabel', 'ctaHref') : null}
+          {hints.secondaryCta ? cta('Secondary CTA', 'ctaSecondaryLabel', 'ctaSecondaryHref') : null}
+          {hints.backgroundImage ? (
+            <HeadingInput
+              label="Background image path"
+              value={heading.backgroundImage ?? ''}
+              onChange={(value) => {
+                props.onHeading('backgroundImage', value);
+              }}
+            />
+          ) : null}
+          {hints.video ? (
+            <>
+              <HeadingInput
+                label="YouTube video id"
+                value={heading.videoId ?? ''}
+                onChange={(value) => {
+                  props.onHeading('videoId', value);
+                }}
+              />
+              <HeadingInput
+                label="Local video path"
+                value={heading.videoPath ?? ''}
+                onChange={(value) => {
+                  props.onHeading('videoPath', value);
+                }}
+              />
+            </>
+          ) : null}
         </>
-      ) : null}
+      )}
 
       {hints.headingOnly ? null : (
         <>
-          <p className="pt-2 text-xs font-medium tracking-wide text-gray-400 uppercase">Items</p>
-          {props.items.map((item, index) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: rows are positional and reorderable
-            <div
-              key={index}
-              className="flex flex-wrap items-end gap-2 border-b border-gray-100 pb-3"
-            >
-              {props.itemFields.map((def) => (
-                <ItemField
-                  key={def.field}
-                  def={def}
-                  item={item}
-                  onChange={(value) => {
-                    props.onItemField(index, def.field, value);
-                  }}
-                />
-              ))}
-              <button
-                type="button"
-                className="px-2 py-2 text-sm text-red-600 hover:text-red-700"
-                onClick={() => {
+          <p className="pt-2 text-xs font-medium tracking-wide text-gray-400 uppercase">
+            {props.itemKind === 'slide' ? 'Slides' : 'Items'}
+          </p>
+          {props.items.map((item, index) =>
+            props.itemKind === 'slide' ? (
+              // biome-ignore lint/suspicious/noArrayIndexKey: slides are stored and ordered positionally
+              <SlideItemEditor
+                key={index}
+                item={item}
+                index={index}
+                itemFields={props.itemFields}
+                onField={(field, value) => {
+                  props.onItemField(index, field, value);
+                }}
+                onRemove={() => {
                   props.onRemoveItem(index);
                 }}
+              />
+            ) : (
+              // biome-ignore lint/suspicious/noArrayIndexKey: rows are positional and reorderable
+              <div
+                key={index}
+                className="flex flex-wrap items-end gap-3 rounded-md border border-gray-200 p-3"
               >
-                Remove
-              </button>
-            </div>
-          ))}
+                {props.itemFields.map((def) => (
+                  <ItemField
+                    key={def.field}
+                    def={def}
+                    item={item}
+                    onChange={(value) => {
+                      props.onItemField(index, def.field, value);
+                    }}
+                  />
+                ))}
+                <button
+                  type="button"
+                  className="px-2 py-2 text-sm text-red-600 hover:text-red-700"
+                  onClick={() => {
+                    props.onRemoveItem(index);
+                  }}
+                >
+                  Remove item
+                </button>
+              </div>
+            ),
+          )}
           <button
             type="button"
-            className="text-sm font-medium text-gray-700 hover:text-gray-900"
+            className={
+              props.itemKind === 'slide'
+                ? 'w-full rounded-lg border border-dashed border-gray-300 px-4 py-3 text-sm font-medium text-gray-600 hover:border-gray-400 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-sm font-medium text-gray-700 hover:text-gray-900'
+            }
             onClick={props.onAddItem}
           >
-            + Add item
+            + Add {props.itemKind === 'slide' ? 'slide' : 'item'}
           </button>
         </>
       )}
@@ -689,7 +983,9 @@ export const SectionEditor = (props: { page: PageKey; sectionKey: SectionKey }) 
   return (
     <div className="flex h-[calc(100dvh-3.25rem)]">
       {/* Inspector rail */}
-      <aside className="flex w-100 shrink-0 flex-col border-r border-gray-200 bg-white">
+      <aside
+        className={`flex shrink-0 flex-col border-r border-gray-200 bg-white ${current.itemKind === 'slide' ? 'w-[28rem]' : 'w-100'}`}
+      >
         <div className="flex items-center justify-between gap-3 border-b border-gray-200 px-4 py-3">
           <div>
             <h1 className="text-sm font-semibold text-gray-900">{current.label}</h1>
@@ -717,6 +1013,7 @@ export const SectionEditor = (props: { page: PageKey; sectionKey: SectionKey }) 
               heading={content.heading}
               items={content.items}
               itemFields={itemFields}
+              itemKind={current.itemKind}
               onHeading={patchHeading}
               onRotatingWords={patchRotatingWords}
               onItemField={patchItemField}

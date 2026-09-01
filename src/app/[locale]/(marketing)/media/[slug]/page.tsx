@@ -82,10 +82,10 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
     <>
       <JsonLd data={[article, breadcrumb]} />
 
-      <article className="bg-white pt-28 lg:pt-36">
-        <div className="container mx-auto px-4">
+      <article className="min-w-0 bg-white pt-28 lg:pt-36">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <header className="mx-auto max-w-4xl">
-            <h1 className="m-0 font-display text-ps-h5 leading-[1.3] font-bold  text-ps-black sm:text-ps-h4 lg:text-ps-h3">
+            <h1 className="m-0 font-display text-ps-h5 leading-[1.25] font-bold wrap-break-word text-ps-black sm:text-ps-h4 lg:text-ps-h3">
               {post.title}
             </h1>
             <p className="mt-5 mb-0 max-w-3xl font-body text-ps-xs leading-relaxed font-semibold text-ps-black-400 sm:text-ps-sm">
@@ -110,7 +110,7 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
             </div>
           )}
 
-          <div className="mx-auto max-w-3xl pt-6 pb-16 lg:pb-24">
+          <div className="mx-auto min-w-0 max-w-3xl pt-6 pb-16 lg:pb-24">
             <ArticleBody html={post.contentHtml} />
           </div>
         </div>

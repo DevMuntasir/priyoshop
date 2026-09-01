@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 export default function Infrastructure() {
 
   return (
-    <section className="bg-ps-black rounded-t-ps-hero min-h-screen py-20 mb-25">
+    <section className="min-h-[80svh] rounded-t-ps-xl bg-ps-black px-4 py-14 sm:rounded-t-ps-hero sm:px-6 sm:py-20 lg:px-8">
       <SectionHeading
         eyebrow="Business Model"
         title="PriyoShop Infrastructuree"

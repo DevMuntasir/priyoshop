@@ -32,12 +32,14 @@ export type SectionHeadingProps = {
 
   align?: 'left' | 'center';
 
-  titleSize?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5';
+  titleSize?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'custom';
 
   /**
    * Only works when title is a string.
-   */
+  */
   accentWords?: string;
+  /** Appends accent words when they are not already present in the title. */
+  appendAccentWords?: boolean;
 
   /**
    * Only works when title is a string.
@@ -46,11 +48,15 @@ export type SectionHeadingProps = {
 
   titleColor?: string;
   descriptionColor?: string;
+  accentColor?: string;
+  as?: 'h1' | 'h2';
+  titleClassName?: string;
+  descriptionClassName?: string;
   descriptionFontClass?: string;
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>;
 
 const TITLE_TEXT_CLASSES: Record<
-  'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5',
+  'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'custom',
   string
 > = {
   display: 'text-ps-h2 lg:text-ps-display',
@@ -59,6 +65,41 @@ const TITLE_TEXT_CLASSES: Record<
   h3: 'text-ps-h3',
   h4: 'text-ps-h4',
   h5: 'text-ps-h5',
+  custom: '',
+};
+
+const resolveColor = (value: string) => {
+  const normalizedValue = value.trim();
+  const isCssColor = /^(#|rgb\(|hsl\(|oklch\(|var\()/u.test(normalizedValue);
+  return {
+    className: isCssColor ? '' : normalizedValue,
+    style: isCssColor ? { color: normalizedValue } : undefined,
+  };
+};
+
+const resolveAccent = (value: string) => {
+  const normalizedValue = value.trim();
+  const isGradient = /^(linear|radial|conic)-gradient\(/iu.test(normalizedValue);
+  if (isGradient) {
+    return {
+      className: 'bg-clip-text text-transparent',
+      style: { backgroundImage: normalizedValue, color: 'transparent' },
+    };
+  }
+  return resolveColor(normalizedValue);
+};
+
+const findLastTextMatch = (title: string, words: string) => {
+  const parts = words.trim().split(/\s+/u).filter(Boolean);
+  if (parts.length === 0) {
+    return null;
+  }
+  const pattern = parts
+    .map((part) => part.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&'))
+    .join('\\s+');
+  const matches = [...title.matchAll(new RegExp(pattern, 'giu'))];
+  const match = matches.at(-1);
+  return match?.index === undefined ? null : { index: match.index, length: match[0].length };
 };
 
 export function SectionHeading({
@@ -71,14 +112,23 @@ export function SectionHeading({
   align = 'center',
   titleSize = 'h1',
   accentWords,
+  appendAccentWords = false,
   gradientWords,
   titleColor = 'text-ps-black',
   descriptionColor = 'text-ps-black-400',
+  accentColor = 'text-ps-red-600',
+  as = 'h2',
+  titleClassName = '',
+  descriptionClassName = '',
   descriptionFontClass = 'font-semibold',
   className = '',
   ...rest
 }: SectionHeadingProps) {
   const centered = align === 'center';
+  const resolvedTitleColor = resolveColor(titleColor);
+  const resolvedDescriptionColor = resolveColor(descriptionColor);
+  const resolvedAccentColor = resolveAccent(accentColor);
+  const TitleTag = as;
 
   let titleNode: React.ReactNode = title;
 
@@ -90,38 +140,44 @@ export function SectionHeading({
   // Only apply string processing when title is actually a string
   else if (typeof title === 'string') {
     if (gradientWords) {
-      const idx = title
-        .toLowerCase()
-        .lastIndexOf(gradientWords.toLowerCase());
+      const match = findLastTextMatch(title, gradientWords);
 
-      if (idx !== -1) {
+      if (match) {
         titleNode = (
           <>
-            {title.slice(0, idx)}
+            {title.slice(0, match.index)}
 
             <span className="bg-linear-to-r from-ps-red-600 via-ps-red-400 to-ps-gold-500 bg-clip-text text-transparent">
-              {title.slice(idx, idx + gradientWords.length)}
+              {title.slice(match.index, match.index + match.length)}
             </span>
 
-            {title.slice(idx + gradientWords.length)}
+            {title.slice(match.index + match.length)}
           </>
         );
       }
     } else if (accentWords) {
-      const idx = title
-        .toLowerCase()
-        .lastIndexOf(accentWords.toLowerCase());
+      const match = findLastTextMatch(title, accentWords);
 
-      if (idx !== -1) {
+      if (match) {
         titleNode = (
           <>
-            {title.slice(0, idx)}
+            {title.slice(0, match.index)}
 
-            <span className="text-ps-red-600">
-              {title.slice(idx, idx + accentWords.length)}
+            <span className={resolvedAccentColor.className} style={resolvedAccentColor.style}>
+              {title.slice(match.index, match.index + match.length)}
             </span>
 
-            {title.slice(idx + accentWords.length)}
+            {title.slice(match.index + match.length)}
+          </>
+        );
+      } else if (appendAccentWords && accentWords.trim()) {
+        titleNode = (
+          <>
+            {title}
+            {title.length > 0 && !/\s$/u.test(title) ? ' ' : null}
+            <span className={resolvedAccentColor.className} style={resolvedAccentColor.style}>
+              {accentWords.trim()}
+            </span>
           </>
         );
       }
@@ -130,7 +186,7 @@ export function SectionHeading({
 
   return (
     <div
-      className={`flex flex-col gap-4 sm:gap-5 ${centered
+      className={`flex min-w-0 max-w-full flex-col gap-4 sm:gap-5 ${centered
         ? 'items-center text-center'
         : 'items-start text-left'
         } ${className}`.trim()}
@@ -138,7 +194,7 @@ export function SectionHeading({
     >
       {eyebrow && (
         <span
-          className={`inline-flex items-center rounded-full px-4 py-1 font-body text-ps-sm font-semibold ring-[1.5px] ring-inset ${eyebrowMode === 'light'
+          className={`inline-flex min-h-9 max-w-full items-center rounded-full px-4 py-1 font-body text-ps-sm font-semibold wrap-break-word ring-[1.5px] ring-inset ${eyebrowMode === 'light'
             ? 'text-ps-white ring-white'
             : 'text-ps-ink-700 ring-black'
             }`}
@@ -147,15 +203,17 @@ export function SectionHeading({
         </span>
       )}
 
-      <h2
-        className={`m-0 font-display font-bold leading-[1.4] tracking-tight ${titleColor} ${TITLE_TEXT_CLASSES[titleSize]}`}
+      <TitleTag
+        className={`m-0 max-w-full font-display font-bold leading-[1.25] tracking-tight text-balance wrap-break-word sm:leading-[1.3] ${resolvedTitleColor.className} ${TITLE_TEXT_CLASSES[titleSize]} ${titleClassName}`}
+        style={resolvedTitleColor.style}
       >
         {titleNode}
-      </h2>
+      </TitleTag>
 
       {description && (
         <p
-          className={`m-0 mt-0! max-w-180 font-body leading-normal text-pretty ${descriptionFontClass} ${descriptionColor}`}
+          className={`m-0 mt-0! max-w-180 font-body leading-relaxed text-pretty wrap-break-word ${descriptionFontClass} ${resolvedDescriptionColor.className} ${descriptionClassName}`}
+          style={resolvedDescriptionColor.style}
         >
           {description}
         </p>

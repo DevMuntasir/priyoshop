@@ -38,8 +38,8 @@ export function NewsExplorer(props: NewsExplorerProps) {
   const visible = filtered.slice(0, visibleCount);
 
   return (
-    <section className="rounded-t-4xl bg-white py-16 lg:py-20">
-      <div className="container mx-auto flex flex-col gap-6 px-4">
+    <section className="rounded-t-4xl bg-white py-12 sm:py-16 lg:py-20">
+      <div className="container mx-auto flex min-w-0 flex-col gap-6 px-4 sm:px-6 lg:px-8">
         <div>
           <h2 className="m-0 font-display text-ps-h5 font-bold tracking-tight text-ps-black sm:text-ps-h4">
             {props.title}

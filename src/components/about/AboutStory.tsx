@@ -17,8 +17,8 @@ Building the backbone of inclusive commerce in Bangladesh.
 export default function AboutStory() {
   return (
     <Section>
-      <div className="flex items-center gap-16 py-20">
-        <div className="w-1/2 ">
+      <div className="flex flex-col items-stretch gap-10 py-12 sm:py-16 lg:flex-row lg:items-center lg:gap-16 lg:py-20">
+        <div className="w-full lg:w-1/2">
           <SectionHeading
             eyebrow="About Us"
             title="Our Story"
@@ -33,13 +33,13 @@ export default function AboutStory() {
             className="text-lg font-normal text-[#444] mt-5 font-body font-semibold max-w-[480px]"
           />
         </div>
-        <div className="w-1/2 bg-gray-50 min-h-[400px]" >
+        <div className="min-h-64 w-full rounded-ps-lg bg-gray-50 sm:min-h-80 lg:min-h-[400px] lg:w-1/2" >
 
         </div>
       </div>
 
-      <div className="flex gap-20 mt-20 ">
-        <div className="w-1/2 pr-20 ">
+      <div className="mt-12 flex flex-col gap-10 sm:mt-16 lg:mt-20 lg:flex-row lg:gap-20">
+        <div className="w-full lg:w-1/2 lg:pr-20">
           <SectionHeading
             eyebrow="Our Purpose"
             title="Our Mission & Vision"
@@ -49,9 +49,9 @@ export default function AboutStory() {
             titleColor="text-ps-black font-extrabold font-desktop"
           />
         </div>
-        <div className="w-1/2  flex flex-col gap-10 justify-center" >
+        <div className="flex w-full flex-col justify-center gap-6 sm:gap-10 lg:w-1/2">
 
-          <div className="bg-gray-50 h-full  p-8 rounded-ps-sm !border-[1px]  h-fit">
+          <div className="h-fit rounded-ps-sm border border-ps-grey-200 bg-gray-50 p-5 sm:p-8">
             <Image src="/about/v.svg" alt="Our Vision" width={80} height={80} />
             <h5 className="font-display font-bold text-ps-h5 my-3">Vision</h5>
             <p className="text-gray-600 font-body font-semibold">
@@ -59,7 +59,7 @@ export default function AboutStory() {
             </p>
           </div>
 
-          <div className="bg-gray-50  p-8 rounded-ps-sm !border-[1px]  h-fit">
+          <div className="h-fit rounded-ps-sm border border-ps-grey-200 bg-gray-50 p-5 sm:p-8">
             <Image src="/about/m.svg" alt="Our Mission" width={80} height={80} />
             <h5 className="font-display font-bold text-ps-h5 my-3">Mission</h5>
             <p className="text-gray-600 font-body font-semibold">

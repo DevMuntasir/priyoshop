@@ -26,9 +26,9 @@ export function SimilarNews(props: SimilarNewsProps) {
   }
 
   return (
-    <section className="rounded-t-4xl bg-ps-cream py-16 lg:py-20">
-      <div className="container mx-auto flex flex-col gap-10 px-4">
-        <div className="flex items-center justify-between gap-6">
+    <section className="rounded-t-4xl bg-ps-cream py-12 sm:py-16 lg:py-20">
+      <div className="container mx-auto flex min-w-0 flex-col gap-8 px-4 sm:gap-10 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
           <h2 className="m-0 font-display text-ps-h5 font-bold tracking-tight text-ps-black sm:text-ps-h4">
             {props.title}
           </h2>

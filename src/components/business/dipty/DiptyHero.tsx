@@ -10,9 +10,9 @@ export function DiptyHero(props: { data: ResolvedSection }) {
     = resolved.align === 'center' ? 'items-center text-center' : 'items-start text-left';
 
   return (
-    <section className={`${resolved.wrapperClass} h-screen bg-[url(/dipty/bg.png)] bg-center bg-cover bg-no-repeat`}>
+    <section className={`${resolved.wrapperClass} min-h-[100svh] bg-[url(/dipty/bg.png)] bg-cover bg-center bg-no-repeat lg:min-h-[100dvh]`}>
       <div
-        className={`container flex min-h-[40vh] flex-col justify-center px-4 sm:min-h-[50vh] lg:min-h-[60vh] ${alignClass}`}
+        className={`container flex min-h-[100svh] flex-col justify-center px-4 pt-28 pb-12 sm:px-6 lg:min-h-[100dvh] lg:px-8 ${alignClass}`}
       >
         <div className=' max-w-[700px]'>
           <Reveal direction='right' delay={0}>

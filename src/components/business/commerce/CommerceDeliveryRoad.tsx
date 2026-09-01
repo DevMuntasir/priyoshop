@@ -9,8 +9,8 @@ export function CommerceDeliveryRoad(props: { data: ResolvedSection }) {
 
   const { heading } = props.data
   return (
-    <section className="relative bg-white pt-20">
-      <div className="container -mb-[100px]">
+    <section className="relative bg-white pt-12 sm:pt-16 lg:pt-20">
+      <div className="container relative z-10 -mb-8 px-4 sm:-mb-14 sm:px-6 lg:-mb-[100px] lg:px-8">
 
         <div className=" !max-w-[780px] ">
 
@@ -36,7 +36,7 @@ export function CommerceDeliveryRoad(props: { data: ResolvedSection }) {
 
         </div>
       </div>
-      <Image src="/about/village.png" width={100} height={100} className="w-screen h-full" />
+      <Image src="/about/village.png" width={1400} height={700} className="h-auto w-full object-cover" />
     </section>
   );
 }

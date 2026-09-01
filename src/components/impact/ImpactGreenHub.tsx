@@ -54,11 +54,11 @@ function HubCard(props: { item: SectionItem; index: number }) {
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
 
-    }} className="relative flex min-w-[calc(100vw-2rem)]  snap-center flex-col overflow-hidden rounded-2xl border border-ps-black-100/30 shadow-sm sm:min-w-[600px] lg:min-w-[700px]">
+    }} className="relative flex min-w-[calc(100vw-2rem)] snap-center flex-col overflow-hidden rounded-2xl border border-ps-black-100/30 shadow-sm sm:min-w-[600px] lg:min-w-[700px]">
       <div className=' bg-gradient-to-r from-white via-white to-transparent h-full'>
         <div className="flex max-w-[400px] h-full flex-col lg:flex-row lg:items-stretch">
           {/* Text column */}
-          <div className="flex flex-1 flex-col gap-4 p-8">
+          <div className="flex flex-1 flex-col gap-4 p-5 sm:p-8">
             <h3 className="m-0 font-display text-ps-h5 font-bold text-[#1B8A3E]">
               {item.imageAlt ?? item.title ?? `Hub ${props.index + 1}`}
             </h3>
@@ -125,7 +125,7 @@ export function ImpactGreenHub(props: { data: ResolvedSection }) {
   return (
     <section className={`overflow-hidden py-16 lg:py-24 ${resolved.wrapperClass}`.trim()}>
       {/* Section heading */}
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow={heading.eyebrow ?? 'Hub Network'}
           title={heading.title}
@@ -139,7 +139,7 @@ export function ImpactGreenHub(props: { data: ResolvedSection }) {
       <div
         ref={trackRef}
         onScroll={onScroll}
-        className="container mx-auto mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="container mx-auto mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth px-4 pb-2 sm:px-6 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item, index) => (
           <HubCard key={item.title ?? index} item={item} index={index} />

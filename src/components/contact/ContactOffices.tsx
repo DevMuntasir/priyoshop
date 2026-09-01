@@ -51,8 +51,8 @@ export async function ContactOffices(props: { locale: string }) {
   const t = await getTranslations({ locale: props.locale, namespace: 'Contact' });
 
   return (
-    <section className="bg-white pb-20">
-      <div className="container mx-auto px-4">
+    <section className="bg-white pb-12 sm:pb-16 lg:pb-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow={t('offices_eyebrow')}
           title={t('offices_title')}

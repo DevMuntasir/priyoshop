@@ -18,10 +18,10 @@ export type StackProps = {
 
 const GRID_COLUMN_CLASSES: Record<1 | 2 | 3 | 4 | 6, string> = {
   1: 'grid-cols-1',
-  2: 'grid-cols-2',
-  3: 'grid-cols-3',
-  4: 'grid-cols-4',
-  6: 'grid-cols-6',
+  2: 'grid-cols-1 sm:grid-cols-2',
+  3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+  4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+  6: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6',
 };
 
 const GAP_CLASSES: Record<'sm' | 'md' | 'lg', string> = {
@@ -52,7 +52,7 @@ export function Grid({
   const colsClass = GRID_COLUMN_CLASSES[columns];
   const gapClass = GAP_CLASSES[gap];
 
-  const classes = `grid ${colsClass} ${gapClass} ${className}`.trim();
+  const classes = `grid min-w-0 max-w-full ${colsClass} ${gapClass} ${className}`.trim();
 
   return (
     <div className={classes} {...rest}>
@@ -75,7 +75,7 @@ export function Stack({
   const gapClass = GAP_CLASSES[gap];
   const wrapClass = wrap ? 'flex-wrap' : '';
 
-  const classes = `flex ${dirClass} ${alignClass} ${gapClass} ${wrapClass} ${className}`.trim();
+  const classes = `flex min-w-0 max-w-full ${dirClass} ${alignClass} ${gapClass} ${wrapClass} ${className}`.trim();
 
   return (
     <div className={classes} {...rest}>

@@ -20,10 +20,7 @@ export default async function Layout(props: {
         }}
       />
       {/* <Preloader /> */}
-      <NavBarServer
-        floating={false}
-        className="fixed left-1/2 z-50 mx-auto mt-[18px] w-full -translate-x-1/2"
-      />
+      <NavBarServer floating />
       <div>{props.children}</div>
       <Footer />
     </div>

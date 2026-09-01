@@ -123,6 +123,10 @@ export type SectionItem = {
   imageAlt?: string;
   ctaLabel?: string;
   href?: string;
+  ctaSecondaryLabel?: string;
+  ctaSecondaryHref?: string;
+  /** CTA button tone (hero slides). */
+  ctaTone?: 'auto' | 'light' | 'dark';
   reverse?: boolean;
   /** Description text (hero slides, ecosystems). */
   description?: string;
@@ -134,10 +138,26 @@ export type SectionItem = {
   column?: 'a' | 'b';
   /** Text color override (hero slides). */
   textColor?: string;
+  /** Description color override (hero slides). */
+  descriptionColor?: string;
   /** Title/heading size (hero slides). */
   textSize?: string;
+  /** Description size (hero slides). */
+  descriptionSize?: string;
+  /** Maximum content width (hero slides). */
+  contentWidth?: string;
+  /** Words within the title that receive the accent color (hero slides). */
+  accentWords?: string;
+  /** Accent-word color (hero slides). */
+  accentColor?: string;
+  /** Accent gradient start color (hero slides). */
+  accentGradientFrom?: string;
+  /** Accent gradient end color (hero slides). */
+  accentGradientTo?: string;
   /** Slide background image (overrides gradient). */
   slideBackgroundImage?: string;
+  /** Slide background color or utility class. */
+  slideBackgroundColor?: string;
   /** Slide alignment (left/center). */
   slideAlign?: 'left' | 'center';
   /** Local video path (video items, e.g. success stories). */
@@ -160,17 +180,18 @@ export type SectionHeadingContent = {
   videoId?: string;
   /** Local video path (distribution video block B). */
   videoPath?: string;
-  /** Text color override for the default hero slide (hex or class). */
+  /** Legacy hero text color retained for slide-data migration. */
   textColor?: string;
-  /** Title size class for the default hero slide. */
+  /** Legacy hero title size retained for slide-data migration. */
   textSize?: string;
-  /** Text alignment for the default hero slide. */
+  /** Legacy hero alignment retained for slide-data migration. */
   slideAlign?: 'left' | 'center';
 };
 
 export type SectionContent = {
   heading: SectionHeadingContent;
   items: SectionItem[];
+  format?: 'hero-slides-v2';
 };
 
 export type ResolvedSection = {
@@ -188,9 +209,11 @@ export type SectionEditorHints = {
   secondaryCta?: boolean;
   backgroundImage?: boolean;
   rotatingWords?: boolean;
-  /** Show text color / size / alignment fields for the heading (default hero slide). */
+  /** Show text color / size / alignment fields for a section heading. */
   textStyle?: boolean;
   headingOnly?: boolean;
+  /** Hide section-level heading fields and edit only the section items. */
+  itemsOnly?: boolean;
   /** Show YouTube-id and local-video-path fields (distribution video blocks). */
   video?: boolean;
 };
@@ -483,23 +506,32 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     key: 'hero',
     label: 'Hero',
     page: 'home',
-    // Slide 1 is the designed default (heading + rotating words + stats card).
-    // Admin-added `slide` items become additional carousel slides.
     itemKind: 'slide',
     defaultOrder: 10,
     defaultStyle: makeDefaultStyle(),
     defaultContent: {
-      heading: {
-        title: 'Bangladeshs\nLeading',
+      heading: { title: 'Hero slides' },
+      items: ['Distribution Partner', 'Credit Partner', 'Retails Partner'].map((accentWords) => ({
+        title: `Bangladeshs\nLeading ${accentWords}`,
         description:
           'We connect five million MSMEs to leading brands through a tech-driven distribution platform',
-        rotatingWords: ['Distribution Partner', 'Credit Partner', 'Retails Partner'],
         ctaLabel: 'Join Us',
         ctaSecondaryLabel: 'Watch Our Story',
-      },
-      items: [],
+        ctaTone: 'dark',
+        accentWords,
+        accentGradientFrom: '#dc2626',
+        accentGradientTo: '#f59e0b',
+        slideBackgroundColor: 'bg-hero-gradient',
+        textColor: 'text-ps-ink-700',
+        descriptionColor: 'text-ps-ink-700',
+        textSize: 'text-[clamp(2.25rem,10vw,4.375rem)]',
+        descriptionSize: 'text-ps-body',
+        contentWidth: 'max-w-3xl',
+        slideAlign: 'left',
+      })),
+      format: 'hero-slides-v2',
     },
-    editor: { rotatingWords: true, sectionCta: true, secondaryCta: true, textStyle: true },
+    editor: { itemsOnly: true },
   },
   embeddedHero: {
     key: 'embeddedHero',
@@ -1908,6 +1940,60 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
 };
 
 export const getSectionDef = (key: SectionKey): SectionDef => SECTION_REGISTRY[key];
+
+/** Converts the legacy special hero heading into independently editable slides. */
+export const normalizeSectionContent = (
+  key: SectionKey,
+  content: SectionContent,
+): SectionContent => {
+  if (key !== 'hero' || content.format === 'hero-slides-v2') {
+    return content;
+  }
+
+  const legacyHeading = content.heading;
+  const accentOptions =
+    legacyHeading.rotatingWords && legacyHeading.rotatingWords.length > 0
+      ? legacyHeading.rotatingWords
+      : [undefined];
+  const headingSlides: SectionItem[] = accentOptions.map((accentWords) => ({
+    title: accentWords ? `${legacyHeading.title} ${accentWords}` : legacyHeading.title,
+    description: legacyHeading.description,
+    ctaLabel: legacyHeading.ctaLabel,
+    href: legacyHeading.ctaHref,
+    ctaSecondaryLabel: legacyHeading.ctaSecondaryLabel,
+    ctaSecondaryHref: legacyHeading.ctaSecondaryHref,
+    ctaTone: legacyHeading.backgroundImage ? 'light' : 'dark',
+    accentWords,
+    accentGradientFrom: accentWords ? '#dc2626' : undefined,
+    accentGradientTo: accentWords ? '#f59e0b' : undefined,
+    slideBackgroundImage: legacyHeading.backgroundImage,
+    slideBackgroundColor: 'bg-hero-gradient',
+    textColor: legacyHeading.textColor ?? 'text-ps-ink-700',
+    descriptionColor: legacyHeading.textColor ?? 'text-ps-ink-700',
+    textSize: legacyHeading.textSize ?? 'text-[clamp(2.25rem,10vw,4.375rem)]',
+    descriptionSize: 'text-ps-body',
+    contentWidth: 'max-w-3xl',
+    slideAlign: legacyHeading.slideAlign ?? 'left',
+  }));
+  const existingSlides = content.items.map((item) => ({
+    ...item,
+    ctaLabel: item.ctaLabel ?? legacyHeading.ctaLabel,
+    href: item.href ?? legacyHeading.ctaHref,
+    ctaSecondaryLabel: item.ctaSecondaryLabel ?? legacyHeading.ctaSecondaryLabel,
+    ctaSecondaryHref: item.ctaSecondaryHref ?? legacyHeading.ctaSecondaryHref,
+    ctaTone: item.ctaTone ?? (item.slideBackgroundImage ? 'light' : 'dark'),
+    slideBackgroundColor: item.slideBackgroundColor ?? 'bg-hero-gradient',
+    descriptionColor: item.descriptionColor ?? item.textColor,
+    descriptionSize: item.descriptionSize ?? 'text-ps-body',
+    contentWidth: item.contentWidth ?? 'max-w-3xl',
+  }));
+
+  return {
+    heading: { title: 'Hero slides' },
+    items: [...headingSlides, ...existingSlides],
+    format: 'hero-slides-v2',
+  };
+};
 
 export const listSectionDefs = (): SectionDef[] => SECTION_KEYS.map((key) => SECTION_REGISTRY[key]);
 

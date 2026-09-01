@@ -19,21 +19,21 @@ export function Stats(props: { items?: StatItem[] }) {
   const items = props.items && props.items.length > 0 ? props.items : DEFAULT_STATS;
 
   return (
-    <div className="absolute -bottom-45 md:-bottom-16 left-1/2 z-50 w-full -translate-x-1/2 px-4 sm:-bottom-20">
-      <div className="mx-auto flex h-auto w-full max-w-247.5 flex-col divide-y divide-ps-black-50 rounded-ps-xl border-2 border-ps-black-50 bg-white p-4 shadow-sm sm:h-45.5! sm:flex-row sm:divide-x sm:divide-y-0 sm:p-5">
+    <div className="absolute -bottom-44 left-1/2 z-50 w-full -translate-x-1/2 px-4 sm:-bottom-24 sm:px-6  lg:px-8">
+      <div className="mx-auto flex h-auto w-full max-w-247.5 flex-col divide-y divide-ps-black-50 rounded-ps-xl border-2 border-ps-black-100/20 bg-white p-3  sm:h-45.5! sm:flex-row sm:divide-x sm:divide-y-0 sm:p-5">
         {items.map((item, i) => {
           const { num, suffix } = parseValue(item.value);
           return (
             <MetricStat
               key={`${item.label}-${i}`}
-              className="flex-1 px-4 py-3 sm:px-10 sm:py-0 border-none"
+              className=" border-none"
               value={<RollingNumber value={num} suffix={suffix} height={52} />}
               label={item.label}
               size="md"
               align="center"
               icon={
                 // oxlint-disable-next-line next/no-img-element -- decorative inline icon; next/image is unnecessary for a static SVG glyph
-                <img src={item.icon} alt={item.label} className="h-12 w-12 sm:h-18 sm:w-18" />
+                <img src={item.icon} alt="" className="h-10 w-10 sm:h-16 sm:w-16 lg:h-18 lg:w-18" />
               }
             />
           );

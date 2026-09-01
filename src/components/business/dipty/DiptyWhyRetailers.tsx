@@ -23,7 +23,7 @@ export function DiptyWhyRetailers(props: { data: ResolvedSection }) {
 
   return (
     <section className="bg-white pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-32">
-      <div className="container ">
+      <div className="container px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow={heading.eyebrow}
           title={heading.title}

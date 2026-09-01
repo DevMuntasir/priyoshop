@@ -13,8 +13,8 @@ export type CardProps = {
 
 const PADDING_CLASSES: Record<'sm' | 'md' | 'lg', string> = {
   sm: 'p-4',
-  md: 'p-6',
-  lg: 'p-8',
+  md: 'p-4 sm:p-6',
+  lg: 'p-5 sm:p-6 lg:p-8',
 };
 
 const ROUNDED_CLASSES: Record<'sm' | 'md' | 'lg', string> = {
@@ -46,7 +46,7 @@ export function Card({
   const borderClass = border ? 'border border-ps-grey-300' : '';
   const shadowClass = shadow ? 'shadow-sm' : '';
 
-  const classes = `${bgClass} ${padClass} ${roundClass} ${borderClass} ${shadowClass} ${className}`.trim();
+  const classes = `min-w-0 max-w-full ${bgClass} ${padClass} ${roundClass} ${borderClass} ${shadowClass} ${className}`.trim();
 
   return (
     <div className={classes} {...rest}>

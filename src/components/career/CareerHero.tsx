@@ -7,7 +7,7 @@ export async function CareerHero(props: { locale: string }) {
   const t = await getTranslations({ locale: props.locale, namespace: 'Career' });
 
   return (
-    <div className="container mx-auto flex flex-col items-center px-4 pt-32 content-center text-center lg:pt-40 pb-14 lg:pb-20">
+    <div className="container mx-auto flex min-h-[24rem] flex-col items-center justify-center px-4 pt-28 pb-14 text-center sm:px-6 sm:pt-32 lg:px-8 lg:pt-40 lg:pb-20">
 
       <div className=' max-w-[800px]'>
         <SectionHeading

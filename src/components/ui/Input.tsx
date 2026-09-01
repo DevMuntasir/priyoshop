@@ -40,7 +40,7 @@ export function Input({
         <input
           type={type}
           disabled={disabled}
-          className={`min-w-0 flex-1 border-none bg-transparent font-body text-ps-body font-normal text-ps-ink-700 outline-none ${className}`.trim()}
+          className={`min-w-0 flex-1 border-none bg-transparent font-body text-base font-normal text-ps-ink-700 outline-none sm:text-ps-body ${className}`.trim()}
           {...rest}
         />
       </span>

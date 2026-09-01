@@ -24,9 +24,9 @@ export function DistributionHowWork(props: { data: ResolvedSection }) {
   }, [stepCount]);
 
   return (
-    <section className="relative bg-black rounded-t-4xl py-20">
+    <section className="relative rounded-t-4xl bg-black py-12 sm:py-16 lg:py-20">
       <div className="flex flex-col justify-center">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-16">
             <SectionHeading
@@ -41,9 +41,9 @@ export function DistributionHowWork(props: { data: ResolvedSection }) {
           </div>
 
           {/* Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12  lg:gap-20 items-stretch">
+          <div className="grid grid-cols-1 items-stretch gap-10 lg:grid-cols-2 lg:gap-20">
             {/* Left: Image */}
-            <div className="relative h-[500px] lg:h-[600px]  mx-auto w-full max-w-[400px] bg-ps-white-950 rounded-xl overflow-hidden">
+            <div className="relative mx-auto aspect-[2/3] h-auto max-h-[600px] w-full max-w-[400px] overflow-hidden rounded-xl bg-ps-white-950 lg:h-[600px] lg:aspect-auto">
               {STEPS.map(step => (
                 <img
                   key={step.id}
@@ -65,7 +65,7 @@ export function DistributionHowWork(props: { data: ResolvedSection }) {
                     key={step.id}
                     type="button"
                     onClick={() => setActiveStep(step.id)}
-                    className="flex cursor-pointer items-stretch gap-6 max-w-100 border-none bg-transparent p-0 text-left"
+                    className="flex min-h-14 max-w-100 cursor-pointer items-stretch gap-4 border-none bg-transparent p-0 text-left sm:gap-6"
                   >
                     <div
                       className={`w-1 shrink-0 rounded-full transition-colors duration-500 ${isActive ? 'bg-ps-white' : 'bg-ps-white-700/50'

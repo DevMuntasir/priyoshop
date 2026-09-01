@@ -14,9 +14,9 @@ export function ImpactHero(props: { data: ResolvedSection }) {
   }
   return (
     <>
-      <section className={`  bg-[url(/impact/bg.png)] bg-cover bg-no-repeat bg-center min-h-screen content-center`}>
+      <section className="flex min-h-[78svh] items-center bg-[url(/impact/bg.png)] bg-cover bg-center bg-no-repeat pt-28 pb-12 lg:min-h-[85dvh]">
         <div
-          className={` container`}
+          className="container px-4 sm:px-6 lg:px-8"
         >
 
           <div className=' max-w-[600px]'>
@@ -36,13 +36,13 @@ export function ImpactHero(props: { data: ResolvedSection }) {
         </div>
 
       </section>
-      <section>
-        <div className="container relative">
-          <div className="z-10 absolute -bottom-16 left-[50%]  -translate-x-[50%] mx-auto grid grid-cols-4 w-full gap-5 justify-center h-37.5">
+      <section className="bg-white px-4 py-10 sm:px-6 lg:px-8">
+        <div className="container mx-auto">
+          <div className="z-10 mx-auto grid w-full grid-cols-1 justify-center gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
             {items.map(item => (
               <MetricStat
                 key={item.name}
-                className=" !text-ps-green "
+                className="rounded-ps-md bg-white px-3 py-5 !text-ps-green shadow-ps-soft"
                 color='!text-ps-green'
                 value={statValue(item)}
                 label={item.name ?? ''}

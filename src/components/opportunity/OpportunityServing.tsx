@@ -1,12 +1,11 @@
 import { Button } from '@/components/ui/Button';
+import type { ResolvedSection } from '@/libs/cms/Sections';
 
 
-export function OpportunityServing({ data }: { data: any }) {
-
-  console.log(data);
-
+export function OpportunityServing(props: { data: ResolvedSection }) {
+  const { heading } = props.data;
   return (
-    <section className="px-4 py-12 ">
+    <section className="px-4 py-12 sm:px-6 lg:px-8">
       <div className="relative container mx-auto overflow-hidden rounded-3xl bg-[url('/opportunities/banner.png')] bg-cover bg-center bg-no-repeat ">
         {/* Background Glow */}
         <div className="absolute inset-0 opacity-20">
@@ -14,31 +13,36 @@ export function OpportunityServing({ data }: { data: any }) {
           <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-red-500 blur-3xl" />
         </div>
 
-        <div className="relative z-10  items-center gap-10 px-8 py-10 flex lg:px-12">
+        <div className="relative z-10 flex flex-col items-start gap-8 px-5 py-10 sm:px-8 lg:flex-row lg:items-center lg:gap-10 lg:px-12 lg:py-14">
           {/* Left Content */}
           <div className="max-w-2xl text-white ">
-            <h2 className="text-3xl font-bold leading-tight lg:text-4xl">
-              Unlock Bangladesh’s Next Retail Growth Story
+            <h2 className="font-display text-ps-h4 font-bold leading-tight text-balance sm:text-ps-h3 lg:text-ps-h2">
+              {heading.title}
             </h2>
 
-            <p className="mt-6 text-lg leading-8 text-white/90">
-              Partner with PriyoShop to reach retailers, strengthen
-              distribution, and build smarter growth across Bangladesh.
-            </p>
+            {heading.description && (
+              <p className="mt-5 max-w-2xl font-body text-ps-body leading-relaxed text-white/90 sm:mt-6">
+                {heading.description}
+              </p>
+            )}
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <Button variant="filled" size="lg" className="!bg-white !text-ps-black">
-                Partner with Us
-              </Button>
+              {heading.ctaLabel && (
+                <Button href={heading.ctaHref} variant="filled" tone="light" size="lg">
+                  {heading.ctaLabel}
+                </Button>
+              )}
 
-              <Button size="lg" className="!bg-transparent !border-[1px] !border-white">
-                Talk with Our Team
-              </Button>
+              {heading.ctaSecondaryLabel && (
+                <Button href={heading.ctaSecondaryHref} variant="outlined" tone="light" size="lg">
+                  {heading.ctaSecondaryLabel}
+                </Button>
+              )}
             </div>
           </div>
 
           {/* Right Image */}
-          <div className="flex justify-center lg:justify-end max-w-[400px] w-full">
+          <div className="hidden w-full max-w-[400px] justify-center lg:flex lg:justify-end">
 
           </div>
         </div>

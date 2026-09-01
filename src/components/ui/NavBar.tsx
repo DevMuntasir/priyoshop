@@ -73,6 +73,8 @@ export function NavBar({
   const [activeDesktop, setActiveDesktop] = useState<string | null>(null);
   const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const menuButtonRef = React.useRef<HTMLButtonElement>(null);
+  const drawerRef = React.useRef<HTMLDivElement>(null);
 
   // Detect prefers-reduced-motion
   useEffect(() => {
@@ -86,6 +88,30 @@ export function NavBar({
       mediaQuery.removeEventListener('change', handleChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    drawerRef.current?.querySelector<HTMLElement>('button, a')?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open]);
 
   const handleLogoClick = () => {
     setOpen(false);
@@ -107,10 +133,10 @@ export function NavBar({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-999 w-full">
+    <div className="fixed inset-x-0 top-0 z-999 w-full px-[env(safe-area-inset-left)]">
       {/* Desktop: Aceternity navbar with dropdowns */}
       <nav
-        className={`container hidden h-16 mx-auto w-[95%] lg:w-[92%] xl:w-full items-center gap-2 lg:gap-4 rounded-ps-md  border border-ps-white-700/10 bg-ps-white/50 px-3 sm:px-4 lg:px-5 shadow backdrop-blur-sm sm:h-18  lg:flex ${floating ? ' mt-2 lg:mt-3' : ''} ${className}`.trim()}
+        className={`container hidden h-16 mx-auto w-[calc(100%-2rem)] max-w-[calc(var(--container-xl)-2rem)] items-center gap-3 rounded-ps-md border border-ps-white-700/10 bg-ps-white/85 px-5 shadow backdrop-blur-md lg:flex ${floating ? 'mt-[calc(env(safe-area-inset-top)+0.75rem)]' : 'mt-[env(safe-area-inset-top)]'} ${className}`.trim()}
         {...rest}
       >
         <button
@@ -170,7 +196,7 @@ export function NavBar({
       </nav>
 
       {/* Mobile: Hamburger + drawer */}
-      <div className="container mt-3 lg:hidden fixed top-0 left-0 right-0 mx-auto h-16 sm:h-20 flex items-center gap-2 sm:gap-3 rounded-ps-md border border-ps-white-700/10 bg-ps-white/50 px-3 sm:px-4 shadow-sm backdrop-blur-sm w-[95%] sm:w-[94%] md:w-[90%]">
+      <div className="fixed inset-x-3 top-[calc(env(safe-area-inset-top)+0.75rem)] mx-auto flex h-16 max-w-3xl items-center gap-2 rounded-ps-md border border-ps-white-700/10 bg-ps-white/90 px-3 shadow-sm backdrop-blur-md sm:inset-x-4 sm:h-18 sm:gap-3 sm:px-4 lg:hidden">
         <button
           type="button"
           onClick={handleLogoClick}
@@ -195,9 +221,11 @@ export function NavBar({
             </Button>
           )}
           <button
+            ref={menuButtonRef}
             type="button"
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
+            aria-controls="mobile-navigation"
             onClick={() => {
               setOpen((v) => !v);
             }}
@@ -215,9 +243,24 @@ export function NavBar({
           animate={{ opacity: 1, y: 0 }}
           exit={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: -10 }}
           transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2 }}
-          className="fixed top-16 sm:top-20 left-0 right-0 lg:hidden w-full max-h-[calc(100vh-4rem)] sm:max-h-[calc(100vh-5rem)] overflow-y-auto"
+          className="fixed inset-x-0 top-[calc(env(safe-area-inset-top)+4.75rem)] bottom-0 lg:hidden"
         >
-          <div className="flex flex-col gap-1 rounded-b-ps-xl border-b border-l border-r border-ps-white-700 bg-ps-white/95 shadow-md backdrop-blur-sm mx-3 sm:mx-4 md:mx-auto md:w-[90%] px-2 py-3 sm:px-4 sm:py-4">
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="absolute inset-0 size-full cursor-default border-none bg-ps-black/20"
+            onClick={() => {
+              setOpen(false);
+              menuButtonRef.current?.focus();
+            }}
+          />
+          <div
+            id="mobile-navigation"
+            ref={drawerRef}
+            role="dialog"
+            aria-modal="true"
+            className="relative mx-3 flex max-h-[calc(100dvh-env(safe-area-inset-top)-5.5rem)] flex-col gap-1 overflow-y-auto overscroll-contain rounded-b-ps-xl border border-t-0 border-ps-white-700 bg-ps-white/98 px-2 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-md backdrop-blur-md sm:mx-4 sm:px-4 sm:py-4 md:mx-auto md:max-w-3xl"
+          >
             <ul className="m-0 flex list-none flex-col gap-1 p-0">
               {menuItems.map((item) => (
                 <li key={item.id}>
@@ -249,7 +292,7 @@ export function NavBar({
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="flex flex-col gap-1 border-l-2 border-ps-grey-300 ml-3 sm:ml-4 pl-3 sm:pl-4"
+                          className="ml-3 flex flex-col gap-1 border-l-2 border-ps-grey-300 pl-3 sm:ml-4 sm:pl-4"
                       >
                         {item.children.map((child) => (
                           <button

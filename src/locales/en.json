@@ -280,6 +280,7 @@
     "description": "We connect retailers directly with brands and distributors — fair prices, next-day restocking and a smarter supply chain for 100,000+ MSMEs.",
     "cta_primary": "Join Us",
     "cta_secondary": "Watch Our Story",
+    "slide_label": "Go to slide {number}",
     "image_alt": "PriyoShop storefront"
   },
   "DistributionPage": {

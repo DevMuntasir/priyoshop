@@ -3,8 +3,8 @@
 import type * as React from 'react';
 
 const SIZE_CLASSES = {
-  sm: 'h-8 gap-1.5 text-ps-sm',
-  md: 'h-10 gap-2 text-ps-body',
+  sm: 'min-h-11 gap-1.5 text-ps-sm',
+  md: 'min-h-11 gap-2 text-ps-body',
   lg: 'h-14 gap-2.5 text-ps-body',
 };
 
@@ -86,7 +86,7 @@ export function Button({
     .trim();
 
   const classes =
-    `inline-flex flex-row items-center justify-center rounded-full border-none font-body font-semibold whitespace-nowrap leading-none no-underline cursor-pointer transition-colors duration-700 ease-in-out enabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 ${fullWidth ? 'w-full' : 'w-fit'} ${SIZE_CLASSES[size]} ${padX} ${animationClasses} ${SKIN_CLASSES[variant][tone]} ${className}`.trim();
+    `inline-flex max-w-full flex-row items-center justify-center rounded-full border-none font-body font-semibold whitespace-nowrap leading-none no-underline cursor-pointer transition-colors duration-700 ease-in-out enabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 ${fullWidth ? 'w-full' : 'w-fit'} ${SIZE_CLASSES[size]} ${padX} ${animationClasses} ${SKIN_CLASSES[variant][tone]} ${className}`.trim();
 
   const iconBox = (node: React.ReactNode) =>
     node ? (
