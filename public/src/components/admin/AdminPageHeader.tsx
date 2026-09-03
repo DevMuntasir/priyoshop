@@ -4,7 +4,7 @@ export const AdminPageHeader = (props: {
   description?: string;
   action?: React.ReactNode;
 }) => (
-  <div className="flex z-[999] font-display p-6 flex-wrap items-start sticky top-[53px] bg-white justify-between gap-4 border-b border-gray-200 pb-5">
+  <div className="flex z-[9] font-display p-6 flex-wrap items-start sticky top-[53px] bg-white justify-between gap-4 border-b border-gray-200 pb-5">
     <div>
       <h1 className="text-2xl font-semibold text-gray-900">{props.title}</h1>
       {props.description ? (
