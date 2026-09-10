@@ -2,14 +2,12 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { buildPageMetadata } from '@/utils/Seo';
+import AboutCTA from '@/components/about/AboutCTA';
+import WhatDrivesUs from '@/components/about/AboutDrives';
 import { AboutHero } from '@/components/about/AboutHero';
+import AboutStory from '@/components/about/AboutStory';
 import Infrastructure from '@/components/about/infrastructure/Infrastructure';
 import { Team } from '@/components/about/team/Team';
-import { Career } from '@/components/sections/career/Career';
-import { getSection } from '@/libs/cms/ContentRepository';
-import AboutStory from '@/components/about/AboutStory';
-import WhatDrivesUs from '@/components/about/AboutDrives';
-import AboutCTA from '@/components/about/AboutCTA';
 
 type AboutPageProps = {
   params: Promise<{ locale: string }>;
@@ -27,10 +25,9 @@ export async function generateMetadata(props: AboutPageProps): Promise<Metadata>
   });
 }
 
-export default async function About(props: AboutPageProps) {
+export default async function AboutPage(props: AboutPageProps) {
   const { locale } = await props.params;
   setRequestLocale(locale);
-  // const career = await getSection('career', locale);
 
   return (
     <>
@@ -39,7 +36,6 @@ export default async function About(props: AboutPageProps) {
       <Infrastructure />
       <Team />
       <WhatDrivesUs />
-      {/* <Career data={career} /> */}
       <AboutCTA />
     </>
   );
