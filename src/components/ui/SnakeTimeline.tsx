@@ -571,7 +571,7 @@ export default function SnakeTimeline({ config, heading, style }: { config: Snak
           title={heading.title}
           eyebrow={heading.eyebrow}
           align={style.base.align}
-          className='w-full mb-10'
+          className='w-full '
         />
 
         <div className="relative w-full container" style={{ aspectRatio: `${VIEW_W} / ${viewH}` }}>

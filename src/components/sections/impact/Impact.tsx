@@ -6,7 +6,7 @@ export function Impact(props: { data: ResolvedSection }) {
   const { heading, style } = props.data;
 
   return (
-    <section className="relative mt-10 overflow-hidden bg-[#fff6f6] py-12 sm:py-14 lg:min-h-[700px] xl:aspect-[7/3.6]">
+    <section className="relative mt-10 overflow-hidden bg-[#fff6f6] py-12 sm:py-14 lg:min-h-[700px] xl:aspect-[7/5]">
       {/* Background */}
       <Image
         src="/impact/section.png"

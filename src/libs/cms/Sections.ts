@@ -474,7 +474,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         ctaHref: '/career',
       },
       items: [
-        { image: '/career/1.png', imageAlt: 'PriyoShop team members at work' },
+        { image: '/career/all.png', imageAlt: 'PriyoShop team members at work' },
         { image: '/career/5.png', imageAlt: 'PriyoShop award celebration' },
         { image: '/career/3.png', imageAlt: 'PriyoShop event performance' },
         { image: '/career/4.png', imageAlt: 'PriyoShop speaker on stage' },

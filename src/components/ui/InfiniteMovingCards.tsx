@@ -39,8 +39,8 @@ export function InfiniteMovingCards(props: InfiniteMovingCardsProps) {
   return (
     <div
       className={cn(
-        'group relative w-full overflow-hidden',
-        '[mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]',
+        'group relative w-full overflow-hidden  ',
+        '[mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] ',
         className,
       )}
     >

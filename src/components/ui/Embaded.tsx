@@ -83,7 +83,8 @@ export function EmbeddedHero(props: { data: ResolvedSection }) {
                 hidden: {},
                 show: { transition: { delayChildren: 0.35, staggerChildren: 0.12 } },
               }}
-              className="absolute inset-y-0 left-5 z-50 flex w-[calc(100%-2.5rem)] w-full flex-col justify-center gap-1 lg:gap-2 mt-10 lg:mt-0 sm:left-8 sm:w-[55%] sm:gap-3 sm:py-10 lg:left-12 lg:w-[45%] lg:gap-4 lg:py-12"
+              className="absolute inset-y-0 left-5 z-50 flex w-[calc(100%-2.5rem)] w-full flex-col justify-end
+               gap-1 lg:gap-2 mt-10 lg:mt-0 sm:left-8 sm:w-[55%] sm:gap-3 sm:py-10 lg:left-12 lg:w-[45%] lg:gap-4 lg:py-12"
             >
               <motion.h2
                 variants={textItem}

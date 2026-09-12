@@ -1,20 +1,7 @@
 import { Button } from '@/components/ui/Button';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
 import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
-
-type GalleryItem = {
-  image: string;
-  imageAlt: string;
-};
-
-const GALLERY_CARD_CLASSES = [
-  'col-span-3 row-span-3 sm:col-span-2 sm:row-span-3 lg:col-span-3 lg:col-start-1 lg:row-span-4 lg:row-start-2',
-  'col-span-3 row-span-3 sm:col-span-4 sm:row-span-3 lg:col-span-4 lg:col-start-4 lg:row-span-3 lg:row-start-1',
-  'col-span-3 row-span-3 sm:col-span-3 sm:row-span-3 lg:col-span-3 lg:col-start-3 lg:row-span-4 lg:row-start-5',
-  'col-span-3 row-span-4 sm:col-span-2 sm:row-span-4 lg:col-span-2 lg:col-start-7 lg:row-span-4 lg:row-start-4',
-  'col-span-3 row-span-3 sm:col-span-3 sm:row-span-3 lg:col-span-3 lg:col-start-8 lg:row-span-3 lg:row-start-2',
-  'col-span-6 row-span-2 sm:col-span-3 sm:row-span-2 lg:col-span-3 lg:col-start-8 lg:row-span-2 lg:row-start-7',
-] as const;
 
 const GALLERY_DOT_CLASSES = [
   'left-[22%] top-[14%]',
@@ -25,34 +12,21 @@ const GALLERY_DOT_CLASSES = [
   'right-[2%] bottom-[31%]',
 ] as const;
 
-const FALLBACK_ITEMS = [
-  { image: '/career/1.png', imageAlt: 'PriyoShop team members at work' },
-  { image: '/career/5.png', imageAlt: 'PriyoShop award celebration' },
-  { image: '/career/3.png', imageAlt: 'PriyoShop event performance' },
-  { image: '/career/4.png', imageAlt: 'PriyoShop speaker on stage' },
-  { image: '/career/6.png', imageAlt: 'PriyoShop team collaboration' },
-  { image: '/career/7.png', imageAlt: 'PriyoShop team outing' },
-] satisfies readonly GalleryItem[];
-
-const defaultFallback: GalleryItem = FALLBACK_ITEMS[0]!;
+const DEFAULT_GALLERY_IMAGE = '/career/all.png';
 
 const toGalleryItems = (items: SectionItem[], title: string) => {
-  const gallery = [...items.filter((item) => item.image), ...FALLBACK_ITEMS];
+  const imageSrc = items.find((item) => item.image)?.image ?? DEFAULT_GALLERY_IMAGE;
+  const itemTitle = items.find((item) => 'title' in item && item.title)?.title;
+  const imageAlt = items.find((item) => 'imageAlt' in item && item.imageAlt)?.imageAlt;
 
-  return GALLERY_CARD_CLASSES.map((className, index) => {
-    const fallbackItem = FALLBACK_ITEMS[index] ?? defaultFallback;
-    const item = gallery[index] ?? fallbackItem;
-
-    const imageAlt = 'imageAlt' in item ? item.imageAlt : undefined;
-    const itemTitle = 'title' in item ? item.title : undefined;
-    const imageSrc = 'image' in item ? item.image : undefined;
-
-    return {
+  return [
+    {
       alt: imageAlt ?? itemTitle ?? title,
-      className,
-      src: imageSrc ?? fallbackItem.image,
-    };
-  });
+      className:
+        'col-span-6 row-span-5 sm:col-span-6 sm:row-span-5 lg:col-span-10 lg:row-span-8',
+      src: imageSrc,
+    },
+  ];
 };
 
 export function Career(props: { data: ResolvedSection }) {
@@ -68,23 +42,13 @@ export function Career(props: { data: ResolvedSection }) {
           <div className="absolute bottom-[-10%] right-[-8%] h-72 w-72 rounded-full border-[40px] border-[#d7e7f5] lg:h-[26rem] lg:w-[26rem] lg:border-[56px]" />
           <div className="relative container grid items-center gap-10 lg:grid-cols-[minmax(0,25rem)_minmax(0,1fr)] lg:gap-12">
             <div className="min-w-0 w-full max-w-[550px]">
-              {props.data.heading.eyebrow ? (
-                <span className="inline-flex items-center rounded-full border border-black px-4 py-1 font-body text-ps-sm font-semibold text-ps-ink-700">
-                  {props.data.heading.eyebrow}
-                </span>
-              ) : null}
-
-              <h2
-                className={`mt-6 text-balance font-display text-ps-h3 font-bold leading-[1.2] tracking-tight sm:text-ps-h2 lg:text-ps-h1 ${resolved.titleColorClass}`}
-              >
-                {props.data.heading.title}
-              </h2>
-
-              {props.data.heading.description ? (
-                <p className="mt-5 max-w-lg text-pretty font-body text-ps-body font-medium leading-8 text-ps-ink-600">
-                  {props.data.heading.description}
-                </p>
-              ) : null}
+              <SectionHeading
+                title={props.data.heading.title}
+                description={props.data.heading.description}
+                eyebrow={props.data.heading.eyebrow}
+                align={resolved.align}
+                titleSize="h2"
+              />
 
               {props.data.heading.ctaLabel ? (
                 <Button
@@ -98,18 +62,17 @@ export function Career(props: { data: ResolvedSection }) {
               ) : null}
             </div>
 
-            <div className="relative mx-auto w-full max-w-[500px]">
-              <div className="grid auto-rows-[4.5rem] grid-cols-6 gap-3 sm:auto-rows-[5rem] lg:auto-rows-[4.25rem] lg:grid-cols-10 lg:gap-4">
-                {galleryItems.map((item) => (
-                  <div
-                    key={`${item.src}-${item.className}`}
-                    className={`${item.className} overflow-hidden rounded-ps-md border-4 border-white bg-white shadow-[0_18px_45px_rgba(15,23,42,0.16)] sm:rounded-[1.75rem] sm:border-[7px]`}
-                  >
-                    {/* oxlint-disable-next-line next/no-img-element -- section images are managed in /public and can be overridden by CMS URLs */}
-                    <img src={item.src} alt={item.alt} className="size-full object-cover" />
-                  </div>
-                ))}
-              </div>
+            <div className="relative mx-auto w-full  aspect-[4/3] ">
+              {galleryItems.map((item) => (
+                <div
+                  key={`${item.src}-${item.className}`}
+                  className={`${item.className} `}
+                >
+                  {/* oxlint-disable-next-line next/no-img-element -- section images are managed in /public and can be overridden by CMS URLs */}
+                  <img src={item.src} alt={item.alt} className="size-full object-cover" />
+                </div>
+              ))}
+
 
               {GALLERY_DOT_CLASSES.map((className) => (
                 <span
