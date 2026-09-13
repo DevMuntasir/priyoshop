@@ -1,6 +1,7 @@
 import { AccentedTitle } from '@/components/ui/AccentedTitle';
 import { ClickToPlayVideo } from '@/components/ui/ClickToPlayVideo';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
 import Image from 'next/image';
 
@@ -19,15 +20,27 @@ export function RetailFinanceIntro(props: { data: ResolvedSection }) {
           }
           description={heading.description}
           eyebrow={heading.eyebrow}
-          align='left'
+          align="left"
         />
         <div className="w-full lg:w-1/2">
-          {heading.backgroundImage && <Image src={heading.backgroundImage} width={400} height={400} className="mx-auto h-auto w-full max-w-md object-contain" alt="" />}
+          {heading.backgroundImage && (
+            <Image
+              src={heading.backgroundImage}
+              width={400}
+              height={400}
+              className="mx-auto h-auto w-full max-w-md object-contain"
+              alt=""
+            />
+          )}
         </div>
       </div>
 
       <div className="container mx-auto rounded-ps-xl bg-ps-cream px-4 sm:px-6 lg:px-10">
-        <ClickToPlayVideo videoPath={heading.videoPath ?? '/video/1.mp4'} title={heading.title} />
+        <ClickToPlayVideo
+          videoPath={heading.videoPath ?? APP_VIDEOS.retailFinance.intro.src}
+          poster={heading.backgroundImage || APP_VIDEOS.retailFinance.intro.poster}
+          title={heading.title}
+        />
       </div>
     </section>
   );

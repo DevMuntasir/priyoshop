@@ -1,7 +1,7 @@
 'use client';
-
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useAnimationFrame, useScroll } from 'framer-motion';
+import { APP_VIDEOS } from '@/constants/Videos';
 
 /**
  * RoadScrollHero
@@ -45,8 +45,8 @@ export interface RoadScrollHeroConfig {
 }
 
 const DEFAULT_CONFIG: RoadScrollHeroConfig = {
-  videoSrc: '/video/road-drive.mp4',
-  posterSrc: '/video/road-drive.mp4',
+  videoSrc: APP_VIDEOS.commerce.roadDrive.src,
+  posterSrc: APP_VIDEOS.commerce.roadDrive.poster,
   pinHeightVh: 560,
   pinHeightVhMobile: 420,
   ease: 0.055,
@@ -63,12 +63,12 @@ const DEFAULT_CONFIG: RoadScrollHeroConfig = {
   scrollCueLabel: '',
 };
 
-interface RoadScrollHeroProps {
+export interface RoadScrollHeroProps {
   config?: Partial<RoadScrollHeroConfig>;
 }
 
-export default function RoadScrollHero({ config = {} }: RoadScrollHeroProps) {
-  const cfg: RoadScrollHeroConfig = { ...DEFAULT_CONFIG, ...config };
+export function RoadScrollHero(props: RoadScrollHeroProps) {
+  const cfg: RoadScrollHeroConfig = { ...DEFAULT_CONFIG, ...props.config };
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);

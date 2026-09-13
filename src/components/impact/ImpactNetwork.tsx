@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { ClickToPlayVideo } from '@/components/ui/ClickToPlayVideo';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { AccentedTitle } from '@/components/ui/AccentedTitle';
+import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
 import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
 
@@ -11,8 +12,8 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
   const resolved = resolveSectionStyle(style);
 
   const mainImage = '/impact/green.png';
-  const videoPoster = '/impact/green.png';
-  const videoPath = heading.videoPath || '/video/1.mp4';
+  const videoPoster = heading.backgroundImage || APP_VIDEOS.impact.network.poster;
+  const videoPath = heading.videoPath || APP_VIDEOS.impact.network.src;
 
   const cardTitle =
     "~Building a Greener Tomorrow: Innovation Through PriyoShop's Green Hub.~";
@@ -40,7 +41,6 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
         <div className="mb-10 lg:mb-14">
           <SectionHeading
             eyebrow={heading.eyebrow}
-
             title={
               <AccentedTitle
                 text={heading.title}
@@ -52,7 +52,6 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
             titleSize="h2"
             descriptionFontClass="font-normal"
             titleColor="font-semibold"
-
           />
         </div>
       )}
@@ -65,25 +64,22 @@ export function ImpactNetwork(props: { data: ResolvedSection }) {
           width={680}
           height={200}
           className="h-auto max-h-[500px] w-full rounded-ps-md object-cover"
-
         />
-
 
         {/* Top-Right: Heading & First Point */}
         <div className="flex min-w-0 max-w-[400px] flex-col justify-center gap-4 py-2 lg:gap-6 lg:py-8 lg:pl-10">
           <SectionHeading
-            titleSize='h5'
-            descriptionFontClass='!text-ps-body'
-            align='left'
+            titleSize="h5"
+            descriptionFontClass="!text-ps-body"
+            align="left"
             title={
-
               <AccentedTitle
                 text={cardTitle}
                 gradientClass="bg-linear-to-r from-ps-green to-green-800 bg-clip-text text-transparent"
               />
             }
           />
-          <p className=' text-ps-md'>
+          <p className="text-ps-md">
             <strong className="font-bold text-ps-black">{item0Title} </strong>
             {item0Body}
           </p>

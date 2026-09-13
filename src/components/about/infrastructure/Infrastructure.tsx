@@ -1,28 +1,28 @@
-import { ClickToPlayVideo } from "@/components/ui/ClickToPlayVideo";
-import { Reveal } from "@/components/ui/Reveal";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { ClickToPlayVideo } from '@/components/ui/ClickToPlayVideo';
+import { Reveal } from '@/components/ui/Reveal';
+import { SectionHeading } from '@/components/ui/SectionHeading';
+import { APP_VIDEOS } from '@/constants/Videos';
 
-export default function Infrastructure() {
-
+export function Infrastructure() {
   return (
     <section className="min-h-[80svh] rounded-t-ps-xl bg-ps-black px-4 py-14 sm:rounded-t-ps-hero sm:px-6 sm:py-20 lg:px-8">
       <SectionHeading
         eyebrow="Business Model"
-        title="PriyoShop Infrastructuree"
+        title="PriyoShop Infrastructure"
         titleSize="h2"
         titleColor="text-ps-white font-extrabold font-desktop"
         description="Platform and Technology-Based"
         eyebrowMode="light"
-        descriptionColor="text-ps-white-600 "
-
+        descriptionColor="text-ps-white-600"
       />
       <Reveal direction="scale" delay={0.1}>
         <ClickToPlayVideo
-          videoPath={'/videos/infrastructure.mp4'}
-          title="YouTube video player"
+          videoPath={APP_VIDEOS.about.infrastructure.src}
+          poster={APP_VIDEOS.about.infrastructure.poster}
+          title="PriyoShop Infrastructure Video"
           className="my-10 h-72 w-full sm:my-14 sm:h-96 lg:my-20 lg:h-125"
         />
       </Reveal>
     </section>
-  )
+  );
 }

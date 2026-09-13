@@ -4,7 +4,10 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { IconButton } from '@/components/ui/IconButton';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
+import type { ParsedVideo } from '@/utils/Video';
+import { parseVideoSource } from '@/utils/Video';
 
 /** YouTube-style red play button overlay for video thumbnails. */
 function YouTubePlayButton() {
@@ -12,12 +15,51 @@ function YouTubePlayButton() {
     <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-lg">
       <svg width="68" height="48" viewBox="0 0 68 48" aria-hidden="true">
         <path
-          d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"
+          d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"
           fill="#FF0000"
         />
         <path d="M45 24L27 14v20" fill="white" />
       </svg>
     </span>
+  );
+}
+
+function WomenActiveVideo(props: {
+  parsed: ParsedVideo;
+  title: string;
+  poster?: string;
+  index: number;
+  videoRefs: React.RefObject<Map<number, HTMLVideoElement>>;
+}) {
+  if (props.parsed.type === 'youtube') {
+    return (
+      <iframe
+        src={`${props.parsed.embedUrl}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+        title={props.title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        className="aspect-video h-auto w-full object-cover border-0"
+      />
+    );
+  }
+
+  return (
+    <video
+      ref={(el) => {
+        if (el) {
+          props.videoRefs.current.set(props.index, el);
+        }
+      }}
+      src={props.parsed.src}
+      poster={props.poster}
+      aria-label={props.title}
+      autoPlay
+      controls
+      playsInline
+      className="aspect-video h-auto w-full object-cover"
+    >
+      <track kind="captions" />
+    </video>
   );
 }
 
@@ -59,7 +101,6 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
 
     handleScroll();
     track.addEventListener('scroll', handleScroll, { passive: true });
-    // eslint-disable-next-line @typescript-eslint/consistent-return
     return () => track.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -86,7 +127,7 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
     });
   };
 
-  const handlePlay = (index: number) => {
+  const handlePlay = (index: number, isDirect: boolean) => {
     // Pause any currently playing video
     if (playingIndex !== null) {
       const prev = videoRefs.current.get(playingIndex);
@@ -95,13 +136,15 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
       }
     }
     setPlayingIndex(index);
-    // Allow the video element to mount, then play
-    setTimeout(() => {
-      const video = videoRefs.current.get(index);
-      if (video) {
-        void video.play();
-      }
-    }, 0);
+    if (isDirect) {
+      // Allow the video element to mount, then play
+      setTimeout(() => {
+        const video = videoRefs.current.get(index);
+        if (video) {
+          void video.play();
+        }
+      }, 0);
+    }
   };
 
   return (
@@ -174,39 +217,37 @@ export function ImpactWomen(props: { data: ResolvedSection }) {
           {items.map((item, index) => {
             const isActive = activeIndex === index;
             const isPlaying = playingIndex === index;
-            const videoPath = item.videoPath ?? '';
-            const poster = item.image;
+            const videoPath = item.videoPath ?? '/video/1.mp4';
+            const parsed = parseVideoSource(videoPath);
+            const poster =
+              item.image ||
+              (parsed.type === 'youtube'
+                ? parsed.thumbnailUrl
+                : APP_VIDEOS.impact.womenStories[index]?.poster || APP_VIDEOS.defaultPoster);
 
             return (
               <div
                 key={`${item.title}-${index}`}
-                className={`relative w-[calc(100vw-2rem)] max-w-4xl shrink-0 snap-center overflow-hidden rounded-2xl transition-all duration-500 sm:w-[55vw] ${isActive
+                className={`relative w-[calc(100vw-2rem)] max-w-4xl shrink-0 snap-center overflow-hidden rounded-2xl transition-all duration-500 sm:w-[55vw] ${
+                  isActive
                     ? 'scale-100 opacity-100'
                     : 'scale-[0.88] opacity-40 blur-[2px]'
-                  }`}
+                }`}
               >
                 {isPlaying ? (
-                  <video
-                    ref={(el) => {
-                      if (el) {
-                        videoRefs.current.set(index, el);
-                      }
-                    }}
-                    src={videoPath}
+                  <WomenActiveVideo
+                    parsed={parsed}
+                    title={item.title ?? ''}
                     poster={poster}
-                    aria-label={item.title ?? ''}
-                    autoPlay
-                    controls
-                    className="aspect-video h-auto w-full object-cover"
-                  >
-                    <track kind="captions" />
-                  </video>
+                    index={index}
+                    videoRefs={videoRefs}
+                  />
                 ) : (
                   <button
                     type="button"
                     onClick={() => {
                       if (isActive) {
-                        handlePlay(index);
+                        handlePlay(index, parsed.type === 'direct');
                       } else {
                         scrollToIndex(index);
                       }

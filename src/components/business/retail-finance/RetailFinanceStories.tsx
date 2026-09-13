@@ -4,7 +4,10 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { IconButton } from '@/components/ui/IconButton';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
+import type { ParsedVideo } from '@/utils/Video';
+import { parseVideoSource } from '@/utils/Video';
 
 function PlayButton() {
   return (
@@ -30,6 +33,45 @@ function ArrowIcon(props: { direction: 'left' | 'right' }) {
         d={props.direction === 'left' ? 'M15 19 8 12l7-7' : 'm9 5 7 7-7 7'}
       />
     </svg>
+  );
+}
+
+function StoryVideo(props: {
+  parsed: ParsedVideo;
+  title: string;
+  poster?: string;
+  index: number;
+  videoRefs: React.RefObject<Map<number, HTMLVideoElement>>;
+}) {
+  if (props.parsed.type === 'youtube') {
+    return (
+      <iframe
+        src={`${props.parsed.embedUrl}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+        title={props.title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        className="size-full border-0 object-cover"
+      />
+    );
+  }
+
+  return (
+    <video
+      ref={(video) => {
+        if (video) {
+          props.videoRefs.current.set(props.index, video);
+        }
+      }}
+      src={props.parsed.src}
+      poster={props.poster}
+      aria-label={props.title}
+      autoPlay
+      controls
+      playsInline
+      className="size-full object-cover"
+    >
+      <track kind="captions" />
+    </video>
   );
 }
 
@@ -165,7 +207,13 @@ export function RetailFinanceStories(props: { data: ResolvedSection }) {
           const isActive = activeIndex === index;
           const isPlaying = playingIndex === index;
           const title = item.title ?? heading.title;
-          const videoPath = item.videoPath ?? '';
+          const videoPath = item.videoPath ?? '/video/1.mp4';
+          const parsed = parseVideoSource(videoPath);
+          const poster =
+            item.image ||
+            (parsed.type === 'youtube'
+              ? parsed.thumbnailUrl
+              : APP_VIDEOS.retailFinance.stories[index]?.poster || APP_VIDEOS.defaultPoster);
 
           return (
             <article
@@ -174,22 +222,13 @@ export function RetailFinanceStories(props: { data: ResolvedSection }) {
               aria-label={title}
             >
               {isPlaying ? (
-                <video
-                  ref={(video) => {
-                    if (video) {
-                      videoRefs.current.set(index, video);
-                    }
-                  }}
-                  src={videoPath}
-                  poster={item.image}
-                  aria-label={title}
-                  autoPlay
-                  controls
-                  playsInline
-                  className="size-full object-cover"
-                >
-                  <track kind="captions" />
-                </video>
+                <StoryVideo
+                  parsed={parsed}
+                  title={title}
+                  poster={poster}
+                  index={index}
+                  videoRefs={videoRefs}
+                />
               ) : (
                 <button
                   type="button"
@@ -203,25 +242,16 @@ export function RetailFinanceStories(props: { data: ResolvedSection }) {
                   aria-label={`Play video: ${title}`}
                   className="group relative block size-full cursor-pointer border-0 bg-ps-grey-100 p-0"
                 >
-                  {item.image ? (
+                  {poster ? (
                     <Image
-                      src={item.image}
+                      src={poster}
                       alt=""
                       fill
                       sizes="(max-width: 639px) 78vw, (max-width: 1023px) 68vw, 58vw"
                       className="object-cover"
                     />
                   ) : (
-                    <video
-                      src={videoPath}
-                      muted
-                      playsInline
-                      preload="metadata"
-                      aria-hidden="true"
-                      className="size-full object-cover"
-                    >
-                      <track kind="captions" />
-                    </video>
+                    <div className="size-full bg-ps-grey-200" />
                   )}
                   <span className="absolute inset-0 bg-black/15 transition-colors group-hover:bg-black/25" />
                   <PlayButton />

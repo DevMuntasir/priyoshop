@@ -1,4 +1,5 @@
 import { ClickToPlayVideo } from '@/components/ui/ClickToPlayVideo';
+import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
 
 export function CommerceRetail(props: { data: ResolvedSection }) {
@@ -9,7 +10,8 @@ export function CommerceRetail(props: { data: ResolvedSection }) {
       <div className="container mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-ps-lg bg-gradient-to-b from-transparent to-white/70 p-2 sm:p-5">
           <ClickToPlayVideo
-            videoPath={heading.videoPath ?? '/video/1.mp4'}
+            videoPath={heading.videoPath ?? APP_VIDEOS.commerce.retail.src}
+            poster={heading.backgroundImage || APP_VIDEOS.commerce.retail.poster}
             title={heading.title}
             className="w-full"
           />

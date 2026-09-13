@@ -243,7 +243,7 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
   video: [
     { field: 'title', label: 'Title' },
     { field: 'videoPath', label: 'Video path' },
-    { field: 'image', label: 'Poster path' },
+    { field: 'image', label: 'Thumbnail / Poster image' },
   ],
   product: [
     { field: 'title', label: 'Name' },
@@ -1159,7 +1159,7 @@ function ContentPanelBody(props: {
           ) : null}
           {hints.sectionCta ? cta('CTA', 'ctaLabel', 'ctaHref') : null}
           {hints.secondaryCta ? cta('Secondary CTA', 'ctaSecondaryLabel', 'ctaSecondaryHref') : null}
-          {hints.backgroundImage ? (
+          {hints.backgroundImage && !hints.video ? (
             <MediaInput
               label="Background image"
               value={heading.backgroundImage ?? ''}
@@ -1183,6 +1183,15 @@ function ContentPanelBody(props: {
                 onChange={(value) => {
                   props.onHeading('videoPath', value);
                 }}
+                placeholder="Choose or enter video URL / path"
+              />
+              <MediaInput
+                label="Video thumbnail / Poster image"
+                value={heading.backgroundImage ?? ''}
+                onChange={(value) => {
+                  props.onHeading('backgroundImage', value);
+                }}
+                placeholder="Choose or upload custom thumbnail image"
               />
             </>
           ) : null}

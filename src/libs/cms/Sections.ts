@@ -2,6 +2,7 @@ import { AWARDS } from '@/components/sections/awards/data';
 import { BACKERS } from '@/components/sections/backers/data';
 import { BRANDS } from '@/components/sections/brands/data';
 import { ECOSYSTEMS } from '@/components/sections/ecosystems/data';
+import { APP_VIDEOS } from '@/constants/Videos';
 import type { PageKey } from './Pages';
 import type { ResponsiveCardStyle, ResponsiveSectionStyle } from './StyleTokens';
 import { makeDefaultStyle, normalizeCardStyle } from './StyleTokens';
@@ -496,7 +497,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         eyebrow: 'One Mobile App',
         title: 'One App for Smarter Retail Growth',
         description: 'Manage sourcing, financing, and business growth through a single digital platform.',
-        backgroundImage: '/app-banner/bg.png'
+        backgroundImage: '/app-banner/bg.png',
       },
       items: [{
         image: '/app-banner/play.png',
@@ -505,7 +506,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
       }],
 
     },
-    editor: { headingOnly: true },
+    editor: { headingOnly: true, backgroundImage: true },
   },
   hero: {
     key: 'hero',
@@ -645,7 +646,9 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: 'Last mile distribution in Bangladesh',
         description:
           'Revolutionizing B2B distribution by integrating advanced technology solutions to streamline operations, enhance supply chain visibility, and improve customer engagement.',
-        videoPath: '/video/1.mp4',
+        videoId: APP_VIDEOS.distribution.showcaseYouTubeId,
+        videoPath: APP_VIDEOS.distribution.b2bPlatform.src,
+        backgroundImage: APP_VIDEOS.distribution.b2bPlatform.poster,
       },
       items: [],
     },
@@ -662,7 +665,8 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
       heading: {
         title: 'One B2B Platform for All Your Retail Business Needs',
         description: 'One B2B Platform for All Your Retail Business Needs',
-        videoPath: '/video/1.mp4',
+        videoPath: APP_VIDEOS.distribution.b2bPlatform.src,
+        backgroundImage: APP_VIDEOS.distribution.b2bPlatform.poster,
       },
       items: [],
     },
@@ -684,6 +688,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         description:
           'PriyoShop is creating a smarter infrastructure layer for brands, retailers, and MSME growth.',
         ctaLabel: 'Install App',
+        backgroundImage: '/commerce/bg.jpg',
       },
       items: [
         { value: '296', name: 'Brands' },
@@ -692,11 +697,11 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         // { value: '296', name: 'Brands' },
       ],
     },
-    editor: { sectionCta: true },
+    editor: { sectionCta: true, backgroundImage: true },
   },
   commerceBanner: {
-    key: 'commerceHero',
-    label: 'Hero',
+    key: 'commerceBanner',
+    label: 'Commerce banner',
     page: 'commerce',
     itemKind: 'metric',
     defaultOrder: 10,
@@ -710,7 +715,8 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         description:
           'PriyoShop helps retailers restock faster, access credit, and manage business needs easily. ',
         ctaLabel: 'Install App',
-        ctaHref: '#'
+        ctaHref: '#',
+        backgroundImage: '/app-banner/bg.png',
       },
       items: [
         { value: '296', name: 'Brands' },
@@ -719,7 +725,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         // { value: '296', name: 'Brands' },
       ],
     },
-    editor: { sectionCta: true },
+    editor: { sectionCta: true, backgroundImage: true },
   },
   commerceRetail: {
     key: 'commerceRetail',
@@ -734,7 +740,8 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: 'Delivering to Retailers Across Bangladesh',
         description:
           'PriyoShop supplies FMCG products directly to retailers’ doorsteps, making it easier for them to restock branded items without closing their shops. With PriyoShop, retailers can order what they need without leaving their stores.',
-        videoPath: '/video/1.mp4',
+        videoPath: APP_VIDEOS.commerce.retail.src,
+        backgroundImage: APP_VIDEOS.commerce.retail.poster,
       },
       items: [],
     },
@@ -859,6 +866,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         description:
           'We help brands reach more businesses by ensuring smooth delivery across regions. From marketing to logistics, we support your growth journey.',
         ctaLabel: 'Install App',
+        backgroundImage: '/distribution/bg.png',
       },
       items: [
         { value: '42', name: 'Hubs' },
@@ -867,7 +875,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         { value: '200K+', name: 'Retailers' },
       ],
     },
-    editor: { sectionCta: true },
+    editor: { sectionCta: true, backgroundImage: true },
   },
   distributionCoverage: {
     key: 'distributionCoverage',
@@ -882,12 +890,12 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: '~What is~ PriyoShop Distribution?',
         description:
           'PriyoShop Distribution connects brands directly with neighborhood retailers through a technology-driven hub-and-route network, improving product availability, delivery speed, market reach and retail execution across Bangladesh.',
-        videoPath: '/video/1.mp4',
-        backgroundImage: '/distribution/about.png'
+        videoPath: APP_VIDEOS.distribution.coverage.src,
+        backgroundImage: APP_VIDEOS.distribution.coverage.poster,
       },
       items: [],
     },
-    editor: { headingOnly: true, video: true },
+    editor: { headingOnly: true, video: true, backgroundImage: true },
   },
   distributionHubModel: {
     key: 'distributionHubModel',
@@ -1024,6 +1032,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         { title: 'Seamless integration with partners' },
       ],
     },
+    editor: { backgroundImage: true },
   },
   distributionBrandGrowth: {
     key: 'distributionBrandGrowth',
@@ -1037,7 +1046,8 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: 'Together with Brands, Growing Retail',
         description:
           'PriyoShop’s distribution infrastructure helps brands expand market reach, improve product availability, reduce delivery inefficiencies and serve retailers faster across Bangladesh.',
-        videoPath: '/video/1.mp4',
+        videoPath: APP_VIDEOS.distribution.brandGrowth.src,
+        backgroundImage: APP_VIDEOS.distribution.brandGrowth.poster,
       },
       items: [],
     },
@@ -1122,7 +1132,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         description:
           'Embedded Credit lets businesses offer seamless financing options directly within their platforms, boosting sales and customer satisfaction effortlessly.',
         ctaLabel: 'Install App',
-        backgroundImage: '/retail/bg.png'
+        backgroundImage: '/retail/bg.jpg'
       },
 
       items: [
@@ -1131,7 +1141,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         { value: '15+ Cr', name: 'Credit Enrolled' },
       ],
     },
-    editor: { sectionCta: true },
+    editor: { sectionCta: true, backgroundImage: true },
   },
   retailFinanceIntro: {
     key: 'retailFinanceIntro',
@@ -1146,12 +1156,12 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: 'What is ~Embedded Credit?~',
         description:
           'Embedded Finance connects retail ordering, retailer data, credit scoring and financial partners into one simple system. This allows retailers to get faster access to credit, while brands benefit from better product availability, higher order frequency and stronger retail growth.',
-        videoPath: '/video/1.mp4',
-        backgroundImage: '/retail/about.png'
+        videoPath: APP_VIDEOS.retailFinance.intro.src,
+        backgroundImage: APP_VIDEOS.retailFinance.intro.poster,
       },
       items: [],
     },
-    editor: { headingOnly: true, video: true },
+    editor: { headingOnly: true, video: true, backgroundImage: true },
   },
   retailFinancePartners: {
     key: 'retailFinancePartners',
@@ -1256,9 +1266,21 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
           'Thousands of retail businesses in Bangladesh use the PriyoShop app to simplify their wholesale orders.',
       },
       items: [
-        { title: 'How PriyoShop grew my store', videoPath: '/video/1.mp4' },
-        { title: 'Restocking without the hassle', videoPath: '/video/1.mp4' },
-        { title: 'Faster delivery, happier customers', videoPath: '/video/1.mp4' },
+        {
+          title: APP_VIDEOS.retailFinance.stories[0]?.title ?? 'How PriyoShop grew my store',
+          videoPath: APP_VIDEOS.retailFinance.stories[0]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.retailFinance.stories[0]?.poster,
+        },
+        {
+          title: APP_VIDEOS.retailFinance.stories[1]?.title ?? 'Restocking without the hassle',
+          videoPath: APP_VIDEOS.retailFinance.stories[1]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.retailFinance.stories[1]?.poster,
+        },
+        {
+          title: APP_VIDEOS.retailFinance.stories[2]?.title ?? 'Faster delivery, happier customers',
+          videoPath: APP_VIDEOS.retailFinance.stories[2]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.retailFinance.stories[2]?.poster,
+        },
       ],
     },
   },
@@ -1314,10 +1336,11 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: '*Quality that builds trust*, value that grows your business',
         description:
           'Premium quality products crafted by PriyoShop to help your retail business thrive.',
+        backgroundImage: '/dipty/bg.png',
       },
       items: [],
     },
-    editor: { headingOnly: true },
+    editor: { headingOnly: true, backgroundImage: true },
   },
   diptyIntro: {
     key: 'diptyIntro',
@@ -1332,7 +1355,8 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: 'What is *Dipty*',
         description:
           'Dipty is a private-label brand of PriyoShop, designed for the everyday needs of Bangladesh’s neighborhood retailers and their customers. By offering quality staples through PriyoShop’s retail infrastructure, Dipty helps retailers access dependable products, serve customers better, and grow their business with confidence.',
-        videoPath: '/video/1.mp4',
+        videoPath: APP_VIDEOS.dipty.intro.src,
+        backgroundImage: APP_VIDEOS.dipty.intro.poster,
       },
       items: [],
     },
@@ -1608,8 +1632,8 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         eyebrow: 'Our Distribution Structure',
         title: 'Distribution Structure',
         description: 'One B2B Platform for All Your Retail Business Needs',
-        videoPath: '/video/1.mp4',
-        backgroundImage: '/opportunities/city.png',
+        videoPath: APP_VIDEOS.opportunity.distribution.src,
+        backgroundImage: APP_VIDEOS.opportunity.distribution.poster,
       },
       items: [],
     },
@@ -1756,13 +1780,14 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: 'Driving Sustainable Retail *Growth Across Bangladesh*',
         description:
           'From electric vehicles to sustainable hubs, PriyoShop is pioneering eco-friendly logistics in Bangladesh to meet global Sustainable Development Goals.',
+        backgroundImage: '/impact/bg.png',
       },
       items: [{ value: '42', name: 'Hubs' },
       { value: '16', name: 'Districts' },
       { value: '1458', name: 'Routes' },
       { value: '200K+', name: 'Retailers' },],
     },
-    editor: { headingOnly: true },
+    editor: { headingOnly: true, backgroundImage: true },
   },
   impactNetwork: {
     key: 'impactNetwork',
@@ -1792,10 +1817,9 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     defaultContent: {
       heading: {
         title: "Sustainable Infrastructure, Inclusive Impact",
-        videoPath: '/video/1.mp4',
+        videoPath: APP_VIDEOS.impact.greenHub.src,
+        backgroundImage: APP_VIDEOS.impact.greenHub.poster,
         description: 'PriyoShop is building a cleaner and more efficient retail network by using greener operations, smarter delivery, and better support for retailers across Bangladesh.',
-        backgroundImage: '/ecosystem/ecosystem-a.png',
-
       },
       items: [
         {
@@ -1902,11 +1926,31 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
           "The Women's Impact section celebrates PriyoShop's dedication to empowering women through inclusive opportunities, supporting female entrepreneurs, and fostering gender equality in every aspect of our business.",
       },
       items: [
-        { title: 'Empowering women entrepreneurs', videoPath: '/video/1.mp4' },
-        { title: 'Female retailers growing with PriyoShop', videoPath: '/video/1.mp4' },
-        { title: 'Gender equality across our business', videoPath: '/video/1.mp4' },
-        { title: 'Gender equality across our business', videoPath: '/video/1.mp4' },
-        { title: 'Gender equality across our business', videoPath: '/video/1.mp4' },
+        {
+          title: APP_VIDEOS.impact.womenStories[0]?.title ?? 'Empowering women entrepreneurs',
+          videoPath: APP_VIDEOS.impact.womenStories[0]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.impact.womenStories[0]?.poster,
+        },
+        {
+          title: APP_VIDEOS.impact.womenStories[1]?.title ?? 'Female retailers growing with PriyoShop',
+          videoPath: APP_VIDEOS.impact.womenStories[1]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.impact.womenStories[1]?.poster,
+        },
+        {
+          title: APP_VIDEOS.impact.womenStories[2]?.title ?? 'Gender equality across our business',
+          videoPath: APP_VIDEOS.impact.womenStories[2]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.impact.womenStories[2]?.poster,
+        },
+        {
+          title: APP_VIDEOS.impact.womenStories[3]?.title ?? 'Community leadership and MSME growth',
+          videoPath: APP_VIDEOS.impact.womenStories[3]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.impact.womenStories[3]?.poster,
+        },
+        {
+          title: APP_VIDEOS.impact.womenStories[4]?.title ?? 'Financial independence for retailers',
+          videoPath: APP_VIDEOS.impact.womenStories[4]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.impact.womenStories[4]?.poster,
+        },
       ],
     },
   },

@@ -1,12 +1,17 @@
 'use client';
 
+import Image from 'next/image';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
+import { APP_VIDEOS } from '@/constants/Videos';
+import { extractYouTubeId } from '@/utils/Video';
 import { RollingNumber } from './RollingNumber';
 
 export type ScrollAutoplayVideoProps = {
-  /** YouTube embed id, e.g. `0B2MieWr4rE`. */
+  /** YouTube embed id or full YouTube URL. */
   videoId: string;
+  /** Optional poster thumbnail image. */
+  poster?: string;
   title: string;
   className?: string;
 };
@@ -47,10 +52,15 @@ function ProgressiveBlur() {
   );
 }
 
-// Embeds a YouTube video that autoplays once it scrolls into view.
+// Embeds a YouTube video that autoplays once it scrolls into view with an initial poster thumbnail preview.
 export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef, { once: true, amount: 0.5 });
+  const rawId = extractYouTubeId(props.videoId) || props.videoId || 'dQw4w9WgXcQ';
+
+  const poster =
+    props.poster ||
+    (rawId ? `https://img.youtube.com/vi/${rawId}/hqdefault.jpg` : APP_VIDEOS.defaultPoster);
 
   const params = new URLSearchParams({
     autoplay: inView ? '1' : '0',
@@ -63,16 +73,25 @@ export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
     disablekb: '1', // disable keyboard controls
     playsinline: '1',
     loop: '1',
-    playlist: props.videoId, // required for loop to work
+    playlist: rawId, // required for loop to work
   });
-  const src = `https://www.youtube-nocookie.com/embed/${props.videoId}?${params.toString()}`;
+  const src = `https://www.youtube-nocookie.com/embed/${rawId}?${params.toString()}`;
   const STATS = [
     { value: 120, label: 'Total Operational Hub' },
     { value: 48, label: 'Total District Coverage' },
     { value: 2500, label: 'Total People Employed' },
   ];
   return (
-    <div ref={containerRef} className={`relative overflow-hidden ${props.className ?? ''}`}>
+    <div ref={containerRef} className={`relative overflow-hidden bg-ps-grey-900 ${props.className ?? ''}`}>
+      {poster && (
+        <Image
+          src={poster}
+          alt={props.title}
+          fill
+          sizes="(max-width: 1024px) 100vw, 1200px"
+          className="absolute inset-0 object-cover"
+        />
+      )}
       {inView ? (
         // Oversize the iframe and clip top/bottom so YouTube's title bar and
         // branding overlay are cropped out of view, leaving only the video.

@@ -1,7 +1,11 @@
 'use client';
 
+import Image from 'next/image';
 import { useRef, useState } from 'react';
+import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
+import type { ParsedVideo } from '@/utils/Video';
+import { parseVideoSource } from '@/utils/Video';
 
 function VideoPlayButton() {
   return (
@@ -29,10 +33,50 @@ function VideoPlayButton() {
   );
 }
 
+function PlayingVideo(props: {
+  parsed: ParsedVideo;
+  title: string;
+  poster?: string;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
+}) {
+  if (props.parsed.type === 'youtube') {
+    return (
+      <iframe
+        src={`${props.parsed.embedUrl}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+        title={props.title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        className="size-full border-0 object-cover"
+      />
+    );
+  }
+
+  return (
+    <video
+      ref={props.videoRef}
+      src={props.parsed.src}
+      poster={props.poster}
+      aria-label={props.title}
+      controls
+      autoPlay
+      playsInline
+      preload="metadata"
+      className="size-full object-cover"
+    >
+      <track kind="captions" />
+    </video>
+  );
+}
+
 export function DistributionBrandGrowth(props: { data: ResolvedSection }) {
   const data = props.data;
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const parsed = parseVideoSource(data.heading.videoPath ?? APP_VIDEOS.distribution.brandGrowth.src);
+  const poster =
+    data.heading.backgroundImage ||
+    (parsed.type === 'youtube' ? parsed.thumbnailUrl : APP_VIDEOS.distribution.brandGrowth.poster);
 
   return (
     <section className="bg-white py-16 sm:py-20 lg:py-24">
@@ -48,31 +92,39 @@ export function DistributionBrandGrowth(props: { data: ResolvedSection }) {
           )}
         </div>
 
-        <div className="relative mt-10 aspect-video overflow-hidden rounded-ps-md bg-[#1b1b1b] sm:mt-12 lg:mt-14 lg:aspect-[1.94/1]">
-          <video
-            ref={videoRef}
-            src={data.heading.videoPath ?? '/video/1.mp4'}
-            poster={data.heading.backgroundImage}
-            aria-label={data.heading.title}
-            controls={isPlaying}
-            playsInline
-            preload="metadata"
-            className={`size-full object-cover transition-opacity duration-300 ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
-          >
-            <track kind="captions" />
-          </video>
-
-          {!isPlaying && (
+        <div className="relative mt-10 aspect-video overflow-hidden rounded-ps-md bg-ps-grey-900 shadow-md sm:mt-12 lg:mt-14 lg:aspect-[1.94/1]">
+          {isPlaying ? (
+            <PlayingVideo
+              parsed={parsed}
+              title={data.heading.title}
+              poster={poster}
+              videoRef={videoRef}
+            />
+          ) : (
             <button
               type="button"
               aria-label={`Play video: ${data.heading.title}`}
-              className="group absolute inset-0 flex size-full cursor-pointer items-center justify-center bg-[#1b1b1b]"
+              className="group absolute inset-0 flex size-full cursor-pointer items-center justify-center overflow-hidden bg-ps-grey-900"
               onClick={() => {
                 setIsPlaying(true);
-                void videoRef.current?.play();
+                if (parsed.type === 'direct') {
+                  setTimeout(() => {
+                    void videoRef.current?.play();
+                  }, 0);
+                }
               }}
             >
-              <span className="transition-transform duration-300 group-hover:scale-105">
+              {poster && (
+                <Image
+                  src={poster}
+                  alt={data.heading.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 1100px"
+                  className="absolute inset-0 object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              )}
+              <span className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-black/10 transition-colors group-hover:bg-black/40" />
+              <span className="relative z-10 transition-transform duration-300 group-hover:scale-105">
                 <VideoPlayButton />
               </span>
             </button>

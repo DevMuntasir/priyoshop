@@ -1,15 +1,15 @@
-import { ClickToPlayVideo } from "@/components/ui/ClickToPlayVideo";
-import { Reveal } from "@/components/ui/Reveal";
+import { ClickToPlayVideo } from '@/components/ui/ClickToPlayVideo';
+import { Reveal } from '@/components/ui/Reveal';
+import { APP_VIDEOS } from '@/constants/Videos';
 
 export function AboutVideo() {
-  return (<>
+  return (
     <Reveal direction="scale" delay={0.1}>
       <ClickToPlayVideo
-        videoPath="/video/1.mp4"
-        title="YouTube video player"
-
+        videoPath={APP_VIDEOS.about.story.src}
+        poster={APP_VIDEOS.about.story.poster}
+        title="About PriyoShop Video"
       />
     </Reveal>
-
-  </>)
+  );
 }

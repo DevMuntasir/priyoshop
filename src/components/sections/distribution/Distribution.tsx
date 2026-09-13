@@ -4,6 +4,7 @@ import { Reveal } from '@/components/ui/Reveal';
 import { ScrollAutoplayVideo } from '@/components/ui/ScrollAutoplayVideo';
 import type { ScrollStep } from '@/components/ui/ScrollSteps';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
 
 // The "Retail growth" step carousel on the black distribution panel.
@@ -56,22 +57,20 @@ export function DistributionVideoA(props: { data: ResolvedSection }) {
             align="center"
           />
         </Reveal>
-        {heading.videoId ? (
-          <Reveal direction="scale" delay={0.1}>
-            <ScrollAutoplayVideo
-              videoId={heading.videoId}
-              title="YouTube video player"
-              className="mx-auto my-10 h-72 max-w-full overflow-hidden rounded-ps-xl sm:my-14 sm:h-96 lg:my-20 lg:h-125"
-            />
-          </Reveal>
-        ) : null}
-
+        <Reveal direction="scale" delay={0.1}>
+          <ScrollAutoplayVideo
+            videoId={heading.videoId || heading.videoPath || APP_VIDEOS.distribution.showcaseYouTubeId}
+            poster={heading.backgroundImage || APP_VIDEOS.distribution.b2bPlatform.poster}
+            title={heading.title || 'YouTube video player'}
+            className="mx-auto my-10 h-72 max-w-full overflow-hidden rounded-ps-xl sm:my-14 sm:h-96 lg:my-20 lg:h-125"
+          />
+        </Reveal>
       </div>
     </div>
   );
 }
 
-// A heading + click-to-play local video, closing the black panel.
+// A heading + click-to-play local/cloud video, closing the black panel.
 export function DistributionVideoB(props: { data: ResolvedSection }) {
   const { heading } = props.data;
 
@@ -89,15 +88,14 @@ export function DistributionVideoB(props: { data: ResolvedSection }) {
             align="center"
           />
         </Reveal>
-        {heading.videoPath ? (
-          <Reveal direction="scale" delay={0.1}>
-            <ClickToPlayVideo
-              videoPath={heading.videoPath}
-              title="YouTube video player"
-              className="my-10 h-72 w-full sm:my-14 sm:h-96 lg:my-20 lg:h-125"
-            />
-          </Reveal>
-        ) : null}
+        <Reveal direction="scale" delay={0.1}>
+          <ClickToPlayVideo
+            videoPath={heading.videoPath ?? APP_VIDEOS.distribution.b2bPlatform.src}
+            poster={heading.backgroundImage || APP_VIDEOS.distribution.b2bPlatform.poster}
+            title={heading.title || 'PriyoShop B2B Platform'}
+            className="my-10 h-72 w-full sm:my-14 sm:h-96 lg:my-20 lg:h-125"
+          />
+        </Reveal>
       </div>
     </div>
   );
