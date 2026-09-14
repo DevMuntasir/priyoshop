@@ -30,11 +30,11 @@ function LeadFeaturedCard(props: {
           />
         )}
       </div>
-      <div className="flex min-w-0 flex-col justify-between gap-6 bg-ps-black p-5 text-white sm:p-8">
+      <div className="flex min-w-0 flex-col gap-4 bg-ps-black p-5 text-white sm:p-8">
         <span className="font-body text-ps-xs font-semibold text-white/70">
           {formatPostDate(props.post.publishedAt, props.locale)}
         </span>
-        <div className="space-y-6">
+        <div className="space-y-3">
           {props.post.publication && (
             <div className="inline-flex w-fit rounded-ps-sm bg-white px-3 py-2">
               {/* oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns */}
@@ -45,10 +45,10 @@ function LeadFeaturedCard(props: {
               />
             </div>
           )}
-          <h2 className="m-0 max-w-sm font-display text-ps-h6 leading-snug font-bold wrap-break-word text-white sm:text-ps-h5">
+          <h2 className="m-0 max-w-sm font-display text-ps-h6 leading-snug font-bold wrap-break-word text-white  line-clamp-5">
             {props.post.title}
           </h2>
-          <span className="inline-flex w-fit items-center rounded-full bg-white px-5 py-3 font-body text-ps-sm font-semibold text-ps-black transition-colors group-hover:bg-ps-grey-100">
+          <span className="inline-flex md:mt-6 w-fit items-center rounded-full bg-white px-5 py-2 font-body text-ps-sm font-semibold text-ps-black transition-colors group-hover:bg-ps-grey-100">
             {props.readLabel}
           </span>
         </div>

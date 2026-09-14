@@ -38,7 +38,7 @@ export function ImpactHero(props: { data: ResolvedSection }) {
         </div>
       </div>
 
-      <div className="container z-10 mx-auto mt-10 grid w-full grid-cols-2 gap-4 px-4 sm:grid-cols-2 sm:px-6 lg:absolute lg:-bottom-32 lg:left-1/2 lg:grid-cols-4 lg:-translate-x-1/2 lg:gap-5 lg:px-8">
+      <div className="container z-10 mx-auto mt-10 grid w-full grid-cols-2 gap-4 px-4 sm:grid-cols-2 sm:px-6 lg:absolute lg:-bottom-16 lg:left-1/2 lg:grid-cols-4 lg:-translate-x-1/2 lg:gap-5 lg:px-8">
         {props.data.items.map((item) => (
           <MetricStat
             key={item.name}

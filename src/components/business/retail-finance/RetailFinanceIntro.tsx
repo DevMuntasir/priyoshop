@@ -9,7 +9,7 @@ export function RetailFinanceIntro(props: { data: ResolvedSection }) {
   const { heading } = props.data;
 
   return (
-    <section className="relative w-full space-y-14 py-14 sm:space-y-20 sm:py-20 lg:space-y-28 lg:py-25">
+    <section className="relative w-full space-y-14 py-14 sm:space-y-20 sm:py-20 lg:space-y-28 lg:py-32">
       <div className="container flex flex-col gap-10 px-4 sm:px-6 lg:flex-row lg:items-center lg:gap-14 lg:px-8">
         <SectionHeading
           title={
