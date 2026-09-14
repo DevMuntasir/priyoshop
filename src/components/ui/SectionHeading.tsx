@@ -68,7 +68,7 @@ const TITLE_TEXT_CLASSES: Record<
   custom: '',
 };
 
-const resolveColor = (value: string) => {
+export const resolveColor = (value: string) => {
   const normalizedValue = value.trim();
   const isCssColor = /^(#|rgb\(|hsl\(|oklch\(|var\()/u.test(normalizedValue);
   return {
@@ -77,7 +77,7 @@ const resolveColor = (value: string) => {
   };
 };
 
-const resolveAccent = (value: string) => {
+export const resolveAccent = (value: string) => {
   const normalizedValue = value.trim();
   const isGradient = /^(linear|radial|conic)-gradient\(/iu.test(normalizedValue);
   if (isGradient) {
@@ -89,7 +89,7 @@ const resolveAccent = (value: string) => {
   return resolveColor(normalizedValue);
 };
 
-const findLastTextMatch = (title: string, words: string) => {
+export const findLastTextMatch = (title: string, words: string) => {
   const parts = words.trim().split(/\s+/u).filter(Boolean);
   if (parts.length === 0) {
     return null;

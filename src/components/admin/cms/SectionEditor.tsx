@@ -135,6 +135,10 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
   ],
   ecosystem: [
     { field: 'title', label: 'Title', full: true },
+    { field: 'accentWords', label: 'Accent words', full: true },
+    { field: 'accentColor', label: 'Solid accent color', type: 'color', full: true },
+    { field: 'accentGradientFrom', label: 'Gradient start', type: 'color' },
+    { field: 'accentGradientTo', label: 'Gradient end', type: 'color' },
     { field: 'body', label: 'Description', type: 'textarea', full: true },
     { field: 'image', label: 'Image path', full: true },
     { field: 'imageAlt', label: 'Image alt text', full: true },
@@ -290,6 +294,11 @@ const ECOSYSTEM_FIELD_GROUPS: ItemFieldGroup[] = [
     title: 'Content',
     description: 'Add the card heading and supporting description.',
     fields: ['title', 'body'],
+  },
+  {
+    title: 'Accent styling',
+    description: 'Use a solid color, or set both gradient colors to override it.',
+    fields: ['accentWords', 'accentColor', 'accentGradientFrom', 'accentGradientTo'],
   },
   {
     title: 'Image',

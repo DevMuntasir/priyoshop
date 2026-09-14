@@ -1,3 +1,4 @@
+import { AccentedTitle } from '@/components/ui/AccentedTitle';
 import { ClickToPlayVideo } from '@/components/ui/ClickToPlayVideo';
 import { RetailGrowthSteps } from '@/components/ui/RetailGrowthSteps';
 import { Reveal } from '@/components/ui/Reveal';
@@ -32,6 +33,7 @@ export function DistributionSteps(props: { data: ResolvedSection }) {
             className="max-w-full !font-normal md:sticky md:top-0 md:max-w-1/2"
             descriptionColor="text-ps-black-100"
             align="left"
+
           />
         }
         steps={steps}
@@ -43,6 +45,13 @@ export function DistributionSteps(props: { data: ResolvedSection }) {
 // A heading + autoplay YouTube video, on the same black panel.
 export function DistributionVideoA(props: { data: ResolvedSection }) {
   const { heading } = props.data;
+  const videoSource =
+    heading.videoId?.trim() ||
+    heading.videoPath?.trim() ||
+    APP_VIDEOS.distribution.showcaseYouTubeId;
+  const poster =
+    heading.backgroundImage?.trim() ||
+    APP_VIDEOS.distribution.b2bPlatform.poster;
 
   return (
     <div className="bg-ps-black">
@@ -59,9 +68,9 @@ export function DistributionVideoA(props: { data: ResolvedSection }) {
         </Reveal>
         <Reveal direction="scale" delay={0.1}>
           <ScrollAutoplayVideo
-            videoId={heading.videoId || heading.videoPath || APP_VIDEOS.distribution.showcaseYouTubeId}
-            poster={heading.backgroundImage || APP_VIDEOS.distribution.b2bPlatform.poster}
-            title={heading.title || 'YouTube video player'}
+            videoId={videoSource}
+            poster={poster}
+            title={heading.title || 'Video player'}
             className="mx-auto my-10 h-72 max-w-full overflow-hidden rounded-ps-xl sm:my-14 sm:h-96 lg:my-20 lg:h-125"
           />
         </Reveal>
@@ -79,7 +88,7 @@ export function DistributionVideoB(props: { data: ResolvedSection }) {
       <div className="px-4 py-12 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading
-            title={heading.title}
+            title={<AccentedTitle text={heading.title} />}
             gradientWords="B2B Platform"
             titleColor=" text-ps-white max-w-4xl"
             titleSize="h2"

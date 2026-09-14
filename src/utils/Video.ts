@@ -28,20 +28,20 @@ export function extractYouTubeId(source?: string | null): string | null {
   const trimmed = source.trim();
 
   // Raw 11-character ID (standard YouTube ID format)
-  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) {
+  if (/^[a-zA-Z0-9_-]{11}$/u.test(trimmed)) {
     return trimmed;
   }
 
-  // youtu.be/<id> or (youtube.com|youtube-nocookie.com)/(embed|v|shorts)/<id>
+  // youtu.be/<id> or (youtube.com|youtube-nocookie.com)/(embed|v|shorts|live)/<id>
   const shortMatch = trimmed.match(
-    /(?:youtu\.be\/|(?:youtube\.com|youtube-nocookie\.com)\/(?:embed|v|shorts)\/)([a-zA-Z0-9_-]{11})/i
+    /(?:youtu\.be\/|(?:[a-zA-Z0-9-]+\.)?youtube(?:-nocookie)?\.com\/(?:embed|v|shorts|live)\/)([a-zA-Z0-9_-]{11})/iu
   );
   if (shortMatch && shortMatch[1]) {
     return shortMatch[1];
   }
 
   // (youtube.com|youtube-nocookie.com)/watch?v=<id>
-  const watchMatch = trimmed.match(/[?&]v=([a-zA-Z0-9_-]{11})/i);
+  const watchMatch = trimmed.match(/[?&]v=([a-zA-Z0-9_-]{11})/iu);
   if (watchMatch && watchMatch[1]) {
     return watchMatch[1];
   }

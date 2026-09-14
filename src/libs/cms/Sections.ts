@@ -113,6 +113,10 @@ export type EcosystemItem = {
   href?: string;
   reverse?: boolean;
   style?: ResponsiveCardStyle;
+  accentWords?: string;
+  accentColor?: string;
+  accentGradientFrom?: string;
+  accentGradientTo?: string;
 };
 
 export type SectionItem = {

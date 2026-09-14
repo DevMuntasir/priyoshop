@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
 import { APP_VIDEOS } from '@/constants/Videos';
-import { extractYouTubeId } from '@/utils/Video';
+import { parseVideoSource } from '@/utils/Video';
 import { RollingNumber } from './RollingNumber';
 
 export type ScrollAutoplayVideoProps = {
-  /** YouTube embed id or full YouTube URL. */
+  /** YouTube embed id, full YouTube URL, direct video path, or Cloudinary URL. */
   videoId: string;
   /** Optional poster thumbnail image. */
   poster?: string;
@@ -52,15 +52,23 @@ function ProgressiveBlur() {
   );
 }
 
-// Embeds a YouTube video that autoplays once it scrolls into view with an initial poster thumbnail preview.
+const STATS = [
+  { value: 250_000, label: 'MSMEs' },
+  { value: 296, label: 'Brands' },
+  { value: 1458, label: 'Routes' },
+  { value: 43, label: 'Hubs' },
+  { value: 3603, label: 'SKUs' },
+];
+
+// Embeds an autoplaying video (YouTube or direct MP4/Cloudinary) once it scrolls into view with an initial poster thumbnail preview.
 export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(containerRef, { once: true, amount: 0.5 });
-  const rawId = extractYouTubeId(props.videoId) || props.videoId || 'dQw4w9WgXcQ';
+  const inView = useInView(containerRef, { once: true, amount: 0.1 });
+  const parsed = parseVideoSource(props.videoId);
 
   const poster =
-    props.poster ||
-    (rawId ? `https://img.youtube.com/vi/${rawId}/hqdefault.jpg` : APP_VIDEOS.defaultPoster);
+    (props.poster && props.poster.trim()) ||
+    (parsed.type === 'youtube' ? parsed.thumbnailUrl : APP_VIDEOS.defaultPoster);
 
   const params = new URLSearchParams({
     autoplay: inView ? '1' : '0',
@@ -73,14 +81,10 @@ export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
     disablekb: '1', // disable keyboard controls
     playsinline: '1',
     loop: '1',
-    playlist: rawId, // required for loop to work
+    playlist: parsed.type === 'youtube' ? parsed.videoId : '', // required for loop to work
   });
-  const src = `https://www.youtube-nocookie.com/embed/${rawId}?${params.toString()}`;
-  const STATS = [
-    { value: 120, label: 'Total Operational Hub' },
-    { value: 48, label: 'Total District Coverage' },
-    { value: 2500, label: 'Total People Employed' },
-  ];
+  const embedSrc = `${parsed.type === 'youtube' ? parsed.embedUrl : ''}?${params.toString()}`;
+
   return (
     <div ref={containerRef} className={`relative overflow-hidden bg-ps-grey-900 ${props.className ?? ''}`}>
       {poster && (
@@ -92,20 +96,36 @@ export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
           className="absolute inset-0 object-cover"
         />
       )}
-      {inView ? (
-        // Oversize the iframe and clip top/bottom so YouTube's title bar and
-        // branding overlay are cropped out of view, leaving only the video.
-        <iframe
-          src={src}
-          title={props.title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-          className="pointer-events-none absolute top-1/2 left-1/2 m-0! h-[calc(100%+160px)] w-full -translate-x-1/2 -translate-y-1/2 border-0 p-0!"
-        />
-      ) : null}
+      {inView && (
+        parsed.type === 'youtube' ? (
+          // Oversize the iframe and clip top/bottom so YouTube's title bar and
+          // branding overlay are cropped out of view, leaving only the video.
+          <iframe
+            src={embedSrc}
+            title={props.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            className="pointer-events-none absolute top-1/2 left-1/2 m-0! h-[calc(100%+160px)] w-full -translate-x-1/2 -translate-y-1/2 border-0 p-0!"
+          />
+        ) : (
+          <video
+            src={parsed.src}
+            poster={poster}
+            aria-label={props.title}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="pointer-events-none absolute inset-0 size-full object-cover"
+          >
+            <track kind="captions" />
+          </video>
+        )
+      )}
       <ProgressiveBlur />
-      <div className="absolute bottom-0 flex w-full justify-center gap-y-4 px-2 pb-3 sm:pb-4 lg:px-0">
+      <div className="absolute bottom-0 flex flex-wrap w-full justify-center gap-y-4 px-2 pb-3 sm:pb-4 lg:px-0">
         {STATS.map((stat, i) => (
           <div
             key={stat.label}

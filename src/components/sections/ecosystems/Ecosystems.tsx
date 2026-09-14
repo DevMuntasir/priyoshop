@@ -1,21 +1,53 @@
 'use client';
 
+import type * as React from 'react';
+import { AccentedTitle } from '@/components/ui/AccentedTitle';
 import { Badge } from '@/components/ui/Badge';
 import { EcosystemCard } from '@/components/ui/EcosystemCard';
 import type { EcosystemCardProps } from '@/components/ui/EcosystemCard';
 import { ScrollFocusStack } from '@/components/ui/ScrollFocusStack';
 import { Section } from '@/components/ui/Section';
-import { SectionHeading } from '@/components/ui/SectionHeading';
-import type { ResolvedSection } from '@/libs/cms/Sections';
+import { findLastTextMatch, resolveAccent, SectionHeading } from '@/components/ui/SectionHeading';
+import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
 import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
 
+function renderEcosystemTitle(item: SectionItem): React.ReactNode {
+  const title = item.title ?? '';
+  const accentWords = item.accentWords?.trim();
+  const accentColor =
+    item.accentGradientFrom && item.accentGradientTo
+      ? `linear-gradient(90deg, ${item.accentGradientFrom}, ${item.accentGradientTo})`
+      : item.accentColor;
+
+  if (accentWords) {
+    const resolvedAccent = resolveAccent(accentColor || 'text-ps-red-600');
+    const match = findLastTextMatch(title, accentWords);
+    if (match) {
+      return (
+        <>
+          {title.slice(0, match.index)}
+          <span className={resolvedAccent.className} style={resolvedAccent.style}>
+            {title.slice(match.index, match.index + match.length)}
+          </span>
+          {title.slice(match.index + match.length)}
+        </>
+      );
+    }
+  }
+
+  if (title.includes('*') || title.includes('~') || title.includes('_') || title.includes('\n')) {
+    return <AccentedTitle text={title} />;
+  }
+
+  return title;
+}
+
 export function Ecosystems(props: { data: ResolvedSection }) {
-  const { heading, items, style } = props.data;
-  const resolved = resolveSectionStyle(style);
-  const cards: EcosystemCardProps[] = items
+  const resolved = resolveSectionStyle(props.data.style);
+  const cards: EcosystemCardProps[] = props.data.items
     .filter((item) => [item.title, item.image].some(Boolean))
     .map((item) => ({
-      title: item.title,
+      title: renderEcosystemTitle(item),
       body: item.body,
       image: item.image,
       imageAlt: item.imageAlt,
@@ -32,14 +64,16 @@ export function Ecosystems(props: { data: ResolvedSection }) {
       stage={Section}
       header={
         <>
-          {heading.eyebrow && (
+          {props.data.heading.eyebrow && (
             <Badge className="mx-auto mb-4" variant="outline">
-              {heading.eyebrow}
+              {props.data.heading.eyebrow}
             </Badge>
           )}
           <SectionHeading
-            title={heading.title}
-            description={heading.description}
+            title={
+              <AccentedTitle text={props.data.heading.title} emClass="bg-gradient-to-r font-extrabold from-ps-red-500 to-yellow-500 bg-clip-text text-transparent" />
+            }
+            description={props.data.heading.description}
             align={resolved.align}
             titleColor={resolved.titleColorClass}
           />
@@ -58,3 +92,4 @@ export function Ecosystems(props: { data: ResolvedSection }) {
     />
   );
 }
+
