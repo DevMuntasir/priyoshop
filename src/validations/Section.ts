@@ -91,7 +91,7 @@ const itemSchema = z.object({
   value: z.string().max(60).optional(),
   tag: z.string().max(60).optional(),
   date: z.string().max(60).optional(),
-  year: z.string().max(20).optional(),
+  year: z.string().max(100).optional(),
   size: z.enum(['short', 'tall']).optional(),
   column: z.enum(['a', 'b']).optional(),
   textColor: z.string().max(60).optional(),
