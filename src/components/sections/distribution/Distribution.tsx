@@ -1,4 +1,5 @@
 import { AccentedTitle } from '@/components/ui/AccentedTitle';
+import { Button } from '@/components/ui/Button';
 import { ClickToPlayVideo } from '@/components/ui/ClickToPlayVideo';
 import { RetailGrowthSteps } from '@/components/ui/RetailGrowthSteps';
 import { Reveal } from '@/components/ui/Reveal';
@@ -10,7 +11,8 @@ import type { ResolvedSection } from '@/libs/cms/Sections';
 
 // The "Retail growth" step carousel on the black distribution panel.
 export function DistributionSteps(props: { data: ResolvedSection }) {
-  const { heading, items } = props.data;
+  const heading = props.data.heading;
+  const items = props.data.items;
   const steps: ScrollStep[] = items.map((item, i) => ({
     label: String(i + 1).padStart(2, '0'),
     title: item.title ?? '',
@@ -20,21 +22,33 @@ export function DistributionSteps(props: { data: ResolvedSection }) {
   }));
 
   return (
-    <div className="max-h-full relative overflow-x-clip h-full w-full rounded-t-ps-xl bg-ps-black py-12 sm:py-16 lg:py-20">
+    <div className="relative h-full max-h-full w-full overflow-x-clip rounded-t-ps-xl bg-ps-black py-12 sm:py-16 lg:py-20">
       <RetailGrowthSteps
         heading={
-          <SectionHeading
-            eyebrow={heading.eyebrow}
-            eyebrowMode="light"
-            title={heading.title}
-            description={heading.description}
-            descriptionFontClass="font-normal"
-            titleColor="text-white"
-            className="max-w-full !font-normal md:sticky md:top-0 md:max-w-1/2"
-            descriptionColor="text-ps-black-100"
-            align="left"
-
-          />
+          <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6">
+            <SectionHeading
+              eyebrow={heading.eyebrow}
+              eyebrowMode="light"
+              title={heading.title}
+              description={heading.description}
+              descriptionFontClass="font-normal"
+              titleColor="text-white"
+              className="max-w-full !font-normal md:sticky md:top-0 md:max-w-1/2"
+              descriptionColor="text-ps-black-100"
+              align="left"
+            />
+            {heading.ctaLabel ? (
+              <div className="shrink-0">
+                <Button
+                  href={heading.ctaHref}
+                  variant="filled"
+                  tone="light"
+                >
+                  {heading.ctaLabel}
+                </Button>
+              </div>
+            ) : null}
+          </div>
         }
         steps={steps}
       />
@@ -85,7 +99,7 @@ export function DistributionVideoB(props: { data: ResolvedSection }) {
 
   return (
     <div className="bg-ps-black pb-12 sm:pb-16 lg:pb-20">
-      <div className="px-4 py-12 sm:px-6 lg:px-8">
+      <div className="px-4  sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading
             title={<AccentedTitle text={heading.title} />}
@@ -95,14 +109,16 @@ export function DistributionVideoB(props: { data: ResolvedSection }) {
             descriptionColor="text-ps-white font-display !font-normal text-ps-body"
             description={heading.description}
             align="center"
+
           />
+
         </Reveal>
         <Reveal direction="scale" delay={0.1}>
           <ClickToPlayVideo
             videoPath={heading.videoPath ?? APP_VIDEOS.distribution.b2bPlatform.src}
             poster={heading.backgroundImage || APP_VIDEOS.distribution.b2bPlatform.poster}
             title={heading.title || 'PriyoShop B2B Platform'}
-            className="my-10 h-72 w-full sm:my-14 sm:h-96 lg:my-20 lg:h-125"
+            className="my-10 h-72 max-w-[700px] mx-auto sm:my-14 sm:h-96 lg:my-20 lg:h-125"
           />
         </Reveal>
       </div>

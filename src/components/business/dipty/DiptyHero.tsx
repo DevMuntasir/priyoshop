@@ -1,4 +1,5 @@
 import { AccentedTitle } from '@/components/ui/AccentedTitle';
+import { ResponsiveHeroBackground } from '@/components/ui/ResponsiveHeroBackground';
 import { Reveal } from '@/components/ui/Reveal';
 import type { ResolvedSection } from '@/libs/cms/Sections';
 import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
@@ -10,10 +11,13 @@ export function DiptyHero(props: { data: ResolvedSection }) {
   const bgImage = props.data.heading.backgroundImage || '/dipty/bg.png';
 
   return (
-    <section
-      className={`${resolved.wrapperClass} min-h-[40svh] bg-cover bg-center bg-no-repeat lg:min-h-[100dvh]`}
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
+    <section className={`${resolved.wrapperClass} relative min-h-[40svh] overflow-hidden lg:min-h-[100dvh]`}>
+      <ResponsiveHeroBackground
+        mobile={bgImage}
+        tablet={props.data.heading.backgroundImageTablet}
+        laptop={props.data.heading.backgroundImageLaptop}
+        desktop={props.data.heading.backgroundImageDesktop}
+      />
       <div className="min-h-[40svh] bg-gradient-to-r from-white via-white to-transparent lg:min-h-[100dvh]">
         <div
           className={`container flex min-h-[40svh] flex-col justify-center px-4 pt-28 pb-12 sm:px-6 lg:min-h-[100dvh] lg:px-8 ${alignClass}`}

@@ -1,5 +1,6 @@
 import { AccentedTitle } from '@/components/ui/AccentedTitle';
 import { MetricStat } from '@/components/ui/MetricStat';
+import { ResponsiveHeroBackground } from '@/components/ui/ResponsiveHeroBackground';
 import { RollingNumber } from '@/components/ui/RollingNumber';
 import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
 
@@ -15,10 +16,13 @@ export function RetailFinanceHero(props: { data: ResolvedSection }) {
   const bgImage = props.data.heading.backgroundImage || '/retail/bg.jpg';
 
   return (
-    <section
-      className="relative flex min-h-[40svh] flex-col justify-center bg-cover bg-center bg-no-repeat pt-28 pb-12 lg:min-h-[100dvh] lg:pt-32"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
+    <section className="relative flex min-h-[40svh] flex-col justify-center overflow-hidden pt-28 pb-12 lg:min-h-[100dvh] lg:pt-32">
+      <ResponsiveHeroBackground
+        mobile={bgImage}
+        tablet={props.data.heading.backgroundImageTablet}
+        laptop={props.data.heading.backgroundImageLaptop}
+        desktop={props.data.heading.backgroundImageDesktop}
+      />
       <div className="container mx-auto flex min-h-[30svh] flex-col justify-center px-4 sm:px-6 lg:min-h-[60svh] lg:px-8">
         <div className="max-w-[700px]">
           <h1

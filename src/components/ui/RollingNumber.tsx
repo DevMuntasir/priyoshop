@@ -47,7 +47,7 @@ export function RollingNumber({
   value,
   prefix = '',
   suffix = '',
-  height = 42,
+  height = 12,
   heightMobile,
   stagger = 0.12,
   duration = 1.7,

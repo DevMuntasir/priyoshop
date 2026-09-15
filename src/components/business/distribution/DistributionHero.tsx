@@ -1,5 +1,6 @@
 import { AccentedTitle } from '@/components/ui/AccentedTitle';
 import { MetricStat } from '@/components/ui/MetricStat';
+import { ResponsiveHeroBackground } from '@/components/ui/ResponsiveHeroBackground';
 import { RollingNumber } from '@/components/ui/RollingNumber';
 import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
 
@@ -15,10 +16,13 @@ export function DistributionHero(props: { data: ResolvedSection }) {
   const bgImage = props.data.heading.backgroundImage || '/distribution/bg.png';
 
   return (
-    <section
-      className="relative flex min-h-[40svh] flex-col justify-center bg-cover bg-center bg-no-repeat lg:min-h-[100dvh]"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
+    <section className="relative flex min-h-[40svh] flex-col justify-center overflow-hidden lg:min-h-[100dvh]">
+      <ResponsiveHeroBackground
+        mobile={bgImage}
+        tablet={props.data.heading.backgroundImageTablet}
+        laptop={props.data.heading.backgroundImageLaptop}
+        desktop={props.data.heading.backgroundImageDesktop}
+      />
       <div className="min-h-[40svh] bg-gradient-to-r from-white via-white/85 to-transparent pt-28 lg:min-h-[100dvh] lg:pt-32 lg:pb-12">
         <div className="container flex min-h-[40svh] flex-col justify-center px-4 sm:px-6 lg:min-h-[60svh] lg:px-8">
           <div className="w-full max-w-2xl lg:max-w-1/2">

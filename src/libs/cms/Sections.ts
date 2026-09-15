@@ -162,6 +162,9 @@ export type SectionItem = {
   accentGradientTo?: string;
   /** Slide background image (overrides gradient). */
   slideBackgroundImage?: string;
+  slideBackgroundImageTablet?: string;
+  slideBackgroundImageLaptop?: string;
+  slideBackgroundImageDesktop?: string;
   /** Slide background color or utility class. */
   slideBackgroundColor?: string;
   /** Slide alignment (left/center). */
@@ -183,6 +186,9 @@ export type SectionHeadingContent = {
   ctaSecondaryLabel?: string;
   ctaSecondaryHref?: string;
   backgroundImage?: string;
+  backgroundImageTablet?: string;
+  backgroundImageLaptop?: string;
+  backgroundImageDesktop?: string;
   rotatingWords?: string[];
   /** YouTube id (distribution video block A). */
   videoId?: string;
@@ -608,7 +614,11 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     defaultOrder: 30,
     defaultStyle: makeDefaultStyle(),
     defaultContent: {
-      heading: { title: 'Retail growth steps' },
+      heading: {
+        title: 'Retail growth steps',
+        ctaLabel: 'Learn More',
+        ctaHref: '/business/distribution',
+      },
       items: [
         {
           title: 'Digitalisation',
@@ -636,7 +646,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         },
       ],
     },
-    editor: { listBody: true },
+    editor: { listBody: true, sectionCta: true },
   },
   distributionVideoA: {
     key: 'distributionVideoA',

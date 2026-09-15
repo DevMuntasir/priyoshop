@@ -1,13 +1,14 @@
+import { ResponsiveHeroBackground } from "@/components/ui/ResponsiveHeroBackground";
 import { Reveal } from "@/components/ui/Reveal";
 import { AccentedTitle } from "../ui/AccentedTitle";
 
 export function AboutHero() {
   return (
     <div>
-      <section className="relative mt-5 min-h-[32svh] lg:min-h-[100svh] w-full bg-[url(/about/ab-bg.png)] bg-cover bg-center bg-no-repeat lg:min-h-[100dvh]">
-
-        <div className="min-h-[32svh] lg:min-h-[100svh] bg-gradient-to-r from-white via-white/85 to-transparent lg:min-h-[100dvh]">
-          <div className="container mx-auto flex min-h-[32svh] lg:min-h-[100svh] flex-col justify-center gap-3 lg:gap-6 px-4 pt-28 pb-12 sm:px-6 md:gap-0 lg:min-h-[100dvh] lg:px-8">
+      <section className="relative mt-5 min-h-[32svh] w-full overflow-hidden lg:min-h-[100dvh]">
+        <ResponsiveHeroBackground mobile="/about/ab-bg.png" />
+        <div className="min-h-[32svh] bg-gradient-to-r from-white via-white/85 to-transparent lg:min-h-[100dvh]">
+          <div className="container mx-auto flex min-h-[32svh] flex-col justify-center gap-3 px-4 pt-28 pb-12 sm:px-6 md:gap-0 lg:min-h-[100dvh] lg:gap-6 lg:px-8">
             <Reveal
               direction="left"
 

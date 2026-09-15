@@ -199,7 +199,10 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
     { field: 'accentGradientFrom', label: 'Gradient start', type: 'color' },
     { field: 'accentGradientTo', label: 'Gradient end', type: 'color' },
     { field: 'description', label: 'Description', type: 'textarea', full: true },
-    { field: 'slideBackgroundImage', label: 'Background image path', full: true },
+    { field: 'slideBackgroundImage', label: 'Background image (Mobile / Default)', full: true },
+    { field: 'slideBackgroundImageTablet', label: 'Background image (Tablet, >= 768px)', full: true },
+    { field: 'slideBackgroundImageLaptop', label: 'Background image (Laptop, >= 1024px)', full: true },
+    { field: 'slideBackgroundImageDesktop', label: 'Background image (Desktop, >= 1140px)', full: true },
     { field: 'slideBackgroundColor', label: 'Background color', type: 'color', full: true },
     { field: 'textColor', label: 'Heading color', type: 'color' },
     { field: 'descriptionColor', label: 'Description color', type: 'color' },
@@ -328,7 +331,13 @@ const SLIDE_FIELD_GROUPS: ItemFieldGroup[] = [
   },
   {
     title: 'Background',
-    fields: ['slideBackgroundImage', 'slideBackgroundColor'],
+    fields: [
+      'slideBackgroundImage',
+      'slideBackgroundImageTablet',
+      'slideBackgroundImageLaptop',
+      'slideBackgroundImageDesktop',
+      'slideBackgroundColor',
+    ],
   },
   {
     title: 'Typography and layout',
@@ -710,6 +719,9 @@ function ItemField(props: {
     props.def.field === 'image' ||
     props.def.field === 'logo' ||
     props.def.field === 'slideBackgroundImage' ||
+    props.def.field === 'slideBackgroundImageTablet' ||
+    props.def.field === 'slideBackgroundImageLaptop' ||
+    props.def.field === 'slideBackgroundImageDesktop' ||
     props.def.field === 'videoPath';
 
   if (isMediaField) {
@@ -749,9 +761,14 @@ function SlideItemEditor(props: {
 }) {
   const background = props.item.slideBackgroundColor ?? 'bg-gray-100';
   const hasCssBackground = /^(#|rgb\(|hsl\(|oklch\(|var\()/u.test(background);
+  const slideBg =
+    props.item.slideBackgroundImage ||
+    props.item.slideBackgroundImageTablet ||
+    props.item.slideBackgroundImageLaptop ||
+    props.item.slideBackgroundImageDesktop;
   let previewStyle: React.CSSProperties | undefined;
-  if (props.item.slideBackgroundImage) {
-    previewStyle = { backgroundImage: `url(${props.item.slideBackgroundImage})` };
+  if (slideBg) {
+    previewStyle = { backgroundImage: `url(${slideBg})` };
   } else if (hasCssBackground) {
     previewStyle = { backgroundColor: background };
   }
@@ -1169,13 +1186,45 @@ function ContentPanelBody(props: {
           {hints.sectionCta ? cta('CTA', 'ctaLabel', 'ctaHref') : null}
           {hints.secondaryCta ? cta('Secondary CTA', 'ctaSecondaryLabel', 'ctaSecondaryHref') : null}
           {hints.backgroundImage && !hints.video ? (
-            <MediaInput
-              label="Background image"
-              value={heading.backgroundImage ?? ''}
-              onChange={(value) => {
-                props.onHeading('backgroundImage', value);
-              }}
-            />
+            <details open className="space-y-3 rounded-lg border border-gray-200 bg-gray-50/50 p-3">
+              <summary className="cursor-pointer text-xs font-semibold tracking-wide text-gray-700 uppercase">
+                Background image (by device)
+              </summary>
+              <div className="space-y-3 pt-2">
+                <MediaInput
+                  label="Mobile / Default"
+                  value={heading.backgroundImage ?? ''}
+                  onChange={(value) => {
+                    props.onHeading('backgroundImage', value);
+                  }}
+                  placeholder="Choose or enter mobile/default background"
+                />
+                <MediaInput
+                  label="Tablet (optional, >= 768px)"
+                  value={heading.backgroundImageTablet ?? ''}
+                  onChange={(value) => {
+                    props.onHeading('backgroundImageTablet', value);
+                  }}
+                  placeholder="Choose or enter tablet background"
+                />
+                <MediaInput
+                  label="Laptop (optional, >= 1024px)"
+                  value={heading.backgroundImageLaptop ?? ''}
+                  onChange={(value) => {
+                    props.onHeading('backgroundImageLaptop', value);
+                  }}
+                  placeholder="Choose or enter laptop background"
+                />
+                <MediaInput
+                  label="Desktop (optional, >= 1140px)"
+                  value={heading.backgroundImageDesktop ?? ''}
+                  onChange={(value) => {
+                    props.onHeading('backgroundImageDesktop', value);
+                  }}
+                  placeholder="Choose or enter desktop background"
+                />
+              </div>
+            </details>
           ) : null}
           {hints.video ? (
             <>

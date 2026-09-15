@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { ResponsiveHeroBackground } from '@/components/ui/ResponsiveHeroBackground';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
 import { Stats } from '../stats/Stats';
@@ -73,7 +74,12 @@ function HeroCtas(props: { slide: SectionItem; defaultTone: 'light' | 'dark'; ac
 }
 
 function HeroSlide(props: { slide: SectionItem; active: boolean }) {
-  const hasImage = Boolean(props.slide.slideBackgroundImage);
+  const hasImage = Boolean(
+    props.slide.slideBackgroundImage ||
+      props.slide.slideBackgroundImageTablet ||
+      props.slide.slideBackgroundImageLaptop ||
+      props.slide.slideBackgroundImageDesktop,
+  );
   const background = resolveBackground(props.slide.slideBackgroundColor);
   const align = props.slide.slideAlign ?? 'left';
   const titleColor = props.slide.textColor ?? (hasImage ? 'text-white' : 'text-ps-ink-700');
@@ -88,13 +94,12 @@ function HeroSlide(props: { slide: SectionItem; active: boolean }) {
     <>
       <div className={`absolute inset-0 ${background.className}`} style={background.style} />
       {hasImage ? (
-        <>
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${props.slide.slideBackgroundImage})` }}
-          />
-          {/* <div className="absolute inset-0 bg-linear-to-r from-black/60 to-black/10" /> */}
-        </>
+        <ResponsiveHeroBackground
+          mobile={props.slide.slideBackgroundImage}
+          tablet={props.slide.slideBackgroundImageTablet}
+          laptop={props.slide.slideBackgroundImageLaptop}
+          desktop={props.slide.slideBackgroundImageDesktop}
+        />
       ) : null}
 
       <div className="relative z-10 flex h-full items-center">

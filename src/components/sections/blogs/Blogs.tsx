@@ -14,6 +14,7 @@ export function Blogs(props: { data: ResolvedSection }) {
         title={heading.title}
         cta={heading.ctaLabel}
         ctaHref={heading.ctaHref}
+        description={heading.description}
         posts={items.map((item) => ({
           ttl: item.title ?? '',
           date: item.date ?? '',

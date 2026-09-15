@@ -61,4 +61,35 @@ describe('sectionUpdateSchema', () => {
 
     expect(style.tablet).toBeUndefined();
   });
+
+  it('accepts per-device responsive background images', () => {
+    const section = SECTION_REGISTRY.distributionHero;
+    const result = sectionUpdateSchema.safeParse({
+      enabled: true,
+      order: section.defaultOrder,
+      style: section.defaultStyle,
+      locale: 'en',
+      content: {
+        heading: {
+          ...section.defaultContent.heading,
+          backgroundImage: '/distribution/bg-mobile.png',
+          backgroundImageTablet: '/distribution/bg-tablet.png',
+          backgroundImageLaptop: '/distribution/bg-laptop.png',
+          backgroundImageDesktop: '/distribution/bg-desktop.png',
+        },
+        items: [
+          {
+            title: 'Hero Slide',
+            slideBackgroundImage: '/hero/slide-mobile.png',
+            slideBackgroundImageTablet: '/hero/slide-tablet.png',
+            slideBackgroundImageLaptop: '/hero/slide-laptop.png',
+            slideBackgroundImageDesktop: '/hero/slide-desktop.png',
+          },
+        ],
+      },
+    });
+
+    expect(result.error?.issues).toBeUndefined();
+    expect(result.success).toBe(true);
+  });
 });

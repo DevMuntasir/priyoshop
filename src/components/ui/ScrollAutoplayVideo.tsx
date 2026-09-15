@@ -132,7 +132,7 @@ export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
             className={`flex flex-1 flex-col items-center gap-1 px-3 text-center sm:gap-2 sm:px-6 lg:px-10 ${i ? 'border-l border-ps-black-50' : ''}`}
           >
             <span className="font-display leading-none font-extrabold tracking-tight text-ps-white">
-              <RollingNumber value={stat.value} suffix="+" height={52} heightMobile={26} />
+              <RollingNumber value={stat.value} suffix="+" height={42} heightMobile={26} />
             </span>
             <span className="font-body text-ps-sm font-semibold text-ps-black-100 sm:text-base">
               {stat.label}

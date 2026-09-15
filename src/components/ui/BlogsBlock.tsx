@@ -21,6 +21,7 @@ export type BlogsBlockProps = {
   align?: Align;
   eyebrow?: string;
   title?: string;
+  description?: string;
   posts?: Post[];
   cta?: string;
   ctaHref?: string;
@@ -53,6 +54,7 @@ export function BlogsBlock({
   align = 'left',
   eyebrow = 'Insights',
   title = 'Read our Blogs',
+  description = 'Get the latest insights on retail, distribution, and finance from our team of experts.',
   posts = DEFAULT_POSTS,
   cta = 'Read All Blogs',
   ctaHref,
@@ -62,7 +64,7 @@ export function BlogsBlock({
       <div className="mx-auto w-full">
         <div className="mb-11 flex flex-wrap items-end justify-between gap-6">
           <Reveal direction="left">
-            <SectionHeading titleSize="h2" eyebrow={eyebrow} title={title} align={align} />
+            <SectionHeading titleSize="h2" description={description} eyebrow={eyebrow} title={title} align={align} />
           </Reveal>
           {cta ? (
             <Reveal direction="right" delay={0.15}>
@@ -87,8 +89,8 @@ export function BlogsBlock({
                   b.href
                     ? undefined
                     : (e) => {
-                        e.preventDefault();
-                      }
+                      e.preventDefault();
+                    }
                 }
               />
             </Reveal>

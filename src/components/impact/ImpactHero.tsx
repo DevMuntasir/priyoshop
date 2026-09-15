@@ -1,8 +1,9 @@
 import { AccentedTitle } from '@/components/ui/AccentedTitle';
+import { ResponsiveHeroBackground } from '@/components/ui/ResponsiveHeroBackground';
 import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
-import { SectionHeading } from '../ui/SectionHeading';
 import { MetricStat } from '../ui/MetricStat';
 import { RollingNumber } from '../ui/RollingNumber';
+import { SectionHeading } from '../ui/SectionHeading';
 
 export function ImpactHero(props: { data: ResolvedSection }) {
   const bgImage = props.data.heading.backgroundImage || '/impact/bg.png';
@@ -15,11 +16,14 @@ export function ImpactHero(props: { data: ResolvedSection }) {
   }
 
   return (
-    <section
-      className="relative flex min-h-[40svh] flex-col justify-center bg-cover bg-center bg-no-repeat pt-28 pb-12 lg:min-h-[100dvh]"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
-      <div className="container px-4 sm:px-6 lg:px-8">
+    <section className="relative flex min-h-[40svh] flex-col justify-center overflow-hidden pt-28 pb-12 lg:min-h-[100dvh]">
+      <ResponsiveHeroBackground
+        mobile={bgImage}
+        tablet={props.data.heading.backgroundImageTablet}
+        laptop={props.data.heading.backgroundImageLaptop}
+        desktop={props.data.heading.backgroundImageDesktop}
+      />
+      <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-[600px]">
           <SectionHeading
             className="!font-extrabold"
