@@ -29,17 +29,17 @@ export const TEAM_CONFIG: TeamConfig = {
       id: '1',
       name: 'Ashikul Alam Khan',
       role: 'Founder & CEO',
-      image: '/team/1.png',
+      image: '/team/p1.png',
       ctaText: 'LinkedIn',
-      ctaHref: 'https://www.linkedin.com/in/ashikul-alam-khan-1a0b3b1a4/',
+      ctaHref: 'https://www.linkedin.com/in/asikulalamkhan/',
     },
     {
       id: '2',
       name: 'Dipty Mandal',
       role: 'Co-founder & CMO',
-      image: '/team/2.png',
+      image: '/team/p2.png',
       ctaText: 'LinkedIn',
-      ctaHref: 'https://www.linkedin.com/in/dipty-mandal-1a0b3b1a4/',
+      ctaHref: 'https://www.linkedin.com/in/dipty-mandal/',
     }
   ],
 };

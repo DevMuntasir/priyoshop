@@ -13,12 +13,18 @@ function statValue(item: SectionItem): React.ReactNode {
 }
 
 export function CommerceHero(props: { data: ResolvedSection }) {
-  const bgImage = props.data.heading.backgroundImage || '/commerce/bg.jpg';
+  const hasCustomBg = Boolean(
+    props.data.heading.backgroundImage
+    || props.data.heading.backgroundImageTablet
+    || props.data.heading.backgroundImageLaptop
+    || props.data.heading.backgroundImageDesktop,
+  );
+  const mobileBg = props.data.heading.backgroundImage || (hasCustomBg ? undefined : '/commerce/bg.jpg');
 
   return (
-    <section className="relative flex min-h-[30svh] flex-col justify-center overflow-hidden bg-ps-cream pt-28 pb-12 lg:min-h-[90svh] lg:pt-0">
+    <section className="relative flex min-h-[30svh] flex-col justify-center  bg-ps-cream pt-28 pb-12 lg:min-h-[90svh] lg:pt-0">
       <ResponsiveHeroBackground
-        mobile={bgImage}
+        mobile={mobileBg}
         tablet={props.data.heading.backgroundImageTablet}
         laptop={props.data.heading.backgroundImageLaptop}
         desktop={props.data.heading.backgroundImageDesktop}

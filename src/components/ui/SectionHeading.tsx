@@ -32,7 +32,7 @@ export type SectionHeadingProps = {
 
   align?: 'left' | 'center';
 
-  titleSize?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'custom';
+  titleSize?: 'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'custom';
 
   /**
    * Only works when title is a string.
@@ -56,7 +56,7 @@ export type SectionHeadingProps = {
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>;
 
 const TITLE_TEXT_CLASSES: Record<
-  'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'custom',
+  'display' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'custom',
   string
 > = {
   display: 'text-ps-h2 lg:text-ps-display',
@@ -65,6 +65,7 @@ const TITLE_TEXT_CLASSES: Record<
   h3: 'text-ps-h3',
   h4: 'text-ps-h4',
   h5: 'text-ps-h5',
+  h6: 'text-ps-h6',
   custom: '',
 };
 

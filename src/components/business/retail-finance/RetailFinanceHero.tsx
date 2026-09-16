@@ -13,12 +13,18 @@ function statValue(item: SectionItem): React.ReactNode {
 }
 
 export function RetailFinanceHero(props: { data: ResolvedSection }) {
-  const bgImage = props.data.heading.backgroundImage || '/retail/bg.jpg';
+  const hasCustomBg = Boolean(
+    props.data.heading.backgroundImage
+    || props.data.heading.backgroundImageTablet
+    || props.data.heading.backgroundImageLaptop
+    || props.data.heading.backgroundImageDesktop,
+  );
+  const mobileBg = props.data.heading.backgroundImage || (hasCustomBg ? undefined : '/retail/bg.jpg');
 
   return (
-    <section className="relative flex min-h-[40svh] flex-col justify-center overflow-hidden pt-28 pb-12 lg:min-h-[100dvh] lg:pt-32">
+    <section className="relative flex min-h-[40svh] flex-col justify-center  pt-28 pb-12 lg:min-h-[100dvh] lg:pt-32">
       <ResponsiveHeroBackground
-        mobile={bgImage}
+        mobile={mobileBg}
         tablet={props.data.heading.backgroundImageTablet}
         laptop={props.data.heading.backgroundImageLaptop}
         desktop={props.data.heading.backgroundImageDesktop}

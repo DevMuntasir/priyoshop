@@ -6,7 +6,13 @@ import { RollingNumber } from '../ui/RollingNumber';
 import { SectionHeading } from '../ui/SectionHeading';
 
 export function ImpactHero(props: { data: ResolvedSection }) {
-  const bgImage = props.data.heading.backgroundImage || '/impact/bg.png';
+  const hasCustomBg = Boolean(
+    props.data.heading.backgroundImage
+    || props.data.heading.backgroundImageTablet
+    || props.data.heading.backgroundImageLaptop
+    || props.data.heading.backgroundImageDesktop,
+  );
+  const mobileBg = props.data.heading.backgroundImage || (hasCustomBg ? undefined : '/impact/bg.png');
 
   function statValue(item: SectionItem): React.ReactNode {
     const numeric = Number(item.value);
@@ -16,9 +22,9 @@ export function ImpactHero(props: { data: ResolvedSection }) {
   }
 
   return (
-    <section className="relative flex min-h-[40svh] flex-col justify-center overflow-hidden pt-28 pb-12 lg:min-h-[100dvh]">
+    <section className="relative flex min-h-[40svh] flex-col justify-center  pt-28 pb-12 lg:min-h-[100dvh]">
       <ResponsiveHeroBackground
-        mobile={bgImage}
+        mobile={mobileBg}
         tablet={props.data.heading.backgroundImageTablet}
         laptop={props.data.heading.backgroundImageLaptop}
         desktop={props.data.heading.backgroundImageDesktop}

@@ -15,7 +15,7 @@ export function Infrastructure() {
         eyebrowMode="light"
         descriptionColor="text-ps-white-600"
       />
-      <Reveal direction="scale" delay={0.1}>
+      <Reveal direction="scale" delay={0.1} className='!max-w-[850px] mx-auto'>
         <ClickToPlayVideo
           videoPath={APP_VIDEOS.about.infrastructure.src}
           poster={APP_VIDEOS.about.infrastructure.poster}

@@ -13,17 +13,23 @@ function statValue(item: SectionItem): React.ReactNode {
 }
 
 export function DistributionHero(props: { data: ResolvedSection }) {
-  const bgImage = props.data.heading.backgroundImage || '/distribution/bg.png';
+  const hasCustomBg = Boolean(
+    props.data.heading.backgroundImage
+    || props.data.heading.backgroundImageTablet
+    || props.data.heading.backgroundImageLaptop
+    || props.data.heading.backgroundImageDesktop,
+  );
+  const mobileBg = props.data.heading.backgroundImage || (hasCustomBg ? undefined : '/distribution/bg.png');
 
   return (
-    <section className="relative flex min-h-[40svh] flex-col justify-center overflow-hidden lg:min-h-[100dvh]">
+    <section className="relative flex min-h-[40svh] flex-col justify-center  lg:min-h-[100dvh]">
       <ResponsiveHeroBackground
-        mobile={bgImage}
+        mobile={mobileBg}
         tablet={props.data.heading.backgroundImageTablet}
         laptop={props.data.heading.backgroundImageLaptop}
         desktop={props.data.heading.backgroundImageDesktop}
       />
-      <div className="min-h-[40svh] bg-gradient-to-r from-white via-white/85 to-transparent pt-28 lg:min-h-[100dvh] lg:pt-32 lg:pb-12">
+      <div className="relative z-10 min-h-[40svh]  bg-gradient-to-r lg:bg-transparent from-white lg:via-white/0 to-transparent pt-28 lg:min-h-[100dvh] lg:pt-32 lg:pb-12">
         <div className="container flex min-h-[40svh] flex-col justify-center px-4 sm:px-6 lg:min-h-[60svh] lg:px-8">
           <div className="w-full max-w-2xl lg:max-w-1/2">
             <h1 className="font-display text-ps-h1 font-extrabold leading-[1.2]">

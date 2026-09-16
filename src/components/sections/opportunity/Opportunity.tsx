@@ -72,14 +72,7 @@ export function Opportunity(props: { data: ResolvedSection }) {
             sizes="100vw"
             className="z-10 mx-auto h-auto w-full"
           />
-          <Image
-            src="/opportunities/wave.png"
-            alt="Illustration of Bangladesh landmarks, transport and industries"
-            width={1440}
-            height={400}
-            sizes="100vw"
-            className="z-10 hidden lg:block absolute -bottom-[330px] -rotate-6 scale-105  mx-auto h-auto w-full"
-          />
+
         </Reveal>
       ) : null}
     </div>

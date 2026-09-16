@@ -3,10 +3,11 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { TeamConfig, TeamMember } from './data';
 import { TEAM_CONFIG } from './data';
 import Image from 'next/image';
+import Link from 'next/link';
 
 function TeamMemberCard({ member }: { member: TeamMember }) {
   return (
-    <div className=" mx-auto">
+    <div className=" mx-auto" style={{ background: 'url(/team/s1.png) ', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', height: 450 }}>
 
 
       <Image
@@ -16,8 +17,25 @@ function TeamMemberCard({ member }: { member: TeamMember }) {
         height={450}
       />
 
-
-
+      <div className=' absolute top-[80%] w-full  !gap-0 left-1/2 -translate-[50%]'>
+        <SectionHeading
+          title={member.name}
+          description={member.role}
+          descriptionFontClass=" m-0"
+          titleClassName='m-0 block !font-bold !w-full'
+          titleSize='h5'
+          className='  w-full  !gap-0 '
+        />
+        <Link href={member.ctaHref || ''} className='w-full block'>
+          <Image
+            src={'/team/l.png'}
+            alt={member.name}
+            width={60}
+            className=' mx-auto mt-5 cursor-pointer'
+            height={20}
+          />
+        </Link>
+      </div>
     </div>
   );
 }
@@ -46,7 +64,7 @@ export function Team({
 
           {/* Team Members Grid with staggered reveal */}
           <RevealGroup stagger={0.1} delayChildren={0.3}>
-            <div className="flex justify-center my-14">
+            <div className="flex justify-center my-14 gap-10">
               {config.members.map((member) => (
                 <Reveal key={member.id} direction="up" distance={48} item>
                   <TeamMemberCard member={member} />

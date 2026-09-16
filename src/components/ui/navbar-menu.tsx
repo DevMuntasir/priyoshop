@@ -98,52 +98,42 @@ export const Menu = ({
   </nav>
 );
 
-export const ProductItem = ({
-  title,
-  description,
-  href,
-  src,
-}: {
+export const ProductItem = (props: {
   title: string;
   description: string;
   href: string;
   src?: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }) => (
-  <a href={href} className="flex space-x-2">
-    {src && (
+  <a href={props.href} onClick={props.onClick} className="flex space-x-2">
+    {props.src && (
       <>
         {/* eslint-disable-next-line next/no-img-element */}
         <img
-          src={src}
+          src={props.src}
           width={60}
           height={30}
-          alt={title}
+          alt={props.title}
           className="shrink-0 mr-3 p-2"
         />
       </>
     )}
     <div>
       <h4 className="text-xl font-bold mb-1 text-ps-black dark:text-ps-white">
-        {title}
+        {props.title}
       </h4>
       <p className="text-ps-ink-500 text-sm max-w-40 dark:text-ps-grey-400">
-        {description}
+        {props.description}
       </p>
     </div>
   </a>
 );
 
-export const HoveredLink = ({
-  children,
-  ...rest
-}: {
-  children: React.ReactNode;
-  [key: string]: unknown;
-}) => (
+export const HoveredLink = (props: React.ComponentPropsWithoutRef<'a'>) => (
   <a
-    {...rest}
-    className="text-ps-ink-600 dark:text-ps-grey-400 hover:text-ps-black dark:hover:text-ps-white"
+    {...props}
+    className={`text-ps-ink-600 transition-colors hover:text-ps-black dark:text-ps-grey-400 dark:hover:text-ps-white ${props.className ?? ''}`.trim()}
   >
-    {children}
+    {props.children}
   </a>
 );

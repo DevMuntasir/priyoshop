@@ -136,12 +136,18 @@ export function NavBar({
     <div className="fixed inset-x-0 top-0 z-999 w-full px-[env(safe-area-inset-left)]">
       {/* Desktop: Aceternity navbar with dropdowns */}
       <nav
+        onMouseLeave={() => {
+          setActiveDesktop(null);
+        }}
         className={`container hidden h-16 mx-auto w-[calc(100%-2rem)] max-w-[calc(var(--container-xl)-2rem)] items-center gap-3 rounded-ps-md border border-ps-white-700/10 bg-ps-white/85 px-5 shadow backdrop-blur-md lg:flex ${floating ? 'mt-[calc(env(safe-area-inset-top)+0.75rem)]' : 'mt-[env(safe-area-inset-top)]'} ${className}`.trim()}
         {...rest}
       >
         <button
           type="button"
           onClick={handleLogoClick}
+          onMouseEnter={() => {
+            setActiveDesktop(null);
+          }}
           className="flex shrink-0 border-none bg-transparent p-0 min-w-fit"
         >
           <Logo width={140} className="w-24 sm:w-32 lg:w-44.5" />
@@ -165,12 +171,24 @@ export function NavBar({
                       description={child.description || ''}
                       href={toAbsoluteHref(child.href)}
                       src={child.image}
+                      onClick={() => {
+                        setActiveDesktop(null);
+                      }}
                     />
                   ))}
                 </div>
               </MenuItem>
             ) : (
-              <HoveredLink key={item.id} href={toAbsoluteHref(item.href)}>
+              <HoveredLink
+                key={item.id}
+                href={toAbsoluteHref(item.href)}
+                onMouseEnter={() => {
+                  setActiveDesktop(null);
+                }}
+                onClick={() => {
+                  setActiveDesktop(null);
+                }}
+              >
                 {item.label}
               </HoveredLink>
             )
@@ -182,13 +200,23 @@ export function NavBar({
             <button
               type="button"
               onClick={handleSecondary}
+              onMouseEnter={() => {
+                setActiveDesktop(null);
+              }}
               className="hidden sm:inline-flex border-none bg-transparent p-2 sm:p-0 font-body text-xs sm:text-ps-sm font-semibold whitespace-nowrap text-ps-black hover:text-ps-ink-600 rounded-lg active:bg-ps-black/5"
             >
               {secondary}
             </button>
           )}
           {cta && (
-            <Button size="md" onClick={onCta} className="text-xs sm:text-sm px-3 sm:px-4 py-2">
+            <Button
+              size="md"
+              onClick={onCta}
+              onMouseEnter={() => {
+                setActiveDesktop(null);
+              }}
+              className="text-xs sm:text-sm px-3 sm:px-4 py-2"
+            >
               {cta}
             </Button>
           )}
