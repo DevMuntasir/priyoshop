@@ -1,8 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Stack } from '@/components/ui/Grid';
@@ -55,7 +56,11 @@ export default function NewJobPostingPage() {
 
   return (
     <main className="space-y-6">
-      <AdminPageHeader title="New job posting" description="Start a new job posting as a draft" />
+      <AdminPageHeader
+        title="New job posting"
+        description="Start a new job posting as a draft"
+        backHref="/admin/career"
+      />
 
       <Card padding="lg" className="max-w-2xl">
         <Stack gap="md">
@@ -102,7 +107,14 @@ export default function NewJobPostingPage() {
 
           <div className="flex gap-2">
             <Button onClick={() => void handleCreate()} disabled={isLoading} tone="brand">
-              {isLoading ? 'Creating…' : 'Create job posting'}
+              {isLoading ? (
+                <span className="inline-flex items-center gap-2">
+                  <AdminSpinner size="sm" tone="white" />
+                  Creating…
+                </span>
+              ) : (
+                'Create job posting'
+              )}
             </Button>
             <Button variant="outlined" tone="dark" onClick={() => router.back()} disabled={isLoading}>
               Cancel

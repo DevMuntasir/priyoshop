@@ -50,6 +50,7 @@ export default async function AdminOverviewPage(props: { params: Promise<{ local
       <AdminPageHeader
         title="Overview"
         description="Manage the content, SEO and configuration of the whole site from one place."
+        showBackButton={false}
       />
 
       <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4  ">

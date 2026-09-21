@@ -1,8 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Stack } from '@/components/ui/Grid';
@@ -55,7 +56,11 @@ export default function NewBlogPostPage() {
 
   return (
     <main className="space-y-6">
-      <AdminPageHeader title="New blog post" description="Start a new post as a draft" />
+      <AdminPageHeader
+        title="New blog post"
+        description="Start a new post as a draft"
+        backHref="/admin/media"
+      />
 
       <Card padding="lg" className="max-w-2xl">
         <Stack gap="md">
@@ -102,7 +107,14 @@ export default function NewBlogPostPage() {
 
           <div className="flex gap-2">
             <Button onClick={() => void handleCreate()} disabled={isLoading} tone="brand">
-              {isLoading ? 'Creating…' : 'Create post'}
+              {isLoading ? (
+                <span className="inline-flex items-center gap-2">
+                  <AdminSpinner size="sm" tone="white" />
+                  Creating…
+                </span>
+              ) : (
+                'Create post'
+              )}
             </Button>
             <Button variant="outlined" tone="dark" onClick={() => router.back()} disabled={isLoading}>
               Cancel

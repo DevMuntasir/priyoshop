@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -48,9 +49,7 @@ export function NewsPublicationEditor(props: { publicationId: string }) {
   if (!publication) {
     return (
       <main className="space-y-6">
-        <Text size="body" className="text-ps-ink-600">
-          {status || 'Loading…'}
-        </Text>
+        <AdminSpinner fullHeight label={status || 'Loading publication…'} />
       </main>
     );
   }
@@ -100,6 +99,7 @@ export function NewsPublicationEditor(props: { publicationId: string }) {
       <AdminPageHeader
         title={publication.name || 'Edit publication'}
         description={`/news/publications/${publication.slug}`}
+        backHref="/admin/news/publications"
       />
 
       <div className="px-8 space-y-4">

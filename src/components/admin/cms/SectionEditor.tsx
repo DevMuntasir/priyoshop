@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { AdminBackButton } from '@/components/admin/AdminBackButton';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
 import { SectionEditorPreview } from '@/components/admin/cms/SectionEditorPreview';
 import { adminFetch } from '@/libs/auth/AdminFetch';
@@ -1327,7 +1329,7 @@ export const SectionEditor = (props: { page: PageKey; sectionKey: SectionKey }) 
   }, [props.sectionKey]);
 
   if (!section) {
-    return <p className="mt-6 text-sm text-gray-500">Loading…</p>;
+    return <AdminSpinner fullHeight label="Loading section…" />;
   }
 
   const current = section;
@@ -1460,9 +1462,12 @@ export const SectionEditor = (props: { page: PageKey; sectionKey: SectionKey }) 
         className="flex w-[28rem] shrink-0 flex-col border-r border-gray-200 bg-white"
       >
         <div className="flex items-center justify-between gap-3 border-b border-gray-200 px-4 py-3">
-          <div>
-            <h1 className="text-sm font-semibold text-gray-900">{current.label}</h1>
-            <p className="text-xs text-gray-400">Editing {locale}</p>
+          <div className="flex items-center gap-2.5">
+            <AdminBackButton href={`/admin/pages/${props.page}`} label="Back" />
+            <div>
+              <h1 className="text-sm font-semibold text-gray-900">{current.label}</h1>
+              <p className="text-xs text-gray-400">Editing {locale}</p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             {status ? <span className="text-xs text-gray-500">{status}</span> : null}

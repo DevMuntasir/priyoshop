@@ -1,8 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Stack } from '@/components/ui/Grid';
@@ -55,7 +56,11 @@ export default function NewNewsPostPage() {
 
   return (
     <main className="space-y-6">
-      <AdminPageHeader title="New news post" description="Start a new post as a draft" />
+      <AdminPageHeader
+        title="New news post"
+        description="Start a new post as a draft"
+        backHref="/admin/news"
+      />
 
       <Card padding="lg" className="max-w-2xl">
         <Stack gap="md">
@@ -70,7 +75,7 @@ export default function NewNewsPostPage() {
                   setSlug(slugifyTitle(e.target.value));
                 }
               }}
-              placeholder="e.g., PriyoShop introduces Dipty Lentils to market"
+              placeholder="e.g. PriyoShop secures seed funding"
               disabled={isLoading}
             />
           </div>
@@ -82,19 +87,16 @@ export default function NewNewsPostPage() {
               value={slug}
               onChange={(e) => {
                 setSlugTouched(true);
-                setSlug(e.target.value.toLowerCase().replaceAll(/\s+/gu, '-'));
+                setSlug(slugifyTitle(e.target.value));
               }}
-              placeholder="e.g., priyoshop-introduces-dipty-lentils-to-market"
+              placeholder="priyoshop-secures-seed-funding"
               disabled={isLoading}
             />
-            <Text size="xs" className="mt-1 text-ps-ink-600">
-              Used in the URL: /news/&lt;slug&gt;
-            </Text>
           </div>
 
           {error && (
-            <div className="rounded-ps-sm border border-ps-red-200 bg-ps-red-50 p-3">
-              <Text size="sm" className="text-ps-red-500">
+            <div className="rounded-md bg-ps-red-50 p-3">
+              <Text size="sm" className="text-ps-red-700">
                 {error}
               </Text>
             </div>
@@ -102,7 +104,14 @@ export default function NewNewsPostPage() {
 
           <div className="flex gap-2">
             <Button onClick={() => void handleCreate()} disabled={isLoading} tone="brand">
-              {isLoading ? 'Creating…' : 'Create post'}
+              {isLoading ? (
+                <span className="inline-flex items-center gap-2">
+                  <AdminSpinner size="sm" tone="white" />
+                  Creating…
+                </span>
+              ) : (
+                'Create post'
+              )}
             </Button>
             <Button variant="outlined" tone="dark" onClick={() => router.back()} disabled={isLoading}>
               Cancel

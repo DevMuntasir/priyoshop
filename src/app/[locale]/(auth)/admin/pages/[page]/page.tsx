@@ -22,6 +22,7 @@ export default async function AdminPageSectionsPage(props: {
       <AdminPageHeader
         title={`${def.label} page`}
         description="Edit the content and styling of each section on this page. Changes go live on save."
+        backHref="/admin/pages"
         action={(
           <Link
             href={`/admin/seo/${page}`}

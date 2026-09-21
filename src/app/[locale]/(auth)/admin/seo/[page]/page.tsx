@@ -21,6 +21,7 @@ export default async function AdminSeoEditPage(props: {
       <AdminPageHeader
         title={`${def.label} — SEO`}
         description="Override the metadata for this page per language. Blank fields fall back to the page's default copy."
+        backHref="/admin/seo"
       />
       <SeoEditor pageKey={page} />
     </div>

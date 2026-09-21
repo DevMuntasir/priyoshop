@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -218,9 +219,7 @@ export function AssetLibrary(props: AssetLibraryProps) {
       {/* Asset Grid / List View */}
       {loading ? (
         <div className="flex h-64 items-center justify-center rounded-xl border border-gray-200 bg-white">
-          <Text size="sm" className="text-gray-500 animate-pulse">
-            Loading media assets…
-          </Text>
+          <AdminSpinner label="Loading media assets…" />
         </div>
       ) : assets.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 bg-white p-12 text-center">

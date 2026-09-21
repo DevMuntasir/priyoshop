@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MenuBuilder } from '@/components/admin/builder/MenuBuilder';
 import { Button } from '@/components/ui/Button';
 import { Text } from '@/components/ui/Text';
@@ -54,7 +55,7 @@ export default function MenuPage() {
   };
 
   if (isLoading) {
-    return <div className="p-8">Loading...</div>;
+    return <AdminSpinner fullHeight label="Loading navigation menu…" />;
   }
 
   return (
@@ -62,6 +63,7 @@ export default function MenuPage() {
       <AdminPageHeader
         title="Menu Builder"
         description="Manage your site's navigation menu"
+        backHref="/admin"
       />
 
       <div className="flex items-center gap-2">
@@ -71,7 +73,14 @@ export default function MenuPage() {
           }}
           disabled={isSaving}
         >
-          {isSaving ? 'Saving...' : 'Save Menu'}
+          {isSaving ? (
+            <span className="inline-flex items-center gap-2">
+              <AdminSpinner size="sm" tone="white" />
+              Saving…
+            </span>
+          ) : (
+            'Save Menu'
+          )}
         </Button>
         <Text size="sm" className="text-ps-ink-600">
           {items.length} items

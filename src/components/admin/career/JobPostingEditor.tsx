@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { RichTextEditor } from '@/components/admin/media/RichTextEditor';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -57,9 +58,7 @@ export function JobPostingEditor(props: { jobId: string }) {
   if (!job) {
     return (
       <main className="space-y-6">
-        <Text size="body" className="text-ps-ink-600">
-          {status || 'Loading…'}
-        </Text>
+        <AdminSpinner fullHeight label={status || 'Loading job posting…'} />
       </main>
     );
   }
@@ -149,6 +148,7 @@ export function JobPostingEditor(props: { jobId: string }) {
       <AdminPageHeader
         title={job.content.en?.title || 'Edit job posting'}
         description={`/career/${job.slug} — ${job.status === 'published' ? 'Published' : 'Draft'}`}
+        backHref="/admin/career"
       />
 
       <div className="px-8 space-y-4">

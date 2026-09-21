@@ -31,6 +31,7 @@ export default async function AdminNewsPublicationsPage(props: {
       <AdminPageHeader
         title="News publications"
         description="Manage the publication logos and names used on featured news cards and publication landing pages."
+        backHref="/admin/news"
       />
 
       <div className="px-8 space-y-4">

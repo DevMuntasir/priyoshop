@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { BuilderCanvas } from '@/components/admin/builder/BuilderCanvas';
 import { ComponentPalette } from '@/components/admin/builder/ComponentPalette';
 import { PropertyPanel } from '@/components/admin/builder/PropertyPanel';
+import { AdminBackButton } from '@/components/admin/AdminBackButton';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { BlocksTree } from '@/components/admin/builder/BlockTree';
 import { useBuilderState } from '@/components/admin/builder/useBuilderState';
 import { Button } from '@/components/ui/Button';
@@ -59,7 +61,7 @@ export default function PageEditorPage(props: PageProps) {
 
 
   if (!params || !page) {
-    return <div className="p-8">Loading...</div>;
+    return <AdminSpinner fullHeight label="Loading page configuration…" />;
   }
 
   const selectedBlock = builderState.getBlockById(builderState.selectedBlockId ?? '');
@@ -165,17 +167,20 @@ export default function PageEditorPage(props: PageProps) {
       {/* Header */}
       <div className="border-b border-ps-grey-200 p-4 space-y-4">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex-1">
-            <Input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Page title"
-              className="text-ps-h4 font-display font-bold"
-            />
-            <Text size="sm" className="text-ps-ink-600 mt-1">
-              /{page.slug}
-            </Text>
+          <div className="flex flex-1 items-center gap-3">
+            <AdminBackButton href="/admin/page-builder" />
+            <div className="flex-1">
+              <Input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Page title"
+                className="text-ps-h4 font-display font-bold"
+              />
+              <Text size="sm" className="text-ps-ink-600 mt-1">
+                /{page.slug}
+              </Text>
+            </div>
           </div>
 
           <div className="flex items-center gap-2">

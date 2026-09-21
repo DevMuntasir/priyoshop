@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
 import { adminFetch } from '@/libs/auth/AdminFetch';
 import type { PageKey } from '@/libs/cms/Pages';
@@ -61,7 +62,7 @@ export const SeoEditor = (props: { pageKey: PageKey }) => {
   }, [props.pageKey]);
 
   if (!loaded) {
-    return <p className="mt-6 text-sm text-gray-500">Loading…</p>;
+    return <AdminSpinner fullHeight label="Loading SEO configuration…" />;
   }
 
   const form = byLocale[locale] ?? emptyForm();

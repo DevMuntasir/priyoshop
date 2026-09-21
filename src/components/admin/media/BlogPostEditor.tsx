@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
 import { RichTextEditor } from '@/components/admin/media/RichTextEditor';
 import { Button } from '@/components/ui/Button';
@@ -56,9 +57,7 @@ export function BlogPostEditor(props: { postId: string }) {
   if (!post) {
     return (
       <main className="space-y-6">
-        <Text size="body" className="text-ps-ink-600">
-          {status || 'Loading…'}
-        </Text>
+        <AdminSpinner fullHeight label={status || 'Loading post…'} />
       </main>
     );
   }
@@ -143,6 +142,7 @@ export function BlogPostEditor(props: { postId: string }) {
       <AdminPageHeader
         title={post.content.en?.title || 'Edit post'}
         description={`/media/${post.slug} — ${post.status === 'published' ? 'Published' : 'Draft'}`}
+        backHref="/admin/media"
       />
 
       <div className='px-8 space-y-4'>

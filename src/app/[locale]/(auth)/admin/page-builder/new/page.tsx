@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/libs/auth/AdminFetch';
 import { validateSlug } from '@/libs/builder/slugValidation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
@@ -65,6 +66,7 @@ export default function NewPagePage() {
       <AdminPageHeader
         title="Create New Page"
         description="Start building a new custom page"
+        backHref="/admin/page-builder"
       />
 
       <Card padding="lg" className="max-w-2xl">
@@ -117,7 +119,14 @@ export default function NewPagePage() {
               disabled={isLoading}
               tone="brand"
             >
-              {isLoading ? 'Creating...' : 'Create Page'}
+              {isLoading ? (
+                <span className="inline-flex items-center gap-2">
+                  <AdminSpinner size="sm" tone="white" />
+                  Creating…
+                </span>
+              ) : (
+                'Create Page'
+              )}
             </Button>
 
             <Button
