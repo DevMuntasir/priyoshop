@@ -44,6 +44,7 @@ import {
 } from '@/components/sections/distribution';
 import { Ecosystems } from '@/components/sections/ecosystems/Ecosystems';
 import { HeroOne } from '@/components/sections/hero/Hero-one';
+import { HeroStats } from '@/components/sections/stats/Stats';
 import { ImpactGreenHub } from '@/components/impact/ImpactGreenHub';
 import { ImpactHero } from '@/components/impact/ImpactHero';
 import { ImpactNetwork } from '@/components/impact/ImpactNetwork';
@@ -89,6 +90,7 @@ export const EDITABLE_SECTION_RENDERERS: Record<
   career: (data) => <Career data={data} />,
   appBanner: (data) => <AppBanner data={data} />,
   hero: (data) => <HeroOne data={data} />,
+  heroStats: (data) => <HeroStats data={data} />,
   embeddedHero: (data) => <EmbeddedHero data={data} />,
   embeddedPartners: (data) => <EmbeddedPartners data={data} />,
   infrastructure: (data) => <Infrastructure data={data} />,

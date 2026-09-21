@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/Button';
 import { ResponsiveHeroBackground } from '@/components/ui/ResponsiveHeroBackground';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
-import { Stats } from '../stats/Stats';
 
 const AUTOPLAY_MS = 6000;
 const DEFAULT_TITLE_SIZE = 'text-[clamp(2.25rem,10vw,4.375rem)]';
@@ -159,7 +158,7 @@ export function HeroOne(props: { data: ResolvedSection }) {
   }
 
   return (
-    <section className="relative mb-48 min-h-[100svh] sm:mb-24 lg:mb-0 lg:min-h-[100dvh]">
+    <section className="relative min-h-[100svh] lg:min-h-[100dvh]">
       {slides.map((slide, index) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: slides are stored and ordered positionally
         <div
@@ -172,7 +171,7 @@ export function HeroOne(props: { data: ResolvedSection }) {
       ))}
 
       {total > 1 ? (
-        <div className="absolute bottom-52 left-1/2 z-50 flex -translate-x-1/2 gap-1 sm:bottom-28 sm:gap-2">
+        <div className="absolute bottom-24 left-1/2 z-50 flex -translate-x-1/2 gap-1 sm:bottom-28 sm:gap-2">
           {slides.map((_, index) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: slide controls follow positional slides
             <button
@@ -187,7 +186,6 @@ export function HeroOne(props: { data: ResolvedSection }) {
           ))}
         </div>
       ) : null}
-      <Stats />
     </section>
   );
 }

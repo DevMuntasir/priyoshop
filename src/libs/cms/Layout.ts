@@ -10,6 +10,7 @@ export type LayoutEntry = {
 export const PAGE_LAYOUT: Record<PageKey, LayoutEntry[]> = {
   home: [
     { key: 'hero', label: 'Hero', defaultOrder: 10, contentEditable: true },
+    { key: 'heroStats', label: 'Hero stats', defaultOrder: 15, contentEditable: true },
     { key: 'ecosystems', label: 'Ecosystems', defaultOrder: 20, contentEditable: true },
     { key: 'distributionSteps', label: 'Distribution steps', defaultOrder: 30, contentEditable: true },
     { key: 'distributionVideoA', label: 'Distribution video (YouTube)', defaultOrder: 32, contentEditable: true },

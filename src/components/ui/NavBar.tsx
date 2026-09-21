@@ -139,7 +139,7 @@ export function NavBar({
         onMouseLeave={() => {
           setActiveDesktop(null);
         }}
-        className={`container hidden h-16 mx-auto w-[calc(100%-2rem)] max-w-[calc(var(--container-xl)-2rem)] items-center gap-3 rounded-ps-md border border-ps-white-700/10 bg-ps-white/85 px-5 shadow backdrop-blur-md lg:flex ${floating ? 'mt-[calc(env(safe-area-inset-top)+0.75rem)]' : 'mt-[env(safe-area-inset-top)]'} ${className}`.trim()}
+        className={`container hidden h-18 mx-auto w-[calc(100%-2rem)] max-w-[calc(var(--container-xl)-2rem)] items-center gap-3 rounded-[13px] border border-ps-white-700/10 bg-ps-white/85 px-5 shadow backdrop-blur-md lg:flex ${floating ? 'mt-[calc(env(safe-area-inset-top)+0.75rem)]' : 'mt-[env(safe-area-inset-top)]'} ${className}`.trim()}
         {...rest}
       >
         <button
@@ -163,7 +163,7 @@ export function NavBar({
                 active={activeDesktop}
                 item={item.label}
               >
-                <div className="grid grid-cols-2 gap-4 sm:gap-6 p-3 sm:p-4">
+                <div className="grid grid-cols-2 gap-4 sm:gap-6 p-3 sm:p-4 ">
                   {item.children.map((child) => (
                     <ProductItem
                       key={child.id}

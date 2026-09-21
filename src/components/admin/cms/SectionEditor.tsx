@@ -40,6 +40,7 @@ import {
   VISIBILITY_OPTIONS,
 } from '@/libs/cms/StyleTokens';
 import { routing } from '@/libs/I18nRouting';
+import { Link } from '@/libs/I18nNavigation';
 
 type Content = SectionContent;
 
@@ -1480,6 +1481,28 @@ export const SectionEditor = (props: { page: PageKey; sectionKey: SectionKey }) 
         <div className="min-h-0 flex-1 overflow-y-auto" data-lenis-prevent>
           {/* Content */}
           <Panel title="Content" defaultOpen>
+            {current.key === 'hero' ? (
+              <div className="mb-4 rounded-md border border-blue-100 bg-blue-50 p-3 text-xs text-blue-800">
+                <span>Looking to update the Hero stats? </span>
+                <Link
+                  href={`/admin/pages/${props.page}/heroStats`}
+                  className="font-semibold underline hover:text-blue-900"
+                >
+                  Edit Hero stats section →
+                </Link>
+              </div>
+            ) : null}
+            {current.key === 'heroStats' ? (
+              <div className="mb-4 rounded-md border border-blue-100 bg-blue-50 p-3 text-xs text-blue-800">
+                <span>These stats display across the bottom of the Home Hero banner. </span>
+                <Link
+                  href={`/admin/pages/${props.page}/hero`}
+                  className="font-semibold underline hover:text-blue-900"
+                >
+                  Edit Hero slides →
+                </Link>
+              </div>
+            ) : null}
             <ContentPanelBody
               hints={hints}
               heading={content.heading}
