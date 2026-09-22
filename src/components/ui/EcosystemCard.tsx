@@ -39,7 +39,7 @@ export function EcosystemCard(props: EcosystemCardProps) {
       <div className="flex flex-col">
         <h3 className={`m-0 leading-snug ${titleClassName}`.trim()}>{props.title}</h3>
         <p
-          className={`mt-3 line-clamp-4 leading-normal ${design ? design.bodyClass : 'font-body text-ps-xs text-ps-black-400 md:text-ps-body lg:text-[18px]'}`.trim()}
+          className={`mt-3  lg:line-clamp-4 leading-normal font-body text-ps-md text-ps-black-400 md:text-ps-body lg:text-[18px]`.trim()}
         >
           {props.body}
         </p>

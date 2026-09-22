@@ -1,136 +1,59 @@
-'use client';
-
-import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { AccentedTitle } from '@/components/ui/AccentedTitle';
+import { Reveal } from '@/components/ui/Reveal';
+import { ScrollExpand } from '@/components/ui/ScrollExpand';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
-import type { ParsedVideo } from '@/utils/Video';
-import { parseVideoSource } from '@/utils/Video';
-
-function VideoPlayButton() {
-  return (
-    <svg viewBox="0 0 88 88" className="size-18 sm:size-22" aria-hidden>
-      <defs>
-        <path
-          id="brand-growth-play-ring"
-          d="M44 44m-35 0a35 35 0 1 1 70 0a35 35 0 1 1-70 0"
-          fill="none"
-        />
-      </defs>
-      <text
-        fill="white"
-        fontSize="5.5"
-        fontWeight="600"
-        letterSpacing="1.8"
-      >
-        <textPath href="#brand-growth-play-ring" textLength="220">
-          PRESS TO WATCH • PRESS TO WATCH •
-        </textPath>
-      </text>
-      <circle cx="44" cy="44" r="22" fill="white" />
-      <path d="m40 35 14 9-14 9Z" fill="#171717" />
-    </svg>
-  );
-}
-
-function PlayingVideo(props: {
-  parsed: ParsedVideo;
-  title: string;
-  poster?: string;
-  videoRef: React.RefObject<HTMLVideoElement | null>;
-}) {
-  if (props.parsed.type === 'youtube') {
-    return (
-      <iframe
-        src={`${props.parsed.embedUrl}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-        title={props.title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-        className="size-full border-0 object-cover"
-      />
-    );
-  }
-
-  return (
-    <video
-      ref={props.videoRef}
-      src={props.parsed.src}
-      poster={props.poster}
-      aria-label={props.title}
-      controls
-      autoPlay
-      playsInline
-      preload="metadata"
-      className="size-full object-cover"
-    >
-      <track kind="captions" />
-    </video>
-  );
-}
 
 export function DistributionBrandGrowth(props: { data: ResolvedSection }) {
-  const data = props.data;
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const parsed = parseVideoSource(data.heading.videoPath ?? APP_VIDEOS.distribution.brandGrowth.src);
-  const poster =
-    data.heading.backgroundImage ||
-    (parsed.type === 'youtube' ? parsed.thumbnailUrl : APP_VIDEOS.distribution.brandGrowth.poster);
+  const videoSource = props.data.heading.videoPath?.trim() || APP_VIDEOS.distribution.brandGrowth.src;
+  const poster = props.data.heading.backgroundImage?.trim() || APP_VIDEOS.distribution.brandGrowth.poster;
 
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-24">
-      <div className="container px-5 sm:px-8">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="m-0 font-display text-ps-h3 leading-tight font-bold tracking-tight text-ps-black text-balance">
-            {data.heading.title}
-          </h2>
-          {data.heading.description && (
-            <p className="mx-auto mt-4 max-w-3xl font-body text-ps-sm leading-relaxed font-normal text-ps-ink-600 text-pretty">
-              {data.heading.description}
-            </p>
-          )}
-        </div>
-
-        <div className="relative mt-10 aspect-video overflow-hidden rounded-ps-md bg-ps-grey-900 shadow-md sm:mt-12 lg:mt-14 lg:aspect-[1.94/1]">
-          {isPlaying ? (
-            <PlayingVideo
-              parsed={parsed}
-              title={data.heading.title}
-              poster={poster}
-              videoRef={videoRef}
-            />
-          ) : (
-            <button
-              type="button"
-              aria-label={`Play video: ${data.heading.title}`}
-              className="group absolute inset-0 flex size-full cursor-pointer items-center justify-center overflow-hidden bg-ps-grey-900"
-              onClick={() => {
-                setIsPlaying(true);
-                if (parsed.type === 'direct') {
-                  setTimeout(() => {
-                    void videoRef.current?.play();
-                  }, 0);
-                }
-              }}
-            >
-              {poster && (
-                <Image
-                  src={poster}
-                  alt={data.heading.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 1100px"
-                  className="absolute inset-0 object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              )}
-              <span className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-black/10 transition-colors group-hover:bg-black/40" />
-              <span className="relative z-10 transition-transform duration-300 group-hover:scale-105">
-                <VideoPlayButton />
-              </span>
-            </button>
-          )}
-        </div>
+    <section className="relative w-full bg-white py-12 sm:py-16 lg:py-20">
+      <div className="container mx-auto px-4 pb-6 sm:px-6 lg:px-8">
+        <Reveal>
+          <SectionHeading
+            title={<AccentedTitle text={props.data.heading.title} />}
+            description={props.data.heading.description}
+            eyebrow={props.data.heading.eyebrow}
+            align="center"
+          />
+        </Reveal>
       </div>
+
+      <ScrollExpand
+        src={videoSource}
+        mediaType="video"
+        poster={poster}
+        alt={props.data.heading.title || APP_VIDEOS.distribution.brandGrowth.title}
+        useWindowScroll
+        scrollHint="Scroll to expand"
+        startWidth={58}
+        startHeight={64}
+        startRadius={24}
+        endRadius={0}
+        mediaZoom={1.25}
+        scrollDistance={1.2}
+        holdDistance={0.3}
+        overlayScrim={0.45}
+      >
+        {/* <div className="max-w-2xl px-4 text-center">
+          <h3 className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl">{props.data.heading.title}</h3>
+          {props.data.heading.description ? (
+            <p className="mt-3 text-sm text-ps-white/90 sm:text-base lg:text-lg">
+              {props.data.heading.description}
+            </p>
+          ) : null}
+          {props.data.heading.ctaLabel ? (
+            <div className="mt-6 flex justify-center">
+              <Button href={props.data.heading.ctaHref} variant="filled" tone="light">
+                {props.data.heading.ctaLabel}
+              </Button>
+            </div>
+          ) : null}
+        </div> */}
+      </ScrollExpand>
     </section>
   );
 }

@@ -98,6 +98,16 @@ export const PAGE_LAYOUT: Record<PageKey, LayoutEntry[]> = {
     { key: 'opportunityPartnerForm', label: 'Partner form', defaultOrder: 80, contentEditable: true },
   ],
   portfolio: [],
+  career: [
+    { key: 'careerHero', label: 'Hero', defaultOrder: 10, contentEditable: true },
+    { key: 'careerVideoBanner', label: 'Video banner', defaultOrder: 20, contentEditable: true },
+    { key: 'careerInspiration', label: 'Inspiring stories', defaultOrder: 30, contentEditable: true },
+    { key: 'careerWhyWork', label: 'Why work here', defaultOrder: 40, contentEditable: true },
+    { key: 'careerValues', label: 'Values', defaultOrder: 50, contentEditable: true },
+    { key: 'careerBenefits', label: 'Benefits', defaultOrder: 60, contentEditable: true },
+    { key: 'careerLife', label: 'Life at PriyoShop', defaultOrder: 70, contentEditable: true },
+    { key: 'careerPositions', label: 'Open positions', defaultOrder: 80, contentEditable: true },
+  ],
 };
 
 export const listLayout = (page: PageKey): LayoutEntry[] => PAGE_LAYOUT[page];

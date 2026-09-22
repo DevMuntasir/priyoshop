@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { buildAboutSections } from '@/components/sections/AboutSections';
 import { buildBusinessSections } from '@/components/sections/BusinessSections';
 import type { BuildPageSectionsOptions } from '@/components/sections/buildPageSections';
+import { buildCareerSections } from '@/components/sections/CareerSections';
 import { buildCommerceSections } from '@/components/sections/CommerceSections';
 import { buildDiptySections } from '@/components/sections/DiptySections';
 import { buildDistributionSections } from '@/components/sections/DistributionSections';
@@ -36,6 +37,7 @@ const BUILDERS: Record<PageKey, (options: BuildOptions) => Promise<React.ReactNo
   impact: buildImpactSections,
   opportunity: buildOpportunitySections,
   portfolio: async () => null,
+  career: buildCareerSections,
 };
 
 type PreviewPageProps = {

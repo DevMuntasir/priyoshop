@@ -1,5 +1,5 @@
 
-export const PAGE_KEYS = ['home', 'about', 'business', 'commerce', 'distribution', 'retailFinance', 'dipty', 'impact', 'opportunity', 'portfolio'] as const;
+export const PAGE_KEYS = ['home', 'about', 'business', 'commerce', 'distribution', 'retailFinance', 'dipty', 'impact', 'opportunity', 'portfolio', 'career'] as const;
 export type PageKey = (typeof PAGE_KEYS)[number];
 
 export const isPageKey = (value: string): value is PageKey =>
@@ -22,6 +22,7 @@ export const PAGE_REGISTRY: Record<PageKey, PageDef> = {
   impact: { key: 'impact', label: 'Impact', path: '/impact' },
   opportunity: { key: 'opportunity', label: 'Opportunity', path: '/opportunity' },
   portfolio: { key: 'portfolio', label: 'Portfolio', path: '/portfolio' },
+  career: { key: 'career', label: 'Career', path: '/career' },
 };
 
 export const getPageDef = (key: PageKey): PageDef => PAGE_REGISTRY[key];

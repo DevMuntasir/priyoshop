@@ -11,7 +11,8 @@ export function OpportunityHero(props: { data: ResolvedSection }) {
 
   return (
     <section
-      className={`min-h-[50svh] bg-ps-white bg-linear-to-b lg:min-h-[100dvh] ${resolved.wrapperClass}`.trim()}
+      className={`min-h-[50svh] bg-ps-white bg-linear-to-b lg:min-h-[100dvh] h-[1200px] ${resolved.wrapperClass}`.trim()}
+      style={{ backgroundColor: heading.backgroundImage, backgroundImage: heading.backgroundImage ? `url(${heading.backgroundImage})` : undefined }}
     >
       <div
         className={`container relative mx-auto flex min-h-[50svh] overflow-hidden px-4 pt-28 pb-12 sm:px-6 lg:min-h-[100dvh] lg:px-8 ${alignClass}`}
@@ -38,7 +39,7 @@ export function OpportunityHero(props: { data: ResolvedSection }) {
           )}
         </div>
         {/* Animated Bangladesh map with dropping pin closing the hero */}
-        {heading.backgroundImage
+        {/* {heading.backgroundImage
         || heading.backgroundImageTablet
         || heading.backgroundImageLaptop
         || heading.backgroundImageDesktop ? (
@@ -69,7 +70,7 @@ export function OpportunityHero(props: { data: ResolvedSection }) {
               height={600}
             />
           </picture>
-        ) : null}
+        ) : null} */}
       </div>
     </section>
   );

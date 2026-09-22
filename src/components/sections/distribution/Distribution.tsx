@@ -124,7 +124,7 @@ export function DistributionVideoB(props: { data: ResolvedSection }) {
         holdDistance={0.3}
         overlayScrim={0.45}
       >
-        <div className="max-w-2xl px-4 text-center">
+        {/* <div className="max-w-2xl px-4 text-center">
           <h3 className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl">{heading.title}</h3>
           {heading.description ? (
             <p className="mt-3 text-sm text-ps-white/90 sm:text-base lg:text-lg">
@@ -138,7 +138,7 @@ export function DistributionVideoB(props: { data: ResolvedSection }) {
               </Button>
             </div>
           ) : null}
-        </div>
+        </div> */}
       </ScrollExpand>
     </div>
   );

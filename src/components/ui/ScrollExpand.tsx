@@ -1,7 +1,8 @@
 'use client';
 
 import type React from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { parseVideoSource } from '@/utils/Video';
 import './ScrollExpand.css';
 
 export type ScrollExpandProps = {
@@ -37,11 +38,12 @@ function smoothstep(edge0: number, edge1: number, x: number): number {
 }
 
 export function ScrollExpand(props: ScrollExpandProps) {
+  const [isMuted, setIsMuted] = useState(true);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const frameRef = useRef<HTMLDivElement | null>(null);
-  const mediaRef = useRef<HTMLImageElement | HTMLVideoElement | null>(null);
+  const mediaRef = useRef<HTMLImageElement | HTMLVideoElement | HTMLIFrameElement | null>(null);
   const titleRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const scrimRef = useRef<HTMLDivElement | null>(null);
@@ -87,7 +89,14 @@ export function ScrollExpand(props: ScrollExpandProps) {
     enabled,
   };
 
+  const lastAppliedRef = useRef(-1);
+
   const applyProgress = (p: number) => {
+    if (Math.abs(p - lastAppliedRef.current) < 0.0002) {
+      return;
+    }
+    lastAppliedRef.current = p;
+
     const frame = frameRef.current;
     const media = mediaRef.current;
     if (!frame || !media) {
@@ -99,12 +108,14 @@ export function ScrollExpand(props: ScrollExpandProps) {
 
     const w = c.startWidth + (100 - c.startWidth) * e;
     const h = c.startHeight + (100 - c.startHeight) * e;
-    const ix = Math.max(0, (100 - w) / 2);
-    const iy = Math.max(0, (100 - h) / 2);
     const r = c.startRadius + (c.endRadius - c.startRadius) * e;
-    frame.style.clipPath = `inset(${iy}% ${ix}% ${iy}% ${ix}% round ${r}px)`;
 
-    media.style.transform = `scale(${c.mediaZoom + (1 - c.mediaZoom) * e})`;
+    frame.style.width = `${w}%`;
+    frame.style.height = `${h}%`;
+    frame.style.borderRadius = `${r}px`;
+
+    const zoom = c.mediaZoom + (1 - c.mediaZoom) * e;
+    media.style.transform = `translate3d(-50%, -50%, 0) scale(${zoom})`;
 
     if (scrimRef.current) {
       scrimRef.current.style.opacity = `${c.overlayScrim * e}`;
@@ -143,19 +154,29 @@ export function ScrollExpand(props: ScrollExpandProps) {
     let current = 0;
     let target = 0;
     let stageH = 0;
+    let stageW = 0;
+    let cachedTrackTop = 0;
     let running = false;
+    let isIntersecting = false;
 
     const measure = () => {
       const c = propsRef.current;
       stageH = c.useWindowScroll ? window.innerHeight : root.clientHeight;
+      stageW = c.useWindowScroll ? window.innerWidth : root.clientWidth;
       if (stageH <= 0) {
         return;
       }
       stage.style.height = `${stageH}px`;
+      stage.style.setProperty('--se-stage-w', `${stageW}px`);
+      stage.style.setProperty('--se-stage-h', `${stageH}px`);
       track.style.height = `${stageH * (1 + Math.max(0, c.scrollDistance) + Math.max(0, c.holdDistance))}px`;
 
-      const w = root.clientWidth || stageH;
+      const w = root.clientWidth || stageW;
       stage.style.setProperty('--se-title-size', `${clamp(w * 0.075, 20, 84)}px`);
+
+      if (c.useWindowScroll) {
+        cachedTrackTop = track.getBoundingClientRect().top + window.scrollY;
+      }
     };
 
     const readProgress = () => {
@@ -165,22 +186,35 @@ export function ScrollExpand(props: ScrollExpandProps) {
       }
       const span = stageH * Math.max(0.01, c.scrollDistance);
       if (c.useWindowScroll) {
-        const { top } = track.getBoundingClientRect();
+        const top = cachedTrackTop - window.scrollY;
         return clamp(-top / span, 0, 1);
       }
       return clamp(root.scrollTop / span, 0, 1);
     };
 
     const tick = () => {
+      target = readProgress();
       const c = propsRef.current;
-      const k = c.smoothing <= 0 ? 1 : 1 - Math.exp(-1 / (60 * c.smoothing));
-      current += (target - current) * k;
-      if (Math.abs(target - current) < 0.0004) {
+
+      if (c.smoothing <= 0 || reduceMotion) {
         current = target;
         running = false;
+      } else {
+        const k = 1 - Math.exp(-1 / (60 * c.smoothing));
+        current += (target - current) * k;
+        if (Math.abs(target - current) < 0.0005) {
+          current = target;
+          running = false;
+        }
       }
+
       applyProgress(current);
-      raf = running ? requestAnimationFrame(tick) : 0;
+
+      if (running) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        raf = 0;
+      }
     };
 
     const kick = () => {
@@ -194,11 +228,11 @@ export function ScrollExpand(props: ScrollExpandProps) {
     };
 
     const onScroll = () => {
-      target = readProgress();
-      if (propsRef.current.smoothing <= 0 || reduceMotion) {
-        current = target;
-        applyProgress(current);
-        return;
+      if (!isIntersecting) {
+        const p = readProgress();
+        if ((p === 0 && current === 0) || (p === 1 && current === 1)) {
+          return;
+        }
       }
       kick();
     };
@@ -218,8 +252,35 @@ export function ScrollExpand(props: ScrollExpandProps) {
     const scroller = useWindowScroll ? window : root;
     scroller.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
-    const ro = new ResizeObserver(onResize);
-    ro.observe(root);
+
+    const videoEl = mediaRef.current instanceof HTMLVideoElement ? mediaRef.current : null;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) {
+          return;
+        }
+        isIntersecting = entry.isIntersecting;
+
+        if (isIntersecting) {
+          if (propsRef.current.useWindowScroll && trackRef.current) {
+            cachedTrackTop = trackRef.current.getBoundingClientRect().top + window.scrollY;
+          }
+          if (videoEl && videoEl.paused) {
+            videoEl.play().catch(() => {});
+          }
+          kick();
+        } else {
+          if (videoEl && !videoEl.paused) {
+            videoEl.pause();
+          }
+        }
+      },
+      { rootMargin: '300px 0px 300px 0px', threshold: 0 }
+    );
+
+    io.observe(track);
 
     return () => {
       if (raf) {
@@ -227,11 +288,15 @@ export function ScrollExpand(props: ScrollExpandProps) {
       }
       scroller.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
-      ro.disconnect();
+      io.disconnect();
+      if (videoEl) {
+        videoEl.pause();
+      }
     };
   }, [useWindowScroll]);
 
   const mediaType = props.mediaType ?? 'image';
+  const parsedVideo = mediaType === 'video' ? parseVideoSource(props.src) : null;
 
   return (
     <div
@@ -242,18 +307,28 @@ export function ScrollExpand(props: ScrollExpandProps) {
       <div ref={trackRef} className="scroll-expand__track">
         <div ref={stageRef} className="scroll-expand__stage">
           <div ref={frameRef} className="scroll-expand__frame">
-            {mediaType === 'video' ? (
-              <video
-                ref={mediaRef as React.RefObject<HTMLVideoElement | null>}
-                className="scroll-expand__media"
-                src={props.src}
-                poster={props.poster}
-                aria-label={props.alt ?? 'Video playback'}
-                autoPlay
-                muted
-                loop
-                playsInline
-              />
+            {mediaType === 'video' && parsedVideo ? (
+              parsedVideo.type === 'youtube' ? (
+                <iframe
+                  ref={mediaRef as unknown as React.RefObject<HTMLIFrameElement | null>}
+                  className="scroll-expand__media border-0 pointer-events-none"
+                  src={`${parsedVideo.embedUrl}?autoplay=1&mute=1&loop=1&playlist=${parsedVideo.videoId}&controls=0&modestbranding=1&playsinline=1`}
+                  title={props.alt ?? 'Video playback'}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                />
+              ) : (
+                <video
+                  ref={mediaRef as React.RefObject<HTMLVideoElement | null>}
+                  className="scroll-expand__media"
+                  src={parsedVideo.src}
+                  poster={props.poster}
+                  aria-label={props.alt ?? 'Video playback'}
+                  preload="metadata"
+                  muted={isMuted}
+                  loop
+                  playsInline
+                />
+              )
             ) : (
               // oxlint-disable-next-line next/no-img-element
               <img
@@ -265,6 +340,34 @@ export function ScrollExpand(props: ScrollExpandProps) {
               />
             )}
             <div ref={scrimRef} className="scroll-expand__scrim" />
+            {mediaType === 'video' && parsedVideo?.type === 'direct' ? (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsMuted((prev) => {
+                    const next = !prev;
+                    if (mediaRef.current && 'muted' in mediaRef.current) {
+                      (mediaRef.current as HTMLVideoElement).muted = next;
+                    }
+                    return next;
+                  });
+                }}
+                aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                className="absolute bottom-5 right-5 z-20 flex size-10 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md transition hover:bg-black/80 hover:scale-110"
+              >
+                {isMuted ? (
+                  <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                  </svg>
+                ) : (
+                  <svg className="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                  </svg>
+                )}
+              </button>
+            ) : null}
             {props.children ? (
               <div ref={overlayRef} className="scroll-expand__overlay">
                 {props.children}

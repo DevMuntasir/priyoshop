@@ -30,7 +30,7 @@ export function CommerceHero(props: { data: ResolvedSection }) {
         desktop={props.data.heading.backgroundImageDesktop}
       />
       <div className="container mx-auto flex min-h-[30svh] flex-col justify-center px-5 lg:min-h-[90svh]">
-        <div className="max-w-[500px]">
+        <div className="max-w-[500px] z-10">
           <h1
             className="font-display text-balance text-ps-h2 font-extrabold leading-[1.3] lg:text-ps-h1 xl:text-ps-display"
           >

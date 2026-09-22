@@ -37,6 +37,14 @@ import { Backers } from '@/components/sections/backers/Backers';
 import { Blogs } from '@/components/sections/blogs/Blogs';
 import { Brands } from '@/components/sections/brands/Brands';
 import { Career } from '@/components/sections/career/Career';
+import { Benefits } from '@/components/career/Benefits';
+import { CareerHero } from '@/components/career/CareerHero';
+import { CareerInspiration } from '@/components/career/CareerInspiration';
+import { CareerPositions } from '@/components/career/CareerPositions';
+import { CareerValues } from '@/components/career/CareerValues';
+import { CareerVideoBanner } from '@/components/career/CareerVideoBanner';
+import { LifeAtPriyoShop } from '@/components/career/LifeAtPriyoShop';
+import { WhyWorkHere } from '@/components/career/WhyWorkHere';
 import {
   DistributionSteps,
   DistributionVideoA,
@@ -149,7 +157,14 @@ export const EDITABLE_SECTION_RENDERERS: Record<
   impactWomen: (data) => <ImpactWomen data={data} />,
   impactPartnerBanner: (data) => <ImpactPartnerBanner data={data} />,
   // impactInitiative: (data) => <ImpactInitiative data={data} />,
-
+  careerHero: (data) => <CareerHero data={data} />,
+  careerVideoBanner: (data) => <CareerVideoBanner data={data} />,
+  careerInspiration: (data) => <CareerInspiration data={data} />,
+  careerWhyWork: (data) => <WhyWorkHere data={data} />,
+  careerValues: (data) => <CareerValues data={data} />,
+  careerBenefits: (data) => <Benefits data={data} />,
+  careerLife: (data) => <LifeAtPriyoShop data={data} />,
+  careerPositions: (data) => <CareerPositions data={data} />,
 };
 
 export const renderEditableSection = (key: SectionKey, data: ResolvedSection): React.ReactNode =>

@@ -24,7 +24,7 @@ export function DistributionHowWork(props: { data: ResolvedSection }) {
   }, [stepCount]);
 
   return (
-    <section className="relative rounded-t-4xl bg-black py-12 sm:py-16 lg:py-20">
+    <section className="relative  bg-black py-12 sm:py-16 lg:py-20">
       <div className="flex flex-col justify-center">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -43,19 +43,7 @@ export function DistributionHowWork(props: { data: ResolvedSection }) {
           {/* Content Grid */}
           <div className="grid grid-cols-1 items-stretch gap-10 lg:grid-cols-2 lg:gap-20">
             {/* Left: Image */}
-            <div className="relative mx-auto aspect-[2/3] h-auto max-h-[600px] w-full max-w-[400px] overflow-hidden rounded-xl bg-ps-white-950 lg:h-[600px] lg:aspect-auto">
-              {STEPS.map(step => (
-                <img
-                  key={step.id}
-                  src={step.image}
-                  alt={step.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-                  style={{ opacity: activeStep === step.id ? 1 : 0 }}
-                />
-              ))}
-            </div>
 
-            {/* Right: Steps */}
             <div className="flex flex-col justify-between gap-8 py-2 h-fit">
               {STEPS.map((step) => {
                 const isActive = activeStep === step.id;
@@ -81,6 +69,19 @@ export function DistributionHowWork(props: { data: ResolvedSection }) {
                   </button>
                 );
               })}
+            </div>
+            {/* Right: Steps */}
+
+            <div className="relative mx-auto aspect-[2/3] h-auto max-h-[600px] w-full max-w-[480px] overflow-hidden rounded-xl bg-ps-white-950 lg:h-[600px] lg:aspect-auto">
+              {STEPS.map(step => (
+                <img
+                  key={step.id}
+                  src={step.image}
+                  alt={step.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                  style={{ opacity: activeStep === step.id ? 1 : 0 }}
+                />
+              ))}
             </div>
           </div>
         </div>

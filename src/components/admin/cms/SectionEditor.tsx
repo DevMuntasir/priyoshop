@@ -268,6 +268,21 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
     { field: 'description', label: 'Detail headline', type: 'textarea', full: true },
     { field: 'body', label: 'Detail body', type: 'textarea', full: true },
   ],
+  story: [
+    { field: 'name', label: 'Name' },
+    { field: 'description', label: 'Story quote / Description', type: 'textarea', full: true },
+    { field: 'image', label: 'Photo image path' },
+    { field: 'imageAlt', label: 'Image alt' },
+  ],
+  value: [
+    { field: 'title', label: 'Title' },
+    { field: 'description', label: 'Description', type: 'textarea', full: true },
+    { field: 'logo', label: 'Icon / Logo path' },
+  ],
+  benefit: [
+    { field: 'title', label: 'Title' },
+    { field: 'description', label: 'Description', type: 'textarea', full: true },
+  ],
 };
 
 const ITEM_KIND_LABELS: Record<ItemKind, string> = {
@@ -287,6 +302,9 @@ const ITEM_KIND_LABELS: Record<ItemKind, string> = {
   video: 'Video',
   product: 'Product',
   feature: 'Feature',
+  story: 'Story',
+  value: 'Value',
+  benefit: 'Benefit',
 };
 
 type ItemFieldGroup = {

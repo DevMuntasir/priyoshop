@@ -30,7 +30,7 @@ export function ImpactHero(props: { data: ResolvedSection }) {
         desktop={props.data.heading.backgroundImageDesktop}
       />
       <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[600px]">
+        <div className="max-w-[600px] z-10">
           <SectionHeading
             className="!font-extrabold"
             titleSize="display"

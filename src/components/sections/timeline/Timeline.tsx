@@ -15,7 +15,7 @@ export function Timeline(props: { data: ResolvedSection }) {
 
   return (
     <div className={`h-full bg-section-gradient ${resolved.wrapperClass}`.trim()}>
-      <div className="container relative mx-auto py-20 h-full">
+      <div className="container relative mx-auto pb-[200px] h-full">
         {/* <div className="px-6 md:px-0">
           <SectionHeading
             titleSize="h3"
@@ -32,7 +32,7 @@ export function Timeline(props: { data: ResolvedSection }) {
             roadWidth: 18,
             travelingImage: '/timeline/van1.png',
             travelingImageSize: 100,
-            travelingImageOffset: -2,
+            travelingImageOffset: 0,
             items: timelineItems,
           }}
           heading={heading} items={items} style={style}

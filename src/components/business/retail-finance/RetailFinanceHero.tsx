@@ -29,8 +29,8 @@ export function RetailFinanceHero(props: { data: ResolvedSection }) {
         laptop={props.data.heading.backgroundImageLaptop}
         desktop={props.data.heading.backgroundImageDesktop}
       />
-      <div className="container mx-auto flex min-h-[30svh] flex-col justify-center px-4 sm:px-6 lg:min-h-[60svh] lg:px-8">
-        <div className="max-w-[700px]">
+      <div className="container z-10 mx-auto flex min-h-[30svh] flex-col justify-center px-4 sm:px-6 lg:min-h-[60svh] lg:px-8">
+        <div className="max-w-[600px]">
           <h1
             className="accented-text font-display text-balance text-ps-h4 font-extrabold leading-[1.3] sm:text-ps-h2 lg:text-ps-h1 xl:text-ps-display"
           >

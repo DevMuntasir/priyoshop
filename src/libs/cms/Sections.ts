@@ -78,7 +78,15 @@ export const SECTION_KEYS = [
   'impactPartnerBanner',
   // 'impactInitiative',
   'opportunityHub',
-  'opportunityDipty'
+  'opportunityDipty',
+  'careerHero',
+  'careerVideoBanner',
+  'careerInspiration',
+  'careerWhyWork',
+  'careerValues',
+  'careerBenefits',
+  'careerLife',
+  'careerPositions',
 ] as const;
 export type SectionKey = (typeof SECTION_KEYS)[number];
 
@@ -101,7 +109,10 @@ export type ItemKind =
   | 'faq'
   | 'video'
   | 'product'
-  | 'feature';
+  | 'feature'
+  | 'story'
+  | 'value'
+  | 'benefit';
 
 export type LogoItem = { name: string; logo: string };
 export type AwardItem = { name: string; caption: string; logo: string };
@@ -2025,6 +2036,219 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
   //     ],
   //   },
   // },
+  careerHero: {
+    key: 'careerHero',
+    label: 'Hero',
+    page: 'career',
+    itemKind: 'card',
+    defaultOrder: 10,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        title: 'Build Your Future With PriyoShop',
+        description:
+          'Explore exciting career opportunities and become part of a team transforming Bangladesh’s retail ecosystem through technology, innovation, and impact.',
+        ctaLabel: 'Explore All Open Positions',
+        ctaHref: '#open-positions',
+      },
+      items: [],
+    },
+    editor: { headingOnly: true, sectionCta: true },
+  },
+  careerVideoBanner: {
+    key: 'careerVideoBanner',
+    label: 'Video banner',
+    page: 'career',
+    itemKind: 'card',
+    defaultOrder: 20,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        title: 'Play video',
+        videoPath: APP_VIDEOS.career.banner.src,
+        backgroundImage: '/career/7.png',
+      },
+      items: [],
+    },
+    editor: { headingOnly: true, video: true },
+  },
+  careerInspiration: {
+    key: 'careerInspiration',
+    label: 'Inspiring stories',
+    page: 'career',
+    itemKind: 'story',
+    defaultOrder: 30,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        eyebrow: 'Meet Our People',
+        title: 'Inspiring Stories',
+        description: '',
+      },
+      items: [
+        {
+          name: 'Sharmin Akter',
+          description:
+            'Sharmin consistently cultivates a positive and supportive office culture by organizing wellness programs and encouraging open communication. She creates a caring environment where every team member feels valued, motivated, and empowered to contribute their best work.',
+          image: '/career/1.png',
+          imageAlt: 'Sharmin Akter',
+        },
+        {
+          name: 'Arafat Shimanto',
+          description:
+            'Arafat turns ambitious ideas into thoughtful solutions through curiosity, collaboration, and a willingness to keep learning. His energy helps the team approach every challenge with confidence.',
+          image: '/career/2.png',
+          imageAlt: 'Arafat Shimanto',
+        },
+        {
+          name: 'Amlan Saha',
+          description:
+            'Amlan brings clarity and ownership to every project while making space for the people around him to grow. His collaborative approach helps the team achieve meaningful results together.',
+          image: '/career/3.png',
+          imageAlt: 'Amlan Saha',
+        },
+      ],
+    },
+  },
+  careerWhyWork: {
+    key: 'careerWhyWork',
+    label: 'Why work here',
+    page: 'career',
+    itemKind: 'card',
+    defaultOrder: 40,
+    defaultStyle: makeDefaultStyle({ align: 'left' }),
+    defaultContent: {
+      heading: {
+        title: 'Why you might love to work here?',
+        description:
+          "At PriyoShop, we offer a fantastic workplace Experience a friendly atmosphere, get recognized for your efforts, and enjoy a world-class culture. We are all about your career growth and development, providing opportunities for learning and advancement. Join us for a rewarding journey where your passion meets profession. PriyoShop is not just a workplace; it's where your aspirations come to life!",
+      },
+      items: [],
+    },
+    editor: { headingOnly: true },
+  },
+  careerValues: {
+    key: 'careerValues',
+    label: 'Values',
+    page: 'career',
+    itemKind: 'value',
+    defaultOrder: 50,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        eyebrow: 'What PriyoShop Believe',
+        title: 'Our Values',
+      },
+      items: [
+        {
+          title: 'Thousands of Products',
+          description: 'All groceries essentials are available on one platform.',
+          logo: '/career/1.svg',
+        },
+        {
+          title: 'Best in Quality',
+          description: 'Eliminating intermediaries, connecting 296+ brands to last-mile retailers.',
+          logo: '/career/2.svg',
+        },
+        {
+          title: 'Wholesale Pricing',
+          description: 'Retailers get clear, low prices without bargaining or hidden charges.',
+          logo: '/career/3.svg',
+        },
+        {
+          title: 'Delivery across Bangladesh',
+          description: 'Retail grocery products are delivered directly to store locations.',
+          logo: '/career/4.svg',
+        },
+        {
+          title: 'Easy Credit Access',
+          description: 'Restock confidently with our hassle-free credit facilities for retailers.',
+          logo: '/career/5.svg',
+        },
+        {
+          title: 'Helpful Support',
+          description: 'Our dedicated support team is always available to answer your questions.',
+          logo: '/career/6.svg',
+        },
+      ],
+    },
+  },
+  careerBenefits: {
+    key: 'careerBenefits',
+    label: 'Benefits',
+    page: 'career',
+    itemKind: 'benefit',
+    defaultOrder: 60,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        eyebrow: 'Employee Benefits',
+        title: 'Best of Benefits',
+      },
+      items: [
+        {
+          title: 'Health & Wellbeing',
+          description: 'Supporting employee wellness through a healthy, positive, and caring workplace environment.',
+        },
+        {
+          title: 'Financial Benefits',
+          description: 'Providing competitive financial benefits and support designed to recognize employees\' contributions.',
+        },
+        {
+          title: 'Learning & Growth',
+          description: 'Creating continuous opportunities to learn, develop new skills, and grow professionally.',
+        },
+        {
+          title: 'Recognition & Rewards',
+          description: 'Celebrating performance, achievements, and meaningful contributions across the organization.',
+        },
+        {
+          title: 'Career Opportunities',
+          description: 'Empowering employees to take on new challenges, expand their capabilities, and progress in their careers.',
+        },
+        {
+          title: 'Special Employee Perks',
+          description: 'Making work more rewarding through celebrations, engagement activities, special recognition, and employee-focused initiatives.',
+        },
+      ],
+    },
+  },
+  careerLife: {
+    key: 'careerLife',
+    label: 'Life at PriyoShop',
+    page: 'career',
+    itemKind: 'gallery',
+    defaultOrder: 70,
+    defaultStyle: makeDefaultStyle({ align: 'left' }),
+    defaultContent: {
+      heading: {
+        title: 'Life at PriyoShop',
+      },
+      items: [
+        { image: '/career/1.png', imageAlt: 'Life at PriyoShop' },
+        { image: '/career/2.png', imageAlt: 'Life at PriyoShop' },
+        { image: '/career/3.png', imageAlt: 'Life at PriyoShop' },
+        { image: '/career/4.png', imageAlt: 'Life at PriyoShop' },
+        { image: '/career/5.png', imageAlt: 'Life at PriyoShop' },
+        { image: '/career/6.png', imageAlt: 'Life at PriyoShop' },
+      ],
+    },
+  },
+  careerPositions: {
+    key: 'careerPositions',
+    label: 'Open positions',
+    page: 'career',
+    itemKind: 'card',
+    defaultOrder: 80,
+    defaultStyle: makeDefaultStyle({ align: 'left' }),
+    defaultContent: {
+      heading: {
+        title: 'Open Positions',
+      },
+      items: [],
+    },
+    editor: { headingOnly: true },
+  },
 };
 
 export const getSectionDef = (key: SectionKey): SectionDef => SECTION_REGISTRY[key];
