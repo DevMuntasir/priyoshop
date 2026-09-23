@@ -30,7 +30,7 @@ export function DistributionCoverage(props: { data: ResolvedSection }) {
           />
         )}
       </div>
-      <div className="bg-section-gradient py-8 sm:py-12 lg:py-20">
+      <div className="bg-section-gradient">
         <ScrollExpand
           src={videoSource}
           mediaType="video"

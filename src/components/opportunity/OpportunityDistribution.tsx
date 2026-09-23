@@ -5,10 +5,22 @@ import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
 import Image from 'next/image';
 
 const distributionIssues = [
-  'No real-time data',
-  'Manual & fragmented\noperations',
-  'No embedded finance',
-  'Limited scalability',
+  {
+    title: 'No real-time data',
+    icon: '/opportunities/a.webp',
+  },
+  {
+    title: 'Manual & fragmented\noperations',
+    icon: '/opportunities/b.webp',
+  },
+  {
+    title: 'No embedded finance',
+    icon: '/opportunities/c.webp',
+  },
+  {
+    title: 'Limited scalability',
+    icon: '/opportunities/d.webp',
+  },
 ];
 
 export function OpportunityDistribution(props: { data: ResolvedSection }) {
@@ -54,14 +66,22 @@ export function OpportunityDistribution(props: { data: ResolvedSection }) {
               </div>
 
               <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {distributionIssues.map((issue) => (
+                {distributionIssues.map((issue, i) => (
                   <div
-                    key={issue}
+                    key={i}
                     className="flex min-h-[210px] flex-col items-center justify-center rounded-[28px] border border-[#e5e1df] bg-[#f7f4f2] px-5 py-6 text-center shadow-[0_1px_0_rgba(0,0,0,0.02)]"
                   >
-                    <div className="mb-6 h-16 w-16 rounded-full bg-[#d9d9d9]" />
+                    <div className="mb-6 h-16 w-16 rounded-full bg-transparent">
+                      <Image
+                        src={issue.icon}
+                        alt={issue.title}
+                        className="h-full w-full object-cover"
+                        width={64}
+                        height={64}
+                      />
+                    </div>
                     <p className="max-w-[220px] text-lg font-medium leading-tight text-[#1a1a1a] sm:text-xl" style={{ whiteSpace: 'pre-line' }}>
-                      {issue}
+                      {issue.title}
                     </p>
                   </div>
                 ))}

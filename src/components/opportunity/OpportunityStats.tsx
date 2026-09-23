@@ -16,7 +16,7 @@ export function OpportunityStats(props: { data: ResolvedSection }) {
   }));
 
   return (
-    <div className={`relative -mt-6 rounded-t-[35px] bg-white ${resolved.wrapperClass}`.trim()}>
+    <div className={`relative bg-white ${resolved.wrapperClass}`.trim()}>
       <div className="container mx-auto px-4 py-14 sm:px-6 sm:py-10 lg:px-8">
         <Reveal direction="up">
           <SectionHeading

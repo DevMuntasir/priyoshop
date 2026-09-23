@@ -1684,7 +1684,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
   },
   opportunityHub: {
     key: 'opportunityHub',
-    label: 'Opportunity Hub',
+    label: 'Hub model',
     page: 'opportunity',
     itemKind: 'card',
     defaultOrder: 50,
@@ -1695,46 +1695,50 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         eyebrow: 'Hub Model',
         description:
           'Our Hub Model streamlines supply chains and enhances financial access for small businesses, driving growth and inclusion throughout Bangladesh.',
-
       },
       items: [
         {
           title: 'General Trade / Grocery Stores',
+          body: 'High restocking frequency and wide product assortment around consistent demand.',
           description: 'High restocking frequency and wide product assortment around consistent demand.',
           image: '/opportunities/hub.png',
         },
         {
           title: 'General Trade / Grocery Stores',
+          body: 'High restocking frequency and wide product assortment around consistent demand.',
           description: 'High restocking frequency and wide product assortment around consistent demand.',
           image: '/opportunities/hub.png',
         },
         {
           title: 'General Trade / Grocery Stores',
+          body: 'High restocking frequency and wide product assortment around consistent demand.',
           description: 'High restocking frequency and wide product assortment around consistent demand.',
           image: '/opportunities/hub.png',
         },
         {
           title: 'General Trade / Grocery Stores',
+          body: 'High restocking frequency and wide product assortment around consistent demand.',
           description: 'High restocking frequency and wide product assortment around consistent demand.',
           image: '/opportunities/hub.png',
         },
         {
           title: 'General Trade / Grocery Stores',
+          body: 'High restocking frequency and wide product assortment around consistent demand.',
           description: 'High restocking frequency and wide product assortment around consistent demand.',
           image: '/opportunities/hub.png',
         },
         {
           title: 'General Trade / Grocery Stores',
+          body: 'High restocking frequency and wide product assortment around consistent demand.',
           description: 'High restocking frequency and wide product assortment around consistent demand.',
           image: '/opportunities/hub.png',
         },
       ],
     },
-    editor: { headingOnly: true, backgroundImage: true },
   },
   opportunityDipty: {
     key: 'opportunityDipty',
-    label: '',
+    label: 'Dipty',
     page: 'opportunity',
     itemKind: 'card',
     defaultOrder: 60,
@@ -1746,29 +1750,31 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
       },
       items: [
         {
-          title: 'High Market Reach Potential',
-          description: 'Access millions of retailers and consumers across the country.',
-          image: '/opportunities/hub.png',
+          title: 'Growing Consumption',
+          body: 'Rising incomes and aspirations are driving strong consumption growth.',
+          description: 'Rising incomes and aspirations are driving strong consumption growth.',
+          image: '',
         },
         {
-          title: 'General Trade / Grocery Stores',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
+          title: 'Expanding Retail Demand',
+          body: 'Retailers are increasing stock, expanding categories, and serving more customers.',
+          description: 'Retailers are increasing stock, expanding categories, and serving more customers.',
+          image: '',
         },
         {
-          title: 'General Trade / Grocery Stores',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
+          title: 'Technology Readiness',
+          body: 'Retailers are adopting digital tools, mobile ordering, and cashless payments.',
+          description: 'Retailers are adopting digital tools, mobile ordering, and cashless payments.',
+          image: '',
         },
         {
-          title: 'General Trade / Grocery Stores',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
+          title: 'Infrastructure-Led Transformation',
+          body: 'Modern infrastructure is unlocking efficiency, visibility, and scale across the market.',
+          description: 'Modern infrastructure is unlocking efficiency, visibility, and scale across the market.',
+          image: '',
         },
-
       ],
     },
-    editor: { headingOnly: true, backgroundImage: true },
   },
   opportunityServing: {
     key: 'opportunityServing',

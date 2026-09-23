@@ -92,7 +92,7 @@ export const PAGE_LAYOUT: Record<PageKey, LayoutEntry[]> = {
     { key: 'opportunityStats', label: 'Opportunities in Bangladesh', defaultOrder: 20, contentEditable: true },
     { key: 'opportunityGrowth', label: 'Growth & possibilities', defaultOrder: 30, contentEditable: true },
     { key: 'opportunityDistribution', label: 'Distribution structure', defaultOrder: 40, contentEditable: true },
-    { key: 'opportunityHub', label: 'Hub model', defaultOrder: 50, contentEditable: false },
+    { key: 'opportunityHub', label: 'Hub model', defaultOrder: 50, contentEditable: true },
     { key: 'opportunityDipty', label: 'Dipty', defaultOrder: 60, contentEditable: true },
     { key: 'opportunityServing', label: 'Serving retailers', defaultOrder: 70, contentEditable: true },
     { key: 'opportunityPartnerForm', label: 'Partner form', defaultOrder: 80, contentEditable: true },

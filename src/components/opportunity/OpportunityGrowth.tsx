@@ -27,7 +27,7 @@ export function OpportunityGrowth(props: { data: ResolvedSection }) {
         </Reveal>
 
         {items.length > 0 && (
-          <div className="mx-auto grid max-w-[900px] grid-cols-1 gap-4 text-left sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
+          <div className="mx-auto grid container grid-cols-1 gap-4 text-left sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
             {items.map((stat) => (
               <div
                 key={`${stat.value}-${stat.name}`}

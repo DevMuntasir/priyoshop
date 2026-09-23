@@ -1,8 +1,8 @@
+import Image from 'next/image';
 import { Reveal } from '@/components/ui/Reveal';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { ResolvedSection } from '@/libs/cms/Sections';
 import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
-import Image from 'next/image';
-import { SectionHeading } from '../ui/SectionHeading';
 
 export function OpportunityHub(props: { data: ResolvedSection }) {
   const { heading, style, items } = props.data;
@@ -24,29 +24,38 @@ export function OpportunityHub(props: { data: ResolvedSection }) {
           />
         </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-10">
-          {items.map((item, index) => (
-            <div key={index}>
-              {
-                item.title && item.description && item.image && (
-                  <Reveal key={index} direction="up" className="border-[1px] border-ps-cream-yellow ">
-                    <div className=' bg-ps-warm-white '>
-                      <Image src={item.image} alt={'log'} width={300} height={200} className='w-full' />
-                    </div>
-                    <div className='p-4'>
-                      {item.title && <h3 className="text-lg lg:text-2xl font-semibold mt-4">{item.title}</h3>}
-                      {item.description && <p className="text-gray-600 mt-2">{item.description}</p>}
-                    </div>
-                  </Reveal>
-                )}
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+          {(items ?? []).map((item, index) => {
+            const body = item.body ?? item.description;
+            if (!item.title && !body && !item.image) {
+              return null;
+            }
 
-
-            </div>
-          ))}
+            return (
+              <div key={index}>
+                <Reveal direction="up" className="flex h-full flex-col border-[1px] border-ps-cream-yellow">
+                  {item.image && (
+                    <div className="bg-ps-warm-white">
+                      <Image
+                        src={item.image}
+                        alt={item.imageAlt || item.title || 'Hub item'}
+                        width={300}
+                        height={200}
+                        className="w-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 p-4">
+                    {item.title && <h3 className="mt-4 text-lg font-semibold lg:text-2xl">{item.title}</h3>}
+                    {body && <p className="mt-2 text-gray-600">{body}</p>}
+                  </div>
+                </Reveal>
+              </div>
+            );
+          })}
         </div>
       </div>
-
-
     </section>
   );
 }
+
