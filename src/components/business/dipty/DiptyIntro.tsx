@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { AccentedTitle } from '@/components/ui/AccentedTitle';
 import { ScrollExpand } from '@/components/ui/ScrollExpand';
 import { SectionHeading } from '@/components/ui/SectionHeading';

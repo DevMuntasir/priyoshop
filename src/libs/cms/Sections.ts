@@ -2132,7 +2132,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
           videoPath: 'https://www.youtube.com/watch?v=aNND7lSQ6zA',
         },
         {
-          title: 'Irfan Ahmed',
+          title: 'Sayad Irfanul Hasan',
           description:
             'Amlan brings clarity and ownership to every project while making space for the people around him to grow. His collaborative approach helps the team achieve meaningful results together.',
           videoPath: 'https://www.youtube.com/watch?v=HVIXs4zh2WI',

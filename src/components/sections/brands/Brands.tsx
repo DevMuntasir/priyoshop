@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/Button';
 import { InfiniteMovingCards } from '@/components/ui/InfiniteMovingCards';
 import { Reveal } from '@/components/ui/Reveal';
 import { Section } from '@/components/ui/Section';

@@ -4,6 +4,7 @@ import type React from 'react';
 import type { AccordionGalleryItem, AccordionGalleryProps } from './AccordionGallery.types';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import type { ParsedVideo } from '@/utils/Video';
 import { parseVideoSource } from '@/utils/Video';
 
 import './AccordionGallery.css';
@@ -126,13 +127,277 @@ function animateSinglePanel(options: AnimatePanelOptions) {
   }
 }
 
+function AccordionVideoPlayer(props: {
+  parsedVideo: ParsedVideo;
+  poster?: string;
+  title: string;
+  onClose: () => void;
+}) {
+  return (
+    <div className="ag-panel__video-wrapper">
+      {props.parsedVideo.type === 'youtube' ? (
+        <iframe
+          src={`${props.parsedVideo.embedUrl}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+          title={props.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          className="size-full border-0 object-cover"
+        />
+      ) : (
+        <video
+          src={props.parsedVideo.src}
+          poster={props.poster}
+          aria-label={props.title}
+          autoPlay
+          controls
+          playsInline
+          className="size-full object-cover"
+        >
+          <track kind="captions" />
+        </video>
+      )}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          props.onClose();
+        }}
+        aria-label="Close video"
+        className="ag-panel__video-close"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          className="size-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+function AccordionPlayOverlay(props: { isActive: boolean }) {
+  if (props.isActive) {
+    return (
+      <span className="ag-panel__play-btn group/play" aria-hidden="true">
+        <span className="ag-panel__play-icon">
+          <svg viewBox="0 0 24 24" className="size-7 translate-x-0.5 fill-current">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        </span>
+      </span>
+    );
+  }
+
+  return (
+    <span className="ag-panel__video-badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" className="size-3.5 fill-current">
+        <path d="M8 5v14l11-7z" />
+      </svg>
+    </span>
+  );
+}
+
+function AccordionPanelLabel(props: {
+  item: AccordionGalleryItem;
+  showQuoteIcon?: boolean;
+  barRef: (el: HTMLElement | SVGElement | null) => void;
+  textRef: (el: HTMLElement | null) => void;
+}) {
+  if (props.item.description) {
+    return (
+      <span className="ag-panel__label" aria-hidden="true">
+        {props.showQuoteIcon && (
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 36 28"
+            className="h-6 w-8 shrink-0 text-white/80"
+            ref={props.barRef}
+          >
+            <path
+              fill="currentColor"
+              d="M0 17.7C0 8.8 4.4 3 13.1 0l2.1 4.2c-4.6 1.7-7.2 4.5-7.7 8.4h6.1V28H0V17.7Zm20.8 0C20.8 8.8 25.2 3 33.9 0l2.1 4.2c-4.6 1.7-7.2 4.5-7.7 8.4h6.1V28H20.8V17.7Z"
+            />
+          </svg>
+        )}
+        <span className="ag-panel__story-content" ref={props.textRef}>
+          <h3 className="font-display text-lg font-semibold leading-tight text-white sm:text-xl">
+            {props.item.label}
+          </h3>
+          <p className="font-body text-xs leading-relaxed text-white/90 sm:text-sm">
+            {props.item.description}
+          </p>
+        </span>
+      </span>
+    );
+  }
+
+  return (
+    <span className="ag-panel__label" aria-hidden="true">
+      <span className="ag-panel__label-row">
+        <span className="ag-panel__bar" ref={props.barRef} />
+        <span className="ag-panel__text" ref={props.textRef}>
+          {props.item.label}
+        </span>
+      </span>
+    </span>
+  );
+}
+
+function AccordionPanel(props: {
+  item: AccordionGalleryItem;
+  index: number;
+  active: number;
+  count: number;
+  trigger: 'hover' | 'click';
+  radius: number;
+  isPlaying: boolean;
+  showLabels: boolean;
+  showQuoteIcon?: boolean;
+  onSelect: (index: number) => void;
+  onPlay: (index: number) => void;
+  onCloseVideo: () => void;
+  panelRef: (el: HTMLElement | null) => void;
+  mediaRef: (el: HTMLElement | null) => void;
+  barRef: (el: HTMLElement | SVGElement | null) => void;
+  textRef: (el: HTMLElement | null) => void;
+}) {
+  const isActive = props.index === props.active;
+  const rawVideo = props.item.video || props.item.videoPath;
+  const parsedVideo = rawVideo ? parseVideoSource(rawVideo) : null;
+  const hasVideo = Boolean(parsedVideo);
+  const poster =
+    props.item.image ||
+    props.item.videoPoster ||
+    (parsedVideo?.type === 'youtube' ? parsedVideo.thumbnailUrl : '/career/1.png');
+
+  if (props.isPlaying && parsedVideo) {
+    return (
+      <div
+        ref={props.panelRef}
+        className="ag-panel text-left ag-panel--active ag-panel--playing"
+        style={{ borderRadius: `${props.radius}px` }}
+      >
+        <AccordionVideoPlayer
+          parsedVideo={parsedVideo}
+          poster={poster}
+          title={props.item.label || props.item.alt || 'Video player'}
+          onClose={props.onCloseVideo}
+        />
+      </div>
+    );
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      props.onSelect((props.index + 1) % props.count);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      props.onSelect((props.index - 1 + props.count) % props.count);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      ref={props.panelRef}
+      className={`ag-panel text-left${isActive ? ' ag-panel--active' : ''}`}
+      style={{ borderRadius: `${props.radius}px` }}
+      onClick={(e) => {
+        if (!isActive) {
+          e.preventDefault();
+          props.onSelect(props.index);
+        } else if (hasVideo) {
+          props.onPlay(props.index);
+        }
+      }}
+      onMouseEnter={() => {
+        if (props.trigger === 'hover') {
+          props.onSelect(props.index);
+        }
+      }}
+      onFocus={() => {
+        props.onSelect(props.index);
+      }}
+      onKeyDown={handleKeyDown}
+      aria-current={isActive ? 'true' : undefined}
+      aria-label={props.item.label}
+    >
+      <span className="ag-panel__frame">
+        <span className="ag-panel__media" ref={props.mediaRef}>
+          {/* oxlint-disable-next-line next/no-img-element -- GSAP 3D perspective accordion requires native img with fluid parent scaling */}
+          <img src={poster} alt={props.item.alt || props.item.label || ''} draggable="false" />
+        </span>
+        <span className="ag-panel__overlay" aria-hidden="true" />
+      </span>
+
+      {hasVideo && <AccordionPlayOverlay isActive={isActive} />}
+
+      {props.showLabels && (
+        <AccordionPanelLabel
+          item={props.item}
+          showQuoteIcon={props.showQuoteIcon}
+          barRef={props.barRef}
+          textRef={props.textRef}
+        />
+      )}
+    </button>
+  );
+}
+
+function resolveGalleryConfig(props: AccordionGalleryProps) {
+  return {
+    items: props.items ?? DEFAULT_ITEMS,
+    expandRatio: props.expandRatio ?? 0.52,
+    duration: props.duration ?? 0.6,
+    ease: props.ease ?? 'power3.out',
+    tilt: props.tilt ?? 8,
+    parallax: props.parallax ?? 0.5,
+    grayscale: props.grayscale ?? true,
+    showLabels: props.showLabels ?? true,
+    stagger: props.stagger ?? 0.06,
+    trigger: props.trigger ?? 'hover',
+    gap: props.gap ?? 10,
+    radius: props.radius ?? 16,
+    height: props.height ?? 460,
+    accentColor: props.accentColor ?? '#ffffff',
+    overlayColor: props.overlayColor ?? '#060010',
+    textColor: props.textColor ?? '#ffffff',
+  };
+}
+
 /**
  * Renders an interactive 3D accordion gallery powered by GSAP with image and video support.
  * @param props - Gallery configuration and items.
  * @returns Accordion gallery component.
  */
 export function AccordionGallery(props: AccordionGalleryProps) {
-  const items = props.items ?? DEFAULT_ITEMS;
+  const config = resolveGalleryConfig(props);
+  const {
+    items,
+    expandRatio,
+    duration,
+    ease,
+    tilt,
+    parallax,
+    grayscale,
+    showLabels,
+    stagger,
+    trigger,
+    gap,
+    radius,
+    height,
+    accentColor,
+    overlayColor,
+    textColor,
+  } = config;
   const count = items.length;
   const initialIndex = Math.min(Math.max(props.defaultIndex ?? 0, 0), Math.max(count - 1, 0));
 
@@ -150,21 +415,6 @@ export function AccordionGallery(props: AccordionGalleryProps) {
   const mediaSizeRef = useRef(320);
 
   const vertical = props.orientation === 'vertical';
-  const expandRatio = props.expandRatio ?? 0.52;
-  const duration = props.duration ?? 0.6;
-  const ease = props.ease ?? 'power3.out';
-  const tilt = props.tilt ?? 8;
-  const parallax = props.parallax ?? 0.5;
-  const grayscale = props.grayscale ?? true;
-  const showLabels = props.showLabels ?? true;
-  const stagger = props.stagger ?? 0.06;
-  const trigger = props.trigger ?? 'hover';
-  const gap = props.gap ?? 10;
-  const radius = props.radius ?? 16;
-  const height = props.height ?? 460;
-  const accentColor = props.accentColor ?? '#ffffff';
-  const overlayColor = props.overlayColor ?? '#060010';
-  const textColor = props.textColor ?? '#ffffff';
 
   const updateActive = (nextIndex: number) => {
     if (playingIndex !== null && playingIndex !== nextIndex) {
@@ -307,210 +557,37 @@ export function AccordionGallery(props: AccordionGalleryProps) {
       style={galleryStyle}
       aria-label="Image and video accordion gallery"
     >
-      {items.map((item, i) => {
-        const isActive = i === active;
-        const hasDescription = Boolean(item.description);
-        const rawVideo = item.video || item.videoPath;
-        const parsedVideo = rawVideo ? parseVideoSource(rawVideo) : null;
-        const hasVideo = Boolean(parsedVideo);
-        const poster =
-          item.image ||
-          item.videoPoster ||
-          (parsedVideo?.type === 'youtube' ? parsedVideo.thumbnailUrl : '/career/1.png');
-        const isPlaying = hasVideo && playingIndex === i;
-
-        return (
-          <div
-            key={item.id ?? item.label ?? i}
-            role="button"
-            tabIndex={0}
-            ref={(el: HTMLDivElement | null) => {
-              panelRefs.current[i] = el;
-            }}
-            className={`ag-panel text-left${isActive ? ' ag-panel--active' : ''}${isPlaying ? ' ag-panel--playing' : ''}`}
-            style={{ borderRadius: `${radius}px` }}
-            onClick={(e) => {
-              if (i !== active) {
-                e.preventDefault();
-                updateActive(i);
-              } else if (hasVideo && !isPlaying) {
-                setPlayingIndex(i);
-              }
-            }}
-            onMouseEnter={() => {
-              if (trigger === 'hover') {
-                updateActive(i);
-              }
-            }}
-            onFocus={() => {
-              updateActive(i);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                if (i !== active) {
-                  e.preventDefault();
-                  updateActive(i);
-                } else if (hasVideo && !isPlaying) {
-                  e.preventDefault();
-                  setPlayingIndex(i);
-                }
-              } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                e.preventDefault();
-                updateActive((i + 1) % count);
-              } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                e.preventDefault();
-                updateActive((i - 1 + count) % count);
-              }
-            }}
-            aria-current={isActive ? 'true' : undefined}
-            aria-label={item.label}
-          >
-            {isPlaying && parsedVideo ? (
-              <div className="ag-panel__video-wrapper">
-                {parsedVideo.type === 'youtube' ? (
-                  <iframe
-                    src={`${parsedVideo.embedUrl}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                    title={item.label || item.alt || 'Video player'}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="size-full border-0 object-cover"
-                  />
-                ) : (
-                  <video
-                    src={parsedVideo.src}
-                    poster={poster}
-                    aria-label={item.label || item.alt || 'Video player'}
-                    autoPlay
-                    controls
-                    playsInline
-                    className="size-full object-cover"
-                  >
-                    <track kind="captions" />
-                  </video>
-                )}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPlayingIndex(null);
-                  }}
-                  aria-label="Close video"
-                  className="ag-panel__video-close"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="size-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
-              </div>
-            ) : null}
-
-            <span className="ag-panel__frame">
-              <span
-                className="ag-panel__media"
-                ref={(el) => {
-                  mediaRefs.current[i] = el;
-                }}
-              >
-                {/* oxlint-disable-next-line next/no-img-element -- GSAP 3D perspective accordion requires native img with fluid parent scaling */}
-                <img src={poster} alt={item.alt || item.label || ''} draggable="false" />
-              </span>
-              <span className="ag-panel__overlay" aria-hidden="true" />
-            </span>
-
-            {hasVideo && !isPlaying && (
-              <>
-                {isActive ? (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setPlayingIndex(i);
-                    }}
-                    aria-label={`Play video: ${item.label || ''}`}
-                    className="ag-panel__play-btn group/play"
-                  >
-                    <span className="ag-panel__play-icon">
-                      <svg viewBox="0 0 24 24" className="size-7 translate-x-0.5 fill-current" aria-hidden="true">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </span>
-                  </button>
-                ) : (
-                  <span className="ag-panel__video-badge" aria-label="Video item">
-                    <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden="true">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                )}
-              </>
-            )}
-
-            {showLabels && !isPlaying && (
-              <span className="ag-panel__label" aria-hidden="true">
-                {hasDescription ? (
-                  <>
-                    {props.showQuoteIcon && (
-                      <svg
-                        aria-hidden="true"
-                        viewBox="0 0 36 28"
-                        className="h-6 w-8 shrink-0 text-white/80"
-                        ref={(el: SVGSVGElement | null) => {
-                          barRefs.current[i] = el;
-                        }}
-                      >
-                        <path
-                          fill="currentColor"
-                          d="M0 17.7C0 8.8 4.4 3 13.1 0l2.1 4.2c-4.6 1.7-7.2 4.5-7.7 8.4h6.1V28H0V17.7Zm20.8 0C20.8 8.8 25.2 3 33.9 0l2.1 4.2c-4.6 1.7-7.2 4.5-7.7 8.4h6.1V28H20.8V17.7Z"
-                        />
-                      </svg>
-                    )}
-                    <span
-                      className="ag-panel__story-content"
-                      ref={(el) => {
-                        textRefs.current[i] = el;
-                      }}
-                    >
-                      <h3 className="font-display text-lg font-semibold leading-tight text-white sm:text-xl">
-                        {item.label}
-                      </h3>
-                      <p className="font-body text-xs leading-relaxed text-white/90 sm:text-sm">
-                        {item.description}
-                      </p>
-                    </span>
-                  </>
-                ) : (
-                  <span className="ag-panel__label-row">
-                    <span
-                      className="ag-panel__bar"
-                      ref={(el) => {
-                        barRefs.current[i] = el;
-                      }}
-                    />
-                    <span
-                      className="ag-panel__text"
-                      ref={(el) => {
-                        textRefs.current[i] = el;
-                      }}
-                    >
-                      {item.label}
-                    </span>
-                  </span>
-                )}
-              </span>
-            )}
-          </div>
-        );
-      })}
+      {items.map((item, i) => (
+        <AccordionPanel
+          key={item.id ?? item.label ?? i}
+          item={item}
+          index={i}
+          active={active}
+          count={count}
+          trigger={trigger}
+          radius={radius}
+          isPlaying={playingIndex === i}
+          showLabels={showLabels}
+          showQuoteIcon={props.showQuoteIcon}
+          onSelect={updateActive}
+          onPlay={setPlayingIndex}
+          onCloseVideo={() => setPlayingIndex(null)}
+          panelRef={(el) => {
+            panelRefs.current[i] = el;
+          }}
+          mediaRef={(el) => {
+            mediaRefs.current[i] = el;
+          }}
+          barRef={(el) => {
+            barRefs.current[i] = el;
+          }}
+          textRef={(el) => {
+            textRefs.current[i] = el;
+          }}
+        />
+      ))}
     </div>
   );
 }
+
 
