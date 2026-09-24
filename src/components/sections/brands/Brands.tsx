@@ -39,11 +39,11 @@ export function Brands(props: { data: ResolvedSection }) {
               titleColor={resolved.titleColorClass}
             />
           </Reveal>
-          <Reveal direction="right" delay={0.15}>
+          {/* <Reveal direction="right" delay={0.15}>
             <Button variant="filled" tone="dark">
               View More Awards
             </Button>
-          </Reveal>
+          </Reveal> */}
         </div>
 
       </Section>

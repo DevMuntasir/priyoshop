@@ -27,23 +27,24 @@ export function RetailFinanceHowWork(props: { data: ResolvedSection }) {
           direction="up"
           className="flex flex-col justify-center py-20 items-start gap-5 lg:sticky lg:top-32"
         >
-          <SectionHeading title={<>
+          <SectionHeading titleSize='h2' title={<>
             <AccentedTitle
               text={heading.title}
               emClass="bg-linear-to-r from-ps-gold-500 to-ps-red-500 bg-clip-text text-transparent"
             />
+
 
           </>} description={heading.description}
             eyebrow={heading.eyebrow}
             align='left' />
         </Reveal>
         {steps.length > 0 && (
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 ">
             {steps.map((step, i) => (
               <div
                 key={step.id}
-                className="sticky py-8 lg:py-20"
-                style={{ top: `calc(6rem + ${i * 2.25}rem)` }}
+                className="sticky py-8 lg:py-5"
+                style={{ top: `calc(6rem + ${i * 0.25}rem)` }}
               >
                 <Reveal direction="up" delay={0.1}>
                   <div className="w-full rounded-2xl overflow-hidden  ">

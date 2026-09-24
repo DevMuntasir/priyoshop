@@ -24,7 +24,7 @@ export function OpportunityHub(props: { data: ResolvedSection }) {
           />
         </Reveal>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <div className="mt-10 flex flex-wrap justify-center gap-6 lg:mt-16 lg:gap-8">
           {(items ?? []).map((item, index) => {
             const body = item.body ?? item.description;
             if (!item.title && !body && !item.image) {
@@ -32,8 +32,8 @@ export function OpportunityHub(props: { data: ResolvedSection }) {
             }
 
             return (
-              <div key={index}>
-                <Reveal direction="up" className="flex h-full flex-col border-[1px] border-ps-cream-yellow">
+              <div key={index} className='min-w-[300px] '>
+                <Reveal direction="up" className="flex   h-full flex-col border-[1px] border-ps-cream-yellow">
                   {item.image && (
                     <div className="bg-ps-warm-white">
                       <Image

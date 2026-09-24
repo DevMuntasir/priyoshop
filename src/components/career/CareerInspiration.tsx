@@ -37,6 +37,7 @@ export function CareerInspiration(props: { data: ResolvedSection }) {
       ? props.data.items.map((item, index) => ({
           id: item.name ? item.name.toLowerCase().replace(/\s+/g, '-') : `story-${index}`,
           image: item.image || `/career/${(index % 3) + 1}.png`,
+          video: item.videoPath,
           name: item.name || item.title || '',
           description: item.description || item.body || '',
         }))

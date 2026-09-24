@@ -6,7 +6,9 @@ import { AccordionGallery } from '@/components/ui/AccordionGallery';
 
 export type InspiringStory = {
   id: string;
-  image: string;
+  image?: string;
+  video?: string;
+  videoPath?: string;
   name: string;
   description: string;
 };
@@ -22,6 +24,7 @@ export function InspiringStories(props: { stories: InspiringStory[] }) {
   const items: AccordionGalleryItem[] = props.stories.map((story) => ({
     id: story.id,
     image: story.image,
+    video: story.video || story.videoPath,
     label: story.name,
     description: story.description,
     alt: story.name,

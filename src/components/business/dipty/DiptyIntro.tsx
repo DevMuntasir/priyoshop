@@ -28,7 +28,7 @@ export function DiptyIntro(props: { data: ResolvedSection }) {
                 description={props.data.heading.description}
               />
             </div>
-            {props.data.heading.backgroundImage && (
+            {/* {props.data.heading.backgroundImage && (
               <Image
                 alt=""
                 src={props.data.heading.backgroundImage}
@@ -36,11 +36,11 @@ export function DiptyIntro(props: { data: ResolvedSection }) {
                 height={200}
                 className="mt-10 h-auto w-full object-contain"
               />
-            )}
+            )} */}
           </div>
         </div>
       </div>
-      <div className="w-full bg-gradient-to-t from-[#E9F5E9] to-[#F7FAF7] py-8 sm:py-12 lg:py-16">
+      <div className="w-full bg-section-gradient">
         <ScrollExpand
           src={videoSource}
           mediaType="video"

@@ -118,6 +118,7 @@ function HeroSlide(props: { slide: SectionItem; active: boolean }) {
             descriptionClassName={`max-w-full! ${props.slide.descriptionSize ?? 'text-ps-body'}`}
             className={`w-full gap-7 ${align === 'center' ? 'mx-auto' : ''}`}
             style={{ maxWidth: CONTENT_MAX_WIDTH[contentWidth] ?? CONTENT_MAX_WIDTH['max-w-3xl'] }}
+            scrollFloat={false}
             action={
               <HeroCtas
                 slide={props.slide}

@@ -61,11 +61,11 @@ export function CareerValues(props: { data: ResolvedSection }) {
           ) : null}
         </div>
 
-        <div className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-px overflow-hidden rounded-ps-md border border-ps-grey-200 bg-ps-grey-200 sm:grid-cols-2 lg:mt-12 lg:grid-cols-3">
+        <div className="mx-auto mt-10  max-w-6xl  overflow-hidden  flex flex-wrap lg:mt-12 justify-center ">
           {items.map((item, index) => {
             const logo = item.logo || item.image || `/career/${(index % 6) + 1}.svg`;
             return (
-              <article key={item.title || index} className="bg-white p-6 sm:min-h-64 sm:p-7 lg:p-8">
+              <article key={item.title || index} className="bg-white w-1/3 border-[1px] border-gray-100 p-6 sm:min-h-64 sm:p-7 lg:p-8">
                 {logo ? (
                   <Image
                     src={logo}

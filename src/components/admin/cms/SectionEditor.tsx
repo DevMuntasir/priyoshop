@@ -281,6 +281,8 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
   ],
   benefit: [
     { field: 'title', label: 'Title' },
+    { field: 'image', label: 'Image path' },
+    { field: 'imageAlt', label: 'Image alt' },
     { field: 'description', label: 'Description', type: 'textarea', full: true },
   ],
 };

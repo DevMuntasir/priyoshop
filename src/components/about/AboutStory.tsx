@@ -33,8 +33,8 @@ export default function AboutStory() {
             className="text-lg font-normal text-[#444] mt-5 font-body font-semibold max-w-[480px]"
           />
         </div>
-        <div className="min-h-64 w-full rounded-ps-lg bg-gray-50 sm:min-h-80 lg:min-h-[400px] lg:w-1/2" >
-
+        <div className="min-h-64 w-full rounded-ps-lg  sm:min-h-80 lg:min-h-[400px] lg:w-1/2" >
+          <Image src="/about/story.webp" className="w-full h-full object-cover" alt="Our Vision" width={400} height={400} />
         </div>
       </div>
 

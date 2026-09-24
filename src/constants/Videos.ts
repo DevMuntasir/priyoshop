@@ -65,6 +65,23 @@ export const APP_VIDEOS = {
       poster: '/business/van.png',
       title: 'Retail Road Delivery',
     },
+    stories: [
+      {
+        title: 'Building stronger retail businesses',
+        videoPath: '/video/1.mp4',
+        poster: '/retail/1.png',
+      },
+      {
+        title: 'Empowering local shop owners',
+        videoPath: '/video/1.mp4',
+        poster: '/retail/2.png',
+      },
+      {
+        title: 'Seamless wholesale ordering experience',
+        videoPath: '/video/1.mp4',
+        poster: '/retail/3.png',
+      },
+    ],
   },
 
   retailFinance: {

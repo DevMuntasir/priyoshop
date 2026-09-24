@@ -4,6 +4,7 @@ import type React from 'react';
 import type { AccordionGalleryItem, AccordionGalleryProps } from './AccordionGallery.types';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { parseVideoSource } from '@/utils/Video';
 
 import './AccordionGallery.css';
 
@@ -11,7 +12,12 @@ export type { AccordionGalleryItem, AccordionGalleryProps } from './AccordionGal
 
 const DEFAULT_ITEMS: AccordionGalleryItem[] = [
   { image: 'https://picsum.photos/id/1015/900/1200', label: 'Canyon', link: '#' },
-  { image: 'https://picsum.photos/id/1018/900/1200', label: 'Ridgeline', link: '#' },
+  {
+    video: 'https://www.youtube.com/watch?v=0B2MieWr4rE',
+    image: 'https://picsum.photos/id/1018/900/1200',
+    label: 'PriyoShop Story',
+    description: 'Empowering retail innovation across Bangladesh.',
+  },
   { image: 'https://picsum.photos/id/1039/900/1200', label: 'Falls', link: '#' },
   { image: 'https://picsum.photos/id/1043/900/1200', label: 'Harbour', link: '#' },
   { image: 'https://picsum.photos/id/1044/900/1200', label: 'Skyline', link: '#' },
@@ -121,7 +127,7 @@ function animateSinglePanel(options: AnimatePanelOptions) {
 }
 
 /**
- * Renders an interactive 3D accordion gallery powered by GSAP.
+ * Renders an interactive 3D accordion gallery powered by GSAP with image and video support.
  * @param props - Gallery configuration and items.
  * @returns Accordion gallery component.
  */
@@ -131,6 +137,7 @@ export function AccordionGallery(props: AccordionGalleryProps) {
   const initialIndex = Math.min(Math.max(props.defaultIndex ?? 0, 0), Math.max(count - 1, 0));
 
   const [internalActive, setInternalActive] = useState(initialIndex);
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const active = props.activeIndex ?? internalActive;
 
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -160,11 +167,45 @@ export function AccordionGallery(props: AccordionGalleryProps) {
   const textColor = props.textColor ?? '#ffffff';
 
   const updateActive = (nextIndex: number) => {
+    if (playingIndex !== null && playingIndex !== nextIndex) {
+      setPlayingIndex(null);
+    }
     if (props.activeIndex === undefined) {
       setInternalActive(nextIndex);
     }
     props.onActiveChange?.(nextIndex);
   };
+
+  useEffect(() => {
+    if (playingIndex !== null && playingIndex !== active) {
+      setPlayingIndex(null);
+    }
+  }, [active, playingIndex]);
+
+  useEffect(() => {
+    if (playingIndex === null) {
+      return;
+    }
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setPlayingIndex(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [playingIndex]);
+
+  useEffect(() => {
+    const currentItem = items[active];
+    const itemVideo = currentItem?.video || currentItem?.videoPath;
+    if ((props.videoAutoplay || currentItem?.videoAutoplay) && itemVideo) {
+      setPlayingIndex(active);
+    }
+  }, [active, items, props.videoAutoplay]);
 
   const applyLayout = (animate: boolean) => {
     const panels = panelRefs.current;
@@ -264,25 +305,36 @@ export function AccordionGallery(props: AccordionGalleryProps) {
       ref={rootRef}
       className={`accordion-gallery${vertical ? ' accordion-gallery--vertical' : ''}${props.className ? ` ${props.className}` : ''}`}
       style={galleryStyle}
-      aria-label="Image accordion gallery"
+      aria-label="Image and video accordion gallery"
     >
       {items.map((item, i) => {
         const isActive = i === active;
         const hasDescription = Boolean(item.description);
+        const rawVideo = item.video || item.videoPath;
+        const parsedVideo = rawVideo ? parseVideoSource(rawVideo) : null;
+        const hasVideo = Boolean(parsedVideo);
+        const poster =
+          item.image ||
+          item.videoPoster ||
+          (parsedVideo?.type === 'youtube' ? parsedVideo.thumbnailUrl : '/career/1.png');
+        const isPlaying = hasVideo && playingIndex === i;
 
         return (
-          <button
+          <div
             key={item.id ?? item.label ?? i}
-            type="button"
-            ref={(el: HTMLButtonElement | null) => {
+            role="button"
+            tabIndex={0}
+            ref={(el: HTMLDivElement | null) => {
               panelRefs.current[i] = el;
             }}
-            className={`ag-panel text-left${isActive ? ' ag-panel--active' : ''}`}
+            className={`ag-panel text-left${isActive ? ' ag-panel--active' : ''}${isPlaying ? ' ag-panel--playing' : ''}`}
             style={{ borderRadius: `${radius}px` }}
             onClick={(e) => {
               if (i !== active) {
                 e.preventDefault();
                 updateActive(i);
+              } else if (hasVideo && !isPlaying) {
+                setPlayingIndex(i);
               }
             }}
             onMouseEnter={() => {
@@ -294,7 +346,15 @@ export function AccordionGallery(props: AccordionGalleryProps) {
               updateActive(i);
             }}
             onKeyDown={(e) => {
-              if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+              if (e.key === 'Enter' || e.key === ' ') {
+                if (i !== active) {
+                  e.preventDefault();
+                  updateActive(i);
+                } else if (hasVideo && !isPlaying) {
+                  e.preventDefault();
+                  setPlayingIndex(i);
+                }
+              } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
                 e.preventDefault();
                 updateActive((i + 1) % count);
               } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
@@ -305,6 +365,54 @@ export function AccordionGallery(props: AccordionGalleryProps) {
             aria-current={isActive ? 'true' : undefined}
             aria-label={item.label}
           >
+            {isPlaying && parsedVideo ? (
+              <div className="ag-panel__video-wrapper">
+                {parsedVideo.type === 'youtube' ? (
+                  <iframe
+                    src={`${parsedVideo.embedUrl}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                    title={item.label || item.alt || 'Video player'}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="size-full border-0 object-cover"
+                  />
+                ) : (
+                  <video
+                    src={parsedVideo.src}
+                    poster={poster}
+                    aria-label={item.label || item.alt || 'Video player'}
+                    autoPlay
+                    controls
+                    playsInline
+                    className="size-full object-cover"
+                  >
+                    <track kind="captions" />
+                  </video>
+                )}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPlayingIndex(null);
+                  }}
+                  aria-label="Close video"
+                  className="ag-panel__video-close"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="size-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+            ) : null}
+
             <span className="ag-panel__frame">
               <span
                 className="ag-panel__media"
@@ -313,12 +421,40 @@ export function AccordionGallery(props: AccordionGalleryProps) {
                 }}
               >
                 {/* oxlint-disable-next-line next/no-img-element -- GSAP 3D perspective accordion requires native img with fluid parent scaling */}
-                <img src={item.image} alt={item.alt || item.label || ''} draggable="false" />
+                <img src={poster} alt={item.alt || item.label || ''} draggable="false" />
               </span>
               <span className="ag-panel__overlay" aria-hidden="true" />
             </span>
 
-            {showLabels && (
+            {hasVideo && !isPlaying && (
+              <>
+                {isActive ? (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setPlayingIndex(i);
+                    }}
+                    aria-label={`Play video: ${item.label || ''}`}
+                    className="ag-panel__play-btn group/play"
+                  >
+                    <span className="ag-panel__play-icon">
+                      <svg viewBox="0 0 24 24" className="size-7 translate-x-0.5 fill-current" aria-hidden="true">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </button>
+                ) : (
+                  <span className="ag-panel__video-badge" aria-label="Video item">
+                    <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden="true">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                )}
+              </>
+            )}
+
+            {showLabels && !isPlaying && (
               <span className="ag-panel__label" aria-hidden="true">
                 {hasDescription ? (
                   <>
@@ -371,9 +507,10 @@ export function AccordionGallery(props: AccordionGalleryProps) {
                 )}
               </span>
             )}
-          </button>
+          </div>
         );
       })}
     </div>
   );
 }
+

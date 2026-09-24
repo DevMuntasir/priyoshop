@@ -5,7 +5,7 @@ import { APP_VIDEOS } from '@/constants/Videos';
 
 export function Infrastructure() {
   return (
-    <section className="min-h-[80svh] rounded-t-ps-xl bg-ps-black pt-14 pb-12 sm:rounded-t-ps-hero sm:pt-20 sm:pb-16 lg:pt-24 lg:pb-20">
+    <section className="min-h-[80svh] rounded-t-ps-xl bg-ps-black pt-14  sm:rounded-t-ps-hero sm:pt-20  lg:pt-24">
       <div className="container mx-auto px-4 pb-6 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading

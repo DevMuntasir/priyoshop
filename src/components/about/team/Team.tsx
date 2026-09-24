@@ -5,48 +5,68 @@ import { TEAM_CONFIG } from './data';
 import Image from 'next/image';
 import Link from 'next/link';
 
-function TeamMemberCard({ member }: { member: TeamMember }) {
+import { TiltedCard } from '@/components/ui/TiltedCard';
+
+function TeamMemberCard(props: { member: TeamMember }) {
   return (
-    <div className=" mx-auto" style={{ background: 'url(/team/s1.png) ', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', height: 450 }}>
-
-
-      <Image
-        src={member.image}
-        alt={member.name}
-        width={400}
-        height={450}
+    <div className="flex flex-col items-center">
+      <TiltedCard
+        imageSrc={props.member.image}
+        altText={props.member.name}
+        captionText={`${props.member.name} • ${props.member.role}`}
+        containerHeight="330px"
+        containerWidth="400px"
+        imageHeight="450px"
+        imageWidth="400px"
+        rotateAmplitude={12}
+        scaleOnHover={1.05}
+        showMobileWarning={false}
+        showTooltip={true}
+        displayOverlayContent={false}
+        innerStyle={{
+          background: 'url(/team/s1.png) center/cover no-repeat',
+          borderRadius: '20px',
+        }}
+        borderRadius="20px"
       />
 
-      <div className=' absolute top-[80%] w-full  !gap-0 left-1/2 -translate-[50%]'>
+      <div className="w-full  text-center">
         <SectionHeading
-          title={member.name}
-          description={member.role}
-          descriptionFontClass=" m-0"
-          titleClassName='m-0 block !font-bold !w-full'
-          titleSize='h5'
-          className='  w-full  !gap-0 '
+          title={props.member.name}
+          description={props.member.role}
+          descriptionFontClass="m-0 text-zinc-600"
+          titleClassName="m-0 block !font-bold !w-full text-zinc-900"
+          titleSize="h5"
+          className="w-full !gap-1"
+          align="center"
         />
-        <Link href={member.ctaHref || ''} className='w-full block'>
-          <Image
-            src={'/team/l.png'}
-            alt={member.name}
-            width={60}
-            className=' mx-auto mt-5 cursor-pointer'
-            height={20}
-          />
-        </Link>
+        {props.member.ctaHref && (
+          <Link
+            href={props.member.ctaHref}
+            className="w-full block"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Image
+              src="/team/l.png"
+              alt={props.member.name}
+              width={60}
+              className="mx-auto mt-4 cursor-pointer hover:opacity-80 transition-opacity"
+              height={20}
+            />
+          </Link>
+        )}
       </div>
     </div>
   );
 }
 
-export function Team({
-  config = TEAM_CONFIG,
-}: {
+export function Team(props: {
   config?: TeamConfig;
 }) {
+  const config = props.config ?? TEAM_CONFIG;
   return (
-    <section className="flex mt-10 px-6 w-full justify-center bg-white">
+    <section className="flex my-10 lg:my-20 px-6 w-full justify-center bg-white">
       <div className="container">
         {/* Header */}
         <Reveal direction="up" distance={40}>
@@ -60,11 +80,9 @@ export function Team({
 
         {/* Core Team Section */}
         <div className="mt-12">
-
-
           {/* Team Members Grid with staggered reveal */}
           <RevealGroup stagger={0.1} delayChildren={0.3}>
-            <div className="flex justify-center my-14 gap-10">
+            <div className="flex flex-wrap justify-center my-14 gap-10">
               {config.members.map((member) => (
                 <Reveal key={member.id} direction="up" distance={48} item>
                   <TeamMemberCard member={member} />

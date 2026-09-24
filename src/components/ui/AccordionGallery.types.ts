@@ -1,6 +1,10 @@
 export type AccordionGalleryItem = {
   id?: string;
-  image: string;
+  image?: string;
+  video?: string;
+  videoPath?: string;
+  videoPoster?: string;
+  videoAutoplay?: boolean;
   label?: string;
   description?: string;
   link?: string;
@@ -30,4 +34,6 @@ export type AccordionGalleryProps = {
   grayscale?: boolean;
   className?: string;
   showQuoteIcon?: boolean;
+  videoAutoplay?: boolean;
 };
+

@@ -264,6 +264,7 @@ export default function CareerScrollHero({ content }: { content: CareerHeroConte
             align='left'
             title={content.title}
             description={content.description}
+            scrollFloat={false}
           />
           {content.ctaLabel ? (
             <Button size="md" variant="filled" href={content.ctaHref} className="mt-7">

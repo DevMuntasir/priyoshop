@@ -1,6 +1,7 @@
 import type * as React from 'react';
 import { FlipTitle } from '@/components/ui/FlipHeadline';
 import type { FlipLine } from '@/components/ui/FlipHeadline';
+import { ScrollFloat } from './ScrollFloat';
 
 export type SectionHeadingProps = {
   eyebrow?: React.ReactNode;
@@ -53,6 +54,21 @@ export type SectionHeadingProps = {
   titleClassName?: string;
   descriptionClassName?: string;
   descriptionFontClass?: string;
+
+  /** Enables or disables the scroll-float character animation on scroll. Defaults to true. */
+  scrollFloat?: boolean;
+  /** Explicitly marks this heading as a hero heading (disabling scroll-float). */
+  isHero?: boolean;
+  /** ScrollTrigger start position for scroll-float. Defaults to 'center bottom+=50%'. */
+  scrollStart?: string;
+  /** ScrollTrigger end position for scroll-float. Defaults to 'bottom bottom-=40%'. */
+  scrollEnd?: string;
+  /** Duration in seconds for scroll-float animation. Defaults to 1. */
+  animationDuration?: number;
+  /** Easing function for scroll-float animation. Defaults to 'back.inOut(2)'. */
+  ease?: string;
+  /** Delay between each character in scroll-float animation. Defaults to 0.03. */
+  stagger?: number;
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>;
 
 const TITLE_TEXT_CLASSES: Record<
@@ -123,6 +139,13 @@ export function SectionHeading({
   descriptionClassName = '',
   descriptionFontClass = 'font-semibold',
   className = '',
+  scrollFloat = true,
+  isHero = false,
+  scrollStart,
+  scrollEnd,
+  animationDuration,
+  ease,
+  stagger,
   ...rest
 }: SectionHeadingProps) {
   const centered = align === 'center';
@@ -204,12 +227,27 @@ export function SectionHeading({
         </span>
       )}
 
-      <TitleTag
-        className={`m-0 max-w-full font-display font-bold leading-[1.25] tracking-tight  wrap-break-word sm:leading-[1.3] ${resolvedTitleColor.className} ${TITLE_TEXT_CLASSES[titleSize]} ${titleClassName}`}
-        style={resolvedTitleColor.style}
-      >
-        {titleNode}
-      </TitleTag>
+      {scrollFloat && !isHero && !flip ? (
+        <ScrollFloat
+          as={TitleTag}
+          className={`m-0 max-w-full font-display font-bold leading-[1.25] tracking-tight wrap-break-word sm:leading-[1.3] ${resolvedTitleColor.className} ${TITLE_TEXT_CLASSES[titleSize]} ${titleClassName}`}
+          style={resolvedTitleColor.style}
+          scrollStart={scrollStart}
+          scrollEnd={scrollEnd}
+          animationDuration={animationDuration}
+          ease={ease}
+          stagger={stagger}
+        >
+          {titleNode}
+        </ScrollFloat>
+      ) : (
+        <TitleTag
+          className={`m-0 max-w-full font-display font-bold leading-[1.25] tracking-tight  wrap-break-word sm:leading-[1.3] ${resolvedTitleColor.className} ${TITLE_TEXT_CLASSES[titleSize]} ${titleClassName}`}
+          style={resolvedTitleColor.style}
+        >
+          {titleNode}
+        </TitleTag>
+      )}
 
       {description && (
         <p

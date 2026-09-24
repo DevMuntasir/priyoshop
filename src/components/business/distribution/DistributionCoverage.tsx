@@ -10,7 +10,7 @@ export function DistributionCoverage(props: { data: ResolvedSection }) {
 
   return (
     <section className="relative min-h-[80svh] w-full">
-      <div className="container px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-25">
+      <div className="container px-4 pt-14 sm:px-6 sm:pt-20 lg:px-8 ">
         <div className="mx-auto max-w-4xl">
           <h1 className="text-center font-display text-ps-h2 font-semibold leading-[1.2]">
             <AccentedTitle text={props.data.heading.title} emClass="text-ps-gold-500" strongClass="text-ps-red-600" />

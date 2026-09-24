@@ -872,7 +872,21 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         description: 'We help neighborhood retailers reduce stock-outs, order products easily, and access the support they need to run stronger, more resilient businesses. '
       },
       items: [
-
+        {
+          title: APP_VIDEOS.commerce.stories[0]?.title ?? 'Building stronger retail businesses',
+          videoPath: APP_VIDEOS.commerce.stories[0]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.commerce.stories[0]?.poster,
+        },
+        {
+          title: APP_VIDEOS.commerce.stories[1]?.title ?? 'Empowering local shop owners',
+          videoPath: APP_VIDEOS.commerce.stories[1]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.commerce.stories[1]?.poster,
+        },
+        {
+          title: APP_VIDEOS.commerce.stories[2]?.title ?? 'Seamless wholesale ordering experience',
+          videoPath: APP_VIDEOS.commerce.stories[2]?.videoPath ?? '/video/1.mp4',
+          image: APP_VIDEOS.commerce.stories[2]?.poster,
+        },
       ],
     },
   },
@@ -1788,8 +1802,8 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: 'Unlock Bangladesh’s Next Retail Growth Story',
         description:
           'Partner with PriyoShop to reach retailers, strengthen distribution, and build smarter growth across Bangladesh.',
-        backgroundImage: '/opportunities/people.png',
-        ctaLabel: 'Partner with Us',
+        backgroundImage: '/opportunities/banner.png',
+        ctaLabel: 'Connect with Us',
         ctaHref: '/contact',
         ctaSecondaryLabel: 'Talk with Our Team',
         ctaSecondaryHref: '/timeline/app-debug%20(1).apk',
@@ -1798,7 +1812,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
       items: [],
     },
 
-    editor: { headingOnly: true, backgroundImage: true },
+    editor: { headingOnly: true, sectionCta: true, secondaryCta: true, backgroundImage: true },
   },
   // opportunityPartnerForm: {
   //   key: 'opportunityPartnerForm',
@@ -2082,7 +2096,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     key: 'careerInspiration',
     label: 'Inspiring stories',
     page: 'career',
-    itemKind: 'story',
+    itemKind: 'video',
     defaultOrder: 30,
     defaultStyle: makeDefaultStyle({ align: 'center' }),
     defaultContent: {
@@ -2093,25 +2107,35 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
       },
       items: [
         {
-          name: 'Sharmin Akter',
+          title: 'Sharmin Akter',
           description:
             'Sharmin consistently cultivates a positive and supportive office culture by organizing wellness programs and encouraging open communication. She creates a caring environment where every team member feels valued, motivated, and empowered to contribute their best work.',
+          videoPath: 'https://www.youtube.com/watch?v=4dxmqiW-WWk',
           image: '/career/1.png',
-          imageAlt: 'Sharmin Akter',
         },
         {
-          name: 'Arafat Shimanto',
+          title: 'Mahbub Alam',
           description:
             'Arafat turns ambitious ideas into thoughtful solutions through curiosity, collaboration, and a willingness to keep learning. His energy helps the team approach every challenge with confidence.',
-          image: '/career/2.png',
-          imageAlt: 'Arafat Shimanto',
+          videoPath: ' https://www.youtube.com/watch?v=VsKtDTW5pmQ',
         },
         {
-          name: 'Amlan Saha',
+          title: 'Md Rafiqul Islam',
           description:
             'Amlan brings clarity and ownership to every project while making space for the people around him to grow. His collaborative approach helps the team achieve meaningful results together.',
-          image: '/career/3.png',
-          imageAlt: 'Amlan Saha',
+          videoPath: 'https://www.youtube.com/watch?v=VoyPtVQQ2Kc',
+        },
+        {
+          title: 'MD. Shakil Ahmed',
+          description:
+            'Amlan brings clarity and ownership to every project while making space for the people around him to grow. His collaborative approach helps the team achieve meaningful results together.',
+          videoPath: 'https://www.youtube.com/watch?v=aNND7lSQ6zA',
+        },
+        {
+          title: 'Irfan Ahmed',
+          description:
+            'Amlan brings clarity and ownership to every project while making space for the people around him to grow. His collaborative approach helps the team achieve meaningful results together.',
+          videoPath: 'https://www.youtube.com/watch?v=HVIXs4zh2WI',
         },
       ],
     },
@@ -2190,31 +2214,44 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
       heading: {
         eyebrow: 'Employee Benefits',
         title: 'Best of Benefits',
+        description: 'Supporting employee wellness through a healthy, positive, and caring workplace environment.',
       },
       items: [
         {
           title: 'Health & Wellbeing',
           description: 'Supporting employee wellness through a healthy, positive, and caring workplace environment.',
+          image: '/career/1.png',
+          imageAlt: 'Health & Wellbeing',
         },
         {
           title: 'Financial Benefits',
           description: 'Providing competitive financial benefits and support designed to recognize employees\' contributions.',
+          image: '/career/2.png',
+          imageAlt: 'Financial Benefits',
         },
         {
           title: 'Learning & Growth',
           description: 'Creating continuous opportunities to learn, develop new skills, and grow professionally.',
+          image: '/career/3.png',
+          imageAlt: 'Learning & Growth',
         },
         {
           title: 'Recognition & Rewards',
           description: 'Celebrating performance, achievements, and meaningful contributions across the organization.',
+          image: '/career/4.png',
+          imageAlt: 'Recognition & Rewards',
         },
         {
           title: 'Career Opportunities',
           description: 'Empowering employees to take on new challenges, expand their capabilities, and progress in their careers.',
+          image: '/career/5.png',
+          imageAlt: 'Career Opportunities',
         },
         {
           title: 'Special Employee Perks',
           description: 'Making work more rewarding through celebrations, engagement activities, special recognition, and employee-focused initiatives.',
+          image: '/career/6.png',
+          imageAlt: 'Special Employee Perks',
         },
       ],
     },

@@ -44,6 +44,7 @@ export function ImpactHero(props: { data: ResolvedSection }) {
             )}
             description={props.data.heading.description}
             align="left"
+            scrollFloat={false}
           />
         </div>
       </div>

@@ -1,3 +1,4 @@
+
 import { ScrollExpand } from '@/components/ui/ScrollExpand';
 import { APP_VIDEOS } from '@/constants/Videos';
 import type { ResolvedSection } from '@/libs/cms/Sections';
@@ -7,7 +8,7 @@ export function CommerceRetail(props: { data: ResolvedSection }) {
   const poster = props.data.heading.backgroundImage?.trim() || APP_VIDEOS.commerce.retail.poster;
 
   return (
-    <section className="bg-section-gradient py-8 sm:py-12 lg:py-20">
+    <section className="bg-section-gradient ">
       <ScrollExpand
         src={videoSource}
         mediaType="video"
