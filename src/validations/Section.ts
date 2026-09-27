@@ -109,6 +109,8 @@ const itemSchema = z.object({
   slideBackgroundImageDesktop: z.string().max(300).optional(),
   slideBackgroundColor: z.string().max(60).optional(),
   slideAlign: z.enum(['left', 'center']).optional(),
+  videoPath: z.string().max(500).optional(),
+  videoAction: z.enum(['secondary', 'primary', 'both']).optional(),
   style: responsiveCardStyleSchema.optional(),
 });
 

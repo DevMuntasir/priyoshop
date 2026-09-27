@@ -15,6 +15,7 @@ import { slugifyTitle, validateNewsSlug } from '@/libs/news/newsSlug';
 export default function NewNewsPostPage() {
   const router = useRouter();
   const [title, setTitle] = useState('');
+  const [newsLink, setNewsLink] = useState('');
   const [slug, setSlug] = useState('');
   const [slugTouched, setSlugTouched] = useState(false);
   const [error, setError] = useState('');
@@ -39,7 +40,11 @@ export default function NewNewsPostPage() {
       const response = await adminFetch('/api/admin/news-posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: title.trim(), slug: slug.trim() }),
+        body: JSON.stringify({
+          title: title.trim(),
+          slug: slug.trim(),
+          newsLink: newsLink.trim(),
+        }),
       });
 
       const data = (await response.json()) as { post?: { postId: string }; error?: string };
@@ -76,6 +81,17 @@ export default function NewNewsPostPage() {
                 }
               }}
               placeholder="e.g. PriyoShop secures seed funding"
+              disabled={isLoading}
+            />
+          </div>
+
+          <div>
+            <span className="mb-2 block text-ps-sm font-semibold">News link</span>
+            <Input
+              type="text"
+              value={newsLink}
+              onChange={(e) => setNewsLink(e.target.value)}
+              placeholder="https://www.thedailystar.net/news/article"
               disabled={isLoading}
             />
           </div>

@@ -1,11 +1,15 @@
 'use client';
 
-import Image from 'next/image';
 import { useInView } from 'motion/react';
 import { useRef } from 'react';
-import { APP_VIDEOS } from '@/constants/Videos';
 import { parseVideoSource } from '@/utils/Video';
 import { RollingNumber } from './RollingNumber';
+
+export type AutoplayVideoStat = {
+  value: number;
+  suffix?: string;
+  label: string;
+};
 
 export type ScrollAutoplayVideoProps = {
   /** YouTube embed id, full YouTube URL, direct video path, or Cloudinary URL. */
@@ -14,6 +18,7 @@ export type ScrollAutoplayVideoProps = {
   poster?: string;
   title: string;
   className?: string;
+  stats?: AutoplayVideoStat[];
 };
 
 // Stacked backdrop-blur layers, each blurrier than the last and masked to a
@@ -30,7 +35,7 @@ function ProgressiveBlur() {
   ];
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-30">
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-28 lg:h-32">
       {layers.map((layer) => {
         const [blur, start, end] = layer;
         const mask = `linear-gradient(to bottom, transparent ${start}%, black ${(start + end) / 2}%, black ${end}%, transparent 100%)`;
@@ -47,18 +52,29 @@ function ProgressiveBlur() {
           />
         );
       })}
-      <div className="absolute inset-0 bg-linear-to-b from-transparent to-black" />
+      <div className="absolute inset-0 bg-linear-to-b from-transparent via-black/40 to-black/90" />
     </div>
   );
 }
 
-const STATS = [
-  { value: 250_000, label: 'MSMEs' },
-  { value: 296, label: 'Brands' },
-  { value: 1458, label: 'Routes' },
-  { value: 43, label: 'Hubs' },
-  { value: 3603, label: 'SKUs' },
+const DEFAULT_STATS: AutoplayVideoStat[] = [
+  { value: 250, suffix: 'K+', label: 'MSMEs' },
+  { value: 296, suffix: '+', label: 'Brands' },
+  { value: 1458, suffix: '+', label: 'Routes' },
+  { value: 43, suffix: '+', label: 'Hubs' },
+  { value: 3603, suffix: '+', label: 'SKUs' },
 ];
+
+function normalizeStat(stat: AutoplayVideoStat): AutoplayVideoStat {
+  if (stat.value >= 10_000 && !stat.suffix) {
+    return {
+      value: Math.round(stat.value / 1_000),
+      suffix: 'K+',
+      label: stat.label,
+    };
+  }
+  return stat;
+}
 
 // Embeds an autoplaying video (YouTube or direct MP4/Cloudinary) once it scrolls into view with an initial poster thumbnail preview.
 export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
@@ -68,7 +84,9 @@ export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
 
   const poster =
     (props.poster && props.poster.trim()) ||
-    (parsed.type === 'youtube' ? parsed.thumbnailUrl : APP_VIDEOS.defaultPoster);
+    (parsed.type === 'youtube' ? parsed.thumbnailUrl : '');
+
+  const stats = (props.stats && props.stats.length > 0 ? props.stats : DEFAULT_STATS).map(normalizeStat);
 
   const params = new URLSearchParams({
     autoplay: inView ? '1' : '0',
@@ -87,7 +105,7 @@ export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
 
   return (
     <div ref={containerRef} className={`relative overflow-hidden bg-ps-grey-900 ${props.className ?? ''}`}>
-      {poster && (
+      {/* {poster && (
         <Image
           src={poster}
           alt={props.title}
@@ -95,7 +113,7 @@ export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
           sizes="(max-width: 1024px) 100vw, 1200px"
           className="absolute inset-0 object-cover"
         />
-      )}
+      )} */}
       {inView && (
         parsed.type === 'youtube' ? (
           // Oversize the iframe and clip top/bottom so YouTube's title bar and
@@ -125,20 +143,27 @@ export function ScrollAutoplayVideo(props: ScrollAutoplayVideoProps) {
         )
       )}
       <ProgressiveBlur />
-      <div className="absolute bottom-0 flex flex-wrap w-full justify-center gap-y-4 px-2 pb-3 sm:pb-4 lg:px-0">
-        {STATS.map((stat, i) => (
-          <div
-            key={stat.label}
-            className={`flex flex-1 flex-col items-center gap-1 px-3 text-center sm:gap-2 sm:px-6 lg:px-10 ${i ? 'border-l border-ps-black-50' : ''}`}
-          >
-            <span className="font-display leading-none font-extrabold tracking-tight text-ps-white">
-              <RollingNumber value={stat.value} suffix="+" height={42} heightMobile={26} />
-            </span>
-            <span className="font-body text-ps-sm font-semibold text-ps-black-100 sm:text-base">
-              {stat.label}
-            </span>
-          </div>
-        ))}
+      <div className="absolute inset-x-0 bottom-0 z-10 w-full px-2 pb-3 sm:px-4 sm:pb-4 lg:px-6 lg:pb-6">
+        <div className="grid grid-cols-5 divide-x divide-ps-black-50/40 sm:divide-ps-black-50">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="flex min-w-0 flex-col items-center justify-center px-1 text-center sm:px-2 lg:px-4"
+            >
+              <span className="font-display font-extrabold tracking-tight text-ps-white leading-none">
+                <RollingNumber
+                  value={stat.value}
+                  suffix={stat.suffix ?? '+'}
+                  height={42}
+                  heightMobile={18}
+                />
+              </span>
+              <span className="mt-1 font-body text-[10px] font-semibold text-ps-black-100 sm:mt-1.5 sm:text-xs lg:text-sm whitespace-nowrap">
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

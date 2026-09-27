@@ -281,7 +281,9 @@
     "cta_primary": "যোগ দিন",
     "cta_secondary": "আমাদের গল্প দেখুন",
     "slide_label": "{number} নম্বর স্লাইডে যান",
-    "image_alt": "প্রিয়শপ স্টোরফ্রন্ট"
+    "image_alt": "প্রিয়শপ স্টোরফ্রন্ট",
+    "close_video": "ভিডিও বন্ধ করুন",
+    "video_player": "ভিডিও প্লেয়ার"
   },
   "DistributionPage": {
     "title": "ডিস্ট্রিবিউশন",

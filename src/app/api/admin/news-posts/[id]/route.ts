@@ -43,12 +43,17 @@ export async function PATCH(request: Request, context: Context) {
     content,
     publishedAt,
     publicationId,
+    newsLink,
     ...rest
   } = parsed.data;
 
   const updates: Omit<Partial<NewsPostDoc>, 'publicationId'> & {
     publicationId?: string | null;
   } = { ...rest };
+
+  if (newsLink !== undefined) {
+    updates.newsLink = newsLink.trim();
+  }
 
   if (slug !== undefined) {
     const slugError = validateNewsSlug(slug);
@@ -64,13 +69,17 @@ export async function PATCH(request: Request, context: Context) {
   if (content !== undefined) {
     // Sanitize every locale's rich text on write; rendering trusts the DB.
     const sanitized: Record<string, NewsPostLocaleContent> = {
-      en: { ...content.en, contentHtml: sanitizeNewsHtml(content.en.contentHtml) },
+      en: {
+        ...content.en,
+        excerpt: content.en.excerpt ?? '',
+        contentHtml: content.en.contentHtml ? sanitizeNewsHtml(content.en.contentHtml) : '',
+      },
     };
     if (content.bn) {
       sanitized.bn = {
         title: content.bn.title ?? '',
         excerpt: content.bn.excerpt ?? '',
-        contentHtml: sanitizeNewsHtml(content.bn.contentHtml ?? ''),
+        contentHtml: content.bn.contentHtml ? sanitizeNewsHtml(content.bn.contentHtml) : '',
         metaTitle: content.bn.metaTitle,
         metaDescription: content.bn.metaDescription,
       };

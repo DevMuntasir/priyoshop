@@ -35,6 +35,7 @@ export type NewsPostDoc = {
   coverImage: string;
   coverImageAlt?: string;
   publicationId?: string;
+  newsLink?: string;
   status: 'draft' | 'published';
   /** Appears in the /news featured spotlight. */
   featured: boolean;
@@ -60,6 +61,7 @@ export type NewsPostCard = {
   coverImageAlt?: string;
   publication?: NewsPostPublication;
   featured: boolean;
+  newsLink?: string;
   /** ISO string so it can cross the server → client boundary. */
   publishedAt: string;
 };

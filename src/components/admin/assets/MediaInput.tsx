@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { Input } from '@/components/ui/Input';
+import { extractYouTubeId } from '@/utils/Video';
 import type { SelectedMedia } from './MediaPickerModal';
 import { MediaPickerModal } from './MediaPickerModal';
 
@@ -19,7 +20,8 @@ export type MediaInputProps = {
 
 export function MediaInput(props: MediaInputProps) {
   const [modalOpen, setModalOpen] = useState(false);
-  const isVideo = props.value.endsWith('.mp4') || props.value.includes('/video/');
+  const youTubeId = extractYouTubeId(props.value);
+  const isVideo = props.value.endsWith('.mp4') || props.value.includes('/video/') || youTubeId !== null;
 
   const handleSelect = (media: SelectedMedia) => {
     props.onChange(media.url);
@@ -36,7 +38,21 @@ export function MediaInput(props: MediaInputProps) {
         {/* Preview Thumbnail */}
         {props.value ? (
           <div className="relative size-10 shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-100 shadow-2xs">
-            {isVideo ? (
+            {youTubeId ? (
+              <div className="relative flex size-full items-center justify-center bg-red-600 text-white">
+                <Image
+                  src={`https://img.youtube.com/vi/${youTubeId}/hqdefault.jpg`}
+                  alt="YouTube preview"
+                  fill
+                  sizes="40px"
+                  unoptimized
+                  className="object-cover"
+                />
+                <span className="absolute inset-0 flex items-center justify-center bg-black/30 text-[10px] font-bold text-white">
+                  ▶
+                </span>
+              </div>
+            ) : isVideo ? (
               <div className="flex size-full items-center justify-center text-[10px] font-bold text-gray-500">
                 ▶ MP4
               </div>

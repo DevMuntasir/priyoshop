@@ -281,7 +281,9 @@
     "cta_primary": "Join Us",
     "cta_secondary": "Watch Our Story",
     "slide_label": "Go to slide {number}",
-    "image_alt": "PriyoShop storefront"
+    "image_alt": "PriyoShop storefront",
+    "close_video": "Close video",
+    "video_player": "Video player"
   },
   "DistributionPage": {
     "title": "Distribution",

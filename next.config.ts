@@ -7,7 +7,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const baseConfig: NextConfig = {
   // Allow the dev server to be reached from other devices on the LAN
   // (e.g. a phone) without Next.js blocking its internal /_next dev resources.
-  allowedDevOrigins: ['192.168.1.68','172.30.96.1'],
+  allowedDevOrigins: ['100.64.18.63'],
   devIndicators: {
     position: 'bottom-right',
   },

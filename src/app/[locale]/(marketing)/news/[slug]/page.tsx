@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { ArticleBody } from '@/components/media/ArticleBody';
 import { formatPostDate } from '@/components/media/formatPostDate';
 import { SimilarNews } from '@/components/news/SimilarNews';
@@ -52,6 +52,12 @@ export default async function NewsPostPage(props: NewsPostPageProps) {
   const post = await getPublishedNewsPostBySlug(slug, locale);
   if (!post) {
     notFound();
+  }
+
+  if (post.newsLink?.trim()) {
+    const rawLink = post.newsLink.trim();
+    const destination = /^https?:\/\//i.test(rawLink) ? rawLink : `https://${rawLink}`;
+    redirect(destination);
   }
 
   // `t` is the NewsSlug namespace; `tNews` reuses keys already consumed on the listing page.
@@ -111,7 +117,7 @@ export default async function NewsPostPage(props: NewsPostPageProps) {
           )}
 
           <div className="mx-auto min-w-0 max-w-3xl pt-6 pb-16 lg:pb-24">
-            <ArticleBody html={post.contentHtml} />
+            <ArticleBody html={post.contentHtml ?? ''} />
           </div>
         </div>
       </article>

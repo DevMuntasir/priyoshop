@@ -26,13 +26,13 @@ export default async function AdminNewsPage(props: { params: Promise<{ locale: s
   const posts = await listNewsPosts();
 
   return (
-    <main className="space-y-6 ">
+    <main className="space-y-6">
       <AdminPageHeader
         title="News"
         description="Write, publish and manage the news posts shown on the public News page."
       />
 
-      <div className="px-8  space-y-4">
+      <div className="space-y-4 px-8">
         <div className="flex flex-wrap gap-3">
           <Link href="/admin/news/new">
             <Button>New post</Button>
@@ -54,26 +54,27 @@ export default async function AdminNewsPage(props: { params: Promise<{ locale: s
               <Link key={post.postId} href={`/admin/news/${post.postId}`}>
                 <Card padding="md" border className="cursor-pointer transition-shadow hover:shadow-md">
                   <Stack gap="sm">
-                    <Stack direction="row" align="center" gap="md" className='flex w-full justify-between'>
-                      <div className="flex-1">
+                    <Stack direction="row" align="center" gap="md" className="flex w-full justify-between">
+                      <div className="min-w-0 flex-1">
                         <Text size="body" weight="semibold">
                           {post.content.en?.title || post.slug}
                         </Text>
-                        <Text size="sm" className="text-ps-ink-600">
-                          /news/{post.slug}
+                        <Text size="sm" className="block max-w-lg truncate text-ps-ink-600">
+                          {post.newsLink || `/news/${post.slug}`}
                         </Text>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex shrink-0 gap-2">
                         {post.featured && (
                           <span className="inline-block rounded-ps-sm bg-ps-cream-yellow px-3 py-1 text-ps-xs font-semibold text-ps-gold-ink">
                             Featured
                           </span>
                         )}
                         <span
-                          className={`inline-block rounded-ps-sm px-3 py-1 text-ps-xs font-semibold ${post.status === 'published'
-                            ? 'bg-ps-green-tint text-ps-black'
-                            : 'bg-ps-grey-100 text-ps-ink-600'
-                            }`}
+                          className={`inline-block rounded-ps-sm px-3 py-1 text-ps-xs font-semibold ${
+                            post.status === 'published'
+                              ? 'bg-ps-green-tint text-ps-black'
+                              : 'bg-ps-grey-100 text-ps-ink-600'
+                          }`}
                         >
                           {post.status === 'published' ? 'Published' : 'Draft'}
                         </span>

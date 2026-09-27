@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
 
-  const { slug, title } = parsed.data;
+  const { slug, title, newsLink } = parsed.data;
 
   const slugError = validateNewsSlug(slug);
   if (slugError) {
@@ -39,6 +39,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Slug already in use' }, { status: 400 });
   }
 
-  const post = await createNewsPost({ slug, title }, guard.actor.user.id);
+  const post = await createNewsPost({ slug, title, newsLink }, guard.actor.user.id);
   return NextResponse.json({ post }, { status: 201 });
 }

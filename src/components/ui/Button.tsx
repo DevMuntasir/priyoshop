@@ -87,7 +87,10 @@ export function Button({
     .trim();
 
   const classes = cn(
-    `inline-flex min-w-0 lg:h-11 max-w-full flex-row items-center justify-center rounded-full border-none font-body font-semibold leading-snug text-center no-underline cursor-pointer transition-colors duration-700 ease-in-out enabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 ${fullWidth ? 'w-full' : 'w-fit'} ${SIZE_CLASSES[size]} ${padX} ${animationClasses} ${SKIN_CLASSES[variant][tone]}`,
+    `inline-flex min-w-0 h-5 lg:h-11 max-w-full flex-row items-center justify-center rounded-full border-none font-body 
+    font-semibold leading-snug text-center no-underline cursor-pointer transition-colors duration-700 ease-in-out 
+    enabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 ${fullWidth ? 'w-full' : 'w-fit'} 
+    ${SIZE_CLASSES[size]} ${padX} ${animationClasses} ${SKIN_CLASSES[variant][tone]}`,
     className,
   );
 
@@ -103,7 +106,7 @@ export function Button({
   const inner = (
     <>
       {iconBox(iconLeft)}
-      {children !== null && <span className="min-w-0 max-w-full break-words">{children}</span>}
+      {children !== null && <span className="min-w-fit max-w-full ">{children}</span>}
       {iconBox(iconRight)}
     </>
   );

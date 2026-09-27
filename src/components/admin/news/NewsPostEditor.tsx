@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
 import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
-import { RichTextEditor } from '@/components/admin/media/RichTextEditor';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -33,8 +32,7 @@ function Field(props: { label: string; hint?: string; children: React.ReactNode 
   );
 }
 
-/* Full news post editor: settings (slug, categories, cover, date, featured),
-   per-locale content with a rich text body, save/publish/delete actions. */
+/* News post editor: title, news external link, category, cover image, publication, published date, featured. */
 export function NewsPostEditor(props: { postId: string }) {
   const router = useRouter();
   const [post, setPost] = useState<NewsPostDoc | null>(null);
@@ -101,7 +99,11 @@ export function NewsPostEditor(props: { postId: string }) {
       body: JSON.stringify({
         slug: post.slug,
         categories: post.categories,
-        content: { en, bn: post.content.bn },
+        content: {
+          en: { ...en, excerpt: '', contentHtml: '' },
+          bn: post.content.bn ? { ...post.content.bn, excerpt: '', contentHtml: '' } : undefined,
+        },
+        newsLink: post.newsLink ?? '',
         coverImage: post.coverImage,
         coverImageAlt: post.coverImageAlt,
         publicationId: post.publicationId ?? null,
@@ -152,11 +154,11 @@ export function NewsPostEditor(props: { postId: string }) {
     <main className="space-y-6">
       <AdminPageHeader
         title={post.content.en?.title || 'Edit post'}
-        description={`/news/${post.slug} — ${post.status === 'published' ? 'Published' : 'Draft'}`}
+        description={post.newsLink || `/news/${post.slug}`}
         backHref="/admin/news"
       />
 
-      <div className='px-8 space-y-4'>
+      <div className="space-y-4 px-8">
         <div className="flex flex-wrap items-center gap-2">
           <Button tone="brand" onClick={() => void save()}>
             Save
@@ -180,7 +182,7 @@ export function NewsPostEditor(props: { postId: string }) {
           )}
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
           <Card padding="lg" className="space-y-5">
             <div className="flex gap-2">
               {LOCALES.map((entry) => (
@@ -188,8 +190,9 @@ export function NewsPostEditor(props: { postId: string }) {
                   key={entry}
                   type="button"
                   onClick={() => setLocale(entry)}
-                  className={`cursor-pointer rounded-ps-pill border-none px-4 py-1.5 font-body text-ps-xs font-semibold ${locale === entry ? 'bg-ps-black text-white' : 'bg-ps-grey-100 text-ps-ink-600'
-                    }`}
+                  className={`cursor-pointer rounded-ps-pill border-none px-4 py-1.5 font-body text-ps-xs font-semibold ${
+                    locale === entry ? 'bg-ps-black text-white' : 'bg-ps-grey-100 text-ps-ink-600'
+                  }`}
                 >
                   {entry === 'en' ? 'English' : 'Bangla'}
                 </button>
@@ -201,52 +204,23 @@ export function NewsPostEditor(props: { postId: string }) {
                 type="text"
                 value={content.title}
                 onChange={(e) => setContentField('title', e.target.value)}
-                placeholder="Post title"
-              />
-            </Field>
-
-            <Field label="Excerpt" hint="Short lead paragraph, also the default meta description.">
-              <textarea
-                aria-label="Excerpt"
-                value={content.excerpt}
-                onChange={(e) => setContentField('excerpt', e.target.value)}
-                rows={3}
-                className="w-full rounded-ps-sm border border-ps-grey-200 px-3 py-2 font-body text-ps-sm outline-none focus:border-ps-black"
-              />
-            </Field>
-
-            <Field label="Body">
-              <RichTextEditor
-                key={locale}
-                value={content.contentHtml}
-                onChange={(html) => setContentField('contentHtml', html)}
-              />
-            </Field>
-
-            <Field label="Meta title (SEO)" hint={`${(content.metaTitle ?? '').length}/70 — falls back to the title.`}>
-              <Input
-                type="text"
-                value={content.metaTitle ?? ''}
-                onChange={(e) => setContentField('metaTitle', e.target.value)}
+                placeholder="News headline / title"
               />
             </Field>
 
             <Field
-              label="Meta description (SEO)"
-              hint={`${(content.metaDescription ?? '').length}/160 — falls back to the excerpt.`}
+              label="News link"
+              hint="External URL of the original article. Visitors clicking the card navigate directly here."
             >
-              <textarea
-                aria-label="Meta description"
-                value={content.metaDescription ?? ''}
-                onChange={(e) => setContentField('metaDescription', e.target.value)}
-                rows={2}
-                className="w-full rounded-ps-sm border border-ps-grey-200 px-3 py-2 font-body text-ps-sm outline-none focus:border-ps-black"
+              <Input
+                type="text"
+                value={post.newsLink ?? ''}
+                onChange={(e) => setPost({ ...post, newsLink: e.target.value })}
+                placeholder="https://www.thedailystar.net/news/article"
               />
             </Field>
-          </Card>
 
-          <Card padding="lg" className="space-y-5 self-start">
-            <Field label="Slug" hint="URL: /news/<slug>">
+            <Field label="Slug" hint="URL identifier: /news/<slug>">
               <Input
                 type="text"
                 value={post.slug}
@@ -254,18 +228,40 @@ export function NewsPostEditor(props: { postId: string }) {
                   setPost({ ...post, slug: e.target.value.toLowerCase().replaceAll(/\s+/gu, '-') })}
               />
             </Field>
+          </Card>
 
-            <Field label="Categories">
+          <Card padding="lg" className="space-y-5 self-start">
+            <Field label="Publication" hint="Select the publication or press source.">
+              <select
+                value={post.publicationId ?? ''}
+                onChange={(event) =>
+                  setPost({
+                    ...post,
+                    publicationId: event.target.value || undefined,
+                  })}
+                className="w-full rounded-ps-sm border border-ps-grey-200 bg-white px-3 py-2 font-body text-ps-sm outline-none focus:border-ps-black"
+              >
+                <option value="">No publication</option>
+                {publications.map((publication) => (
+                  <option key={publication.publicationId} value={publication.publicationId}>
+                    {publication.name}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field label="Category">
               <div className="flex flex-wrap gap-2">
                 {NEWS_CATEGORIES.map((category) => (
                   <button
                     key={category}
                     type="button"
                     onClick={() => toggleCategory(category)}
-                    className={`cursor-pointer rounded-ps-pill px-3 py-1.5 font-body text-ps-xs font-semibold ring-1 ring-inset transition-colors ${post.categories.includes(category)
-                      ? 'border-none bg-ps-black text-white ring-ps-black'
-                      : 'border-none bg-transparent text-ps-ink-600 ring-ps-grey-300 hover:ring-ps-black'
-                      }`}
+                    className={`cursor-pointer rounded-ps-pill px-3 py-1.5 font-body text-ps-xs font-semibold ring-1 ring-inset transition-colors ${
+                      post.categories.includes(category)
+                        ? 'border-none bg-ps-black text-white ring-ps-black'
+                        : 'border-none bg-transparent text-ps-ink-600 ring-ps-grey-300 hover:ring-ps-black'
+                    }`}
                   >
                     {category}
                   </button>
@@ -298,25 +294,6 @@ export function NewsPostEditor(props: { postId: string }) {
                 value={post.coverImageAlt ?? ''}
                 onChange={(e) => setPost({ ...post, coverImageAlt: e.target.value })}
               />
-            </Field>
-
-            <Field label="Publication" hint="Optional logo and publication page source for this post.">
-              <select
-                value={post.publicationId ?? ''}
-                onChange={(event) =>
-                  setPost({
-                    ...post,
-                    publicationId: event.target.value || undefined,
-                  })}
-                className="w-full rounded-ps-sm border border-ps-grey-200 bg-white px-3 py-2 font-body text-ps-sm outline-none focus:border-ps-black"
-              >
-                <option value="">No publication</option>
-                {publications.map((publication) => (
-                  <option key={publication.publicationId} value={publication.publicationId}>
-                    {publication.name}
-                  </option>
-                ))}
-              </select>
             </Field>
 
             <Field label="Published date">

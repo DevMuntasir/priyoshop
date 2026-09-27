@@ -53,23 +53,34 @@ export function DistributionSteps(props: { data: ResolvedSection }) {
 
 // A heading + autoplay YouTube video, on the same black panel.
 export function DistributionVideoA(props: { data: ResolvedSection }) {
-  const { heading } = props.data;
   const videoSource =
-    heading.videoId?.trim() ||
-    heading.videoPath?.trim() ||
+    props.data.heading.videoId?.trim() ||
+    props.data.heading.videoPath?.trim() ||
     APP_VIDEOS.distribution.showcaseYouTubeId;
-  const poster = heading.backgroundImage?.trim() || APP_VIDEOS.distribution.b2bPlatform.poster;
+  const poster = props.data.heading.backgroundImage?.trim() || APP_VIDEOS.distribution.b2bPlatform.poster;
+
+  const stats = props.data.items && props.data.items.length > 0
+    ? props.data.items.map((item) => {
+      const rawValue = (item.value ?? '').trim();
+      const match = /^(\d+)(.*)$/u.exec(rawValue);
+      return {
+        value: match ? Number(match[1]) : 0,
+        suffix: match?.[2] || '+',
+        label: item.name ?? item.title ?? '',
+      };
+    })
+    : undefined;
 
   return (
     <div className="bg-ps-black">
       <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
         <Reveal>
           <SectionHeading
-            title={heading.title}
+            title={props.data.heading.title}
             titleColor=" text-ps-white"
             titleSize="h2"
             descriptionColor="text-ps-white font-display !font-normal text-ps-body"
-            description={heading.description}
+            description={props.data.heading.description}
             align="center"
           />
         </Reveal>
@@ -77,7 +88,8 @@ export function DistributionVideoA(props: { data: ResolvedSection }) {
           <ScrollAutoplayVideo
             videoId={videoSource}
             poster={poster}
-            title={heading.title || 'Video player'}
+            title={props.data.heading.title || 'Video player'}
+            stats={stats}
             className="mx-auto my-10 h-72 max-w-full overflow-hidden rounded-ps-xl sm:my-14 sm:h-96 lg:my-20 lg:h-125"
           />
         </Reveal>

@@ -20,7 +20,7 @@ export function StatsList(props: { items?: StatItem[] }) {
   const items = props.items && props.items.length > 0 ? props.items : DEFAULT_STATS;
 
   return (
-    <div className="mx-auto flex h-auto w-full max-w-240.5 divide-y divide-ps-black-50 rounded-ps-sm lg:rounded-ps-md border-2 border-ps-black-100/20 bg-white sm:h-35.5! sm:flex-row sm:divide-x sm:divide-y-0">
+    <div className="mx-auto py-3 flex h-auto w-full max-w-240.5 divide-y divide-ps-black-50 rounded-ps-sm lg:rounded-ps-md border-[1px] shadow-sm border-ps-black-100/20 bg-white  sm:flex-row sm:divide-x sm:divide-y-0">
       {items.map((item, i) => {
         const { num, suffix } = parseValue(item.value);
         return (
@@ -46,14 +46,14 @@ export function HeroStats(props: { data: ResolvedSection }) {
   const items: StatItem[] =
     props.data.items && props.data.items.length > 0
       ? props.data.items.map((item) => ({
-          value: item.value ?? '',
-          label: item.name ?? '',
-          icon: item.logo ?? '',
-        }))
+        value: item.value ?? '',
+        label: item.name ?? '',
+        icon: item.logo ?? '',
+      }))
       : DEFAULT_STATS;
 
   return (
-    <div className="relative z-40 -mt-18 sm:-mt-20 w-full px-4 md:px-6 mb-24 sm:mb-12 lg:mb-0">
+    <div className="relative z-40 -mt-18 sm:-mt-20 w-full md:px-6 mb-10 sm:mb-12 lg:mb-0">
       <StatsList items={items} />
     </div>
   );

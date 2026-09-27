@@ -10,16 +10,30 @@ export type FeaturedNewsCarouselProps = {
   readLabel: string;
 };
 
+function resolveNewsHref(post: NewsPostCard) {
+  const rawLink = post.newsLink?.trim();
+  if (rawLink) {
+    return {
+      href: /^https?:\/\//i.test(rawLink) ? rawLink : `https://${rawLink}`,
+      isExternal: true,
+    };
+  }
+  return {
+    href: `/news/${post.slug}`,
+    isExternal: false,
+  };
+}
+
 function LeadFeaturedCard(props: {
   post: NewsPostCard;
   locale: string;
   readLabel: string;
 }) {
-  return (
-    <Link
-      href={`/news/${props.post.slug}`}
-      className="group grid h-full min-w-0 overflow-hidden rounded-ps-xl bg-ps-black no-underline ring-1 ring-ps-black/10 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft lg:grid-cols-[1.2fr_0.95fr]"
-    >
+  const link = resolveNewsHref(props.post);
+  const cardClassName = 'group grid h-full min-w-0 overflow-hidden rounded-ps-xl bg-ps-black no-underline ring-1 ring-ps-black/10 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft lg:grid-cols-[1.2fr_0.95fr]';
+
+  const cardContent = (
+    <>
       <div className="aspect-[16/10] min-h-0 overflow-hidden bg-ps-grey-100 sm:aspect-video lg:aspect-auto lg:min-h-96">
         {props.post.coverImage && (
           // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
@@ -45,7 +59,7 @@ function LeadFeaturedCard(props: {
               />
             </div>
           )}
-          <h2 className="m-0 max-w-sm font-display text-ps-h6 leading-snug font-bold wrap-break-word text-white  line-clamp-5">
+          <h2 className="m-0 max-w-sm font-display text-ps-h6 leading-snug font-bold wrap-break-word text-white line-clamp-5">
             {props.post.title}
           </h2>
           <span className="inline-flex md:mt-6 w-fit items-center rounded-full bg-white px-5 py-2 font-body text-ps-sm font-semibold text-ps-black transition-colors group-hover:bg-ps-grey-100">
@@ -53,16 +67,35 @@ function LeadFeaturedCard(props: {
           </span>
         </div>
       </div>
+    </>
+  );
+
+  if (link.isExternal) {
+    return (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cardClassName}
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={link.href} className={cardClassName}>
+      {cardContent}
     </Link>
   );
 }
 
 function CompactFeaturedCard(props: { post: NewsPostCard; locale: string }) {
-  return (
-    <Link
-      href={`/news/${props.post.slug}`}
-      className="group grid min-w-0 overflow-hidden rounded-ps-md bg-white no-underline ring-1 ring-ps-grey-200 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft sm:min-h-44 sm:grid-cols-[164px_minmax(0,1fr)]"
-    >
+  const link = resolveNewsHref(props.post);
+  const cardClassName = 'group grid min-w-0 overflow-hidden rounded-ps-md bg-white no-underline ring-1 ring-ps-grey-200 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft sm:min-h-44 sm:grid-cols-[164px_minmax(0,1fr)]';
+
+  const cardContent = (
+    <>
       <div className="aspect-video overflow-hidden bg-ps-grey-100 sm:h-full sm:aspect-auto">
         {props.post.coverImage && (
           // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
@@ -75,8 +108,8 @@ function CompactFeaturedCard(props: { post: NewsPostCard; locale: string }) {
       </div>
       <div className="flex min-w-0 flex-col justify-center gap-3 p-4">
         {props.post.publication ? (
-          // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
           <div className="w-fit max-w-full border border-ps-grey-200 p-1">
+            {/* oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns */}
             <img
               src={props.post.publication.logo}
               alt={props.post.publication.logoAlt ?? props.post.publication.name}
@@ -93,6 +126,25 @@ function CompactFeaturedCard(props: { post: NewsPostCard; locale: string }) {
           {formatPostDate(props.post.publishedAt, props.locale)}
         </span>
       </div>
+    </>
+  );
+
+  if (link.isExternal) {
+    return (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={cardClassName}
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={link.href} className={cardClassName}>
+      {cardContent}
     </Link>
   );
 }
@@ -121,7 +173,6 @@ export function FeaturedNewsCarousel(props: FeaturedNewsCarouselProps) {
             ))}
           </div>
         )}
-
       </div>
 
       {extraPosts.length > 0 && (

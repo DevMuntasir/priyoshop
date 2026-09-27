@@ -84,6 +84,9 @@ const OPTION_LABELS: Record<string, string> = {
   auto: 'Auto (match background)',
   light: 'Light',
   dark: 'Dark',
+  secondary: 'Secondary button (Watch Our Story / Play)',
+  primary: 'Primary button',
+  both: 'Both buttons',
 };
 
 const COLOR_PREVIEWS: Record<string, string> = {
@@ -245,6 +248,18 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
       options: ['auto', 'light', 'dark'],
       full: true,
     },
+    {
+      field: 'videoPath',
+      label: 'Modal video (YouTube URL or Media Library asset)',
+      full: true,
+    },
+    {
+      field: 'videoAction',
+      label: 'Button to trigger video modal',
+      type: 'select',
+      options: ['secondary', 'primary', 'both'],
+      full: true,
+    },
   ],
   faq: [
     { field: 'title', label: 'Question', full: true },
@@ -375,7 +390,15 @@ const SLIDE_FIELD_GROUPS: ItemFieldGroup[] = [
   },
   {
     title: 'Calls to action',
-    fields: ['ctaTone', 'ctaLabel', 'href', 'ctaSecondaryLabel', 'ctaSecondaryHref'],
+    fields: [
+      'ctaTone',
+      'ctaLabel',
+      'href',
+      'ctaSecondaryLabel',
+      'ctaSecondaryHref',
+      'videoPath',
+      'videoAction',
+    ],
   },
 ];
 
@@ -402,6 +425,8 @@ function addItemTo(
           contentWidth: 'max-w-3xl',
           slideAlign: 'left',
           ctaTone: 'dark',
+          ctaSecondaryLabel: 'Watch Our Story',
+          videoAction: 'secondary',
         }
       : {};
   const next = { ...content, items: [...content.items, item] };
@@ -672,6 +697,9 @@ function ItemField(props: {
     let value = typeof raw === 'string' ? raw : '';
     if (!value && props.def.field === 'ctaTone') {
       value = 'auto';
+    }
+    if (!value && props.def.field === 'videoAction') {
+      value = 'secondary';
     }
     return (
       <label className={props.def.full ? 'col-span-2 block w-full' : 'block flex-1'}>

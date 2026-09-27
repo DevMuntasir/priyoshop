@@ -27,6 +27,8 @@ function useIsMobile() {
   return isMobile;
 }
 
+type MarginType = NonNullable<Parameters<typeof useInView>[1]>['margin'];
+
 export type RollingNumberProps = {
   /** target number, e.g. 296, 100, 1428 */
   value: number;
@@ -41,6 +43,8 @@ export type RollingNumberProps = {
   /** roll duration in seconds */
   duration?: number;
   className?: string;
+  /** margin for intersection observer, defaults to '0px' */
+  margin?: MarginType;
 };
 
 export function RollingNumber({
@@ -49,12 +53,12 @@ export function RollingNumber({
   suffix = '',
   height = 12,
   heightMobile,
-  stagger = 0.12,
-  duration = 1.7,
+  stagger = 0.05,
+  duration = 1.1,
   className = '',
 }: RollingNumberProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInView(ref, { once: true });
   const reduce = useReducedMotion();
   const isMobile = useIsMobile();
 

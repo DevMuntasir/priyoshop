@@ -181,8 +181,10 @@ export type SectionItem = {
   slideBackgroundColor?: string;
   /** Slide alignment (left/center). */
   slideAlign?: 'left' | 'center';
-  /** Local video path (video items, e.g. success stories). */
+  /** Local video path or remote URL (video items, hero modal video, etc.). */
   videoPath?: string;
+  /** CTA button action that triggers the video modal in hero slides. */
+  videoAction?: 'secondary' | 'primary' | 'both';
   groupImages?: string[];
   /** Per-item responsive design tokens (ecosystem cards). */
   style?: ResponsiveCardStyle;
@@ -556,6 +558,8 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         descriptionSize: 'text-ps-body',
         contentWidth: 'max-w-3xl',
         slideAlign: 'left',
+        videoPath: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        videoAction: 'secondary',
       })),
       format: 'hero-slides-v2',
     },

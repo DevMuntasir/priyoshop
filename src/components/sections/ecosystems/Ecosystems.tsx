@@ -59,7 +59,7 @@ export function Ecosystems(props: { data: ResolvedSection }) {
 
   return (
     <ScrollFocusStack
-      className={`bg-ps-gray-100 w-full ${resolved.wrapperClass}`.trim()}
+      className={`bg-ps-gray-100 w-full pb-10 ${resolved.wrapperClass}`.trim()}
       items={cards}
       stage={Section}
       header={

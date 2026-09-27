@@ -54,6 +54,7 @@ function toCard(
     coverImageAlt: doc.coverImageAlt,
     publication,
     featured: doc.featured,
+    newsLink: doc.newsLink,
     publishedAt: doc.publishedAt.toISOString(),
   };
 }
@@ -251,7 +252,7 @@ export async function listPublishedNewsSlugs(): Promise<{ slug: string; updatedA
  * @throws Error when the insert is not acknowledged.
  */
 export async function createNewsPost(
-  input: { title: string; slug: string },
+  input: { title: string; slug: string; newsLink?: string },
   userId: string,
 ): Promise<NewsPostDoc> {
   const now = new Date();
@@ -261,6 +262,7 @@ export async function createNewsPost(
     categories: [],
     content: { en: { title: input.title, excerpt: '', contentHtml: '' } },
     coverImage: '',
+    newsLink: input.newsLink ?? '',
     status: 'draft',
     featured: false,
     publishedAt: now,
@@ -295,6 +297,7 @@ export async function updateNewsPost(
       | 'content'
       | 'coverImage'
       | 'coverImageAlt'
+      | 'newsLink'
       | 'status'
       | 'featured'
       | 'publishedAt'
