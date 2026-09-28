@@ -9,6 +9,7 @@ import { Text } from '@/components/ui/Text';
 import { PERMISSIONS } from '@/libs/auth/Permissions';
 import { requirePermission } from '@/libs/auth/Rbac';
 import { listJobPostings } from '@/libs/career/CareerRepository';
+import { getDaysUntilAutoDelete, isJobDeadlinePassed } from '@/libs/career/jobDeadline';
 
 export const metadata = {
   title: 'Careers',
@@ -60,14 +61,21 @@ export default async function AdminCareerPage(props: { params: Promise<{ locale:
                           /career/{job.slug}
                         </Text>
                       </div>
-                      <span
-                        className={`inline-block rounded-ps-sm px-3 py-1 text-ps-xs font-semibold ${job.status === 'published'
-                          ? 'bg-ps-green-tint text-ps-black'
-                          : 'bg-ps-grey-100 text-ps-ink-600'
-                        }`}
-                      >
-                        {job.status === 'published' ? 'Published' : 'Draft'}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        {isJobDeadlinePassed(job.deadline) && (
+                          <span className="inline-block rounded-ps-sm bg-amber-100 px-3 py-1 text-ps-xs font-semibold text-amber-900">
+                            Expired ({getDaysUntilAutoDelete(job.deadline)}d left)
+                          </span>
+                        )}
+                        <span
+                          className={`inline-block rounded-ps-sm px-3 py-1 text-ps-xs font-semibold ${job.status === 'published'
+                            ? 'bg-ps-green-tint text-ps-black'
+                            : 'bg-ps-grey-100 text-ps-ink-600'
+                          }`}
+                        >
+                          {job.status === 'published' ? 'Published' : 'Draft'}
+                        </span>
+                      </div>
                     </Stack>
                     <Text size="xs" className="text-ps-ink-600">
                       {job.category || 'No category'} ·{' '}

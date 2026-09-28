@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
+import { AdminBreadcrumb } from '@/components/admin/AdminBreadcrumb';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { SignOutButton } from '@/components/auth/SignOutButton';
 import { Link } from '@/libs/I18nNavigation';
@@ -35,7 +36,11 @@ export default async function AdminLayout(props: {
 
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="flex z-[9] sticky top-0 items-center justify-between gap-4 border-b border-gray-200 bg-white px-6 py-4">
-            <span className="text-sm font-medium text-gray-500">Priyo CMS</span>
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-gray-500">Priyo CMS</span>
+              <span className="text-gray-300">/</span>
+              <AdminBreadcrumb />
+            </div>
             <div className="flex items-center gap-4">
               <Link href="/" className="border-none text-sm text-gray-600 hover:text-gray-900">
                 View site

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { CategoryChips } from '@/components/media/CategoryChips';
 import { CAREER_CATEGORIES } from '@/libs/career/Categories';
+import { isJobPastAutoDeleteThreshold } from '@/libs/career/jobDeadline';
 import type { JobPostingCard } from '@/libs/career/Types';
 import { JobRow } from './JobRow';
 
@@ -17,6 +18,7 @@ export type OpenPositionsProps = {
   vacancyLabel: string;
   deadlineLabel: string;
   applyLabel: string;
+  expiredLabel: string;
   loadMoreLabel: string;
 };
 
@@ -25,11 +27,13 @@ export function OpenPositions(props: OpenPositionsProps) {
   const [active, setActive] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
+  const validJobs = props.jobs.filter((job) => !isJobPastAutoDeleteThreshold(job.deadline));
+
   const usedCategories = CAREER_CATEGORIES.filter((category) =>
-    props.jobs.some((job) => job.category === category),
+    validJobs.some((job) => job.category === category),
   );
 
-  const filtered = active ? props.jobs.filter((job) => job.category === active) : props.jobs;
+  const filtered = active ? validJobs.filter((job) => job.category === active) : validJobs;
   const visible = filtered.slice(0, visibleCount);
 
   return (
@@ -58,6 +62,7 @@ export function OpenPositions(props: OpenPositionsProps) {
               vacancyLabel={props.vacancyLabel}
               deadlineLabel={props.deadlineLabel}
               applyLabel={props.applyLabel}
+              expiredLabel={props.expiredLabel}
             />
           ))}
         </div>

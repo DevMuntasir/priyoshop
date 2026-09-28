@@ -165,6 +165,7 @@
     "vacancy_label": "Vacancy",
     "deadline_label": "Deadline",
     "apply_label": "Apply Now",
+    "expired_label": "Closed",
     "load_more": "Load More",
     "breadcrumb_home": "Home"
   },

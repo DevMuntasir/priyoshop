@@ -27,6 +27,7 @@ export function CareerPositions(props: { data: ResolvedSection }) {
         vacancyLabel={t('vacancy_label')}
         deadlineLabel={t('deadline_label')}
         applyLabel={t('apply_label')}
+        expiredLabel={t('expired_label')}
         loadMoreLabel={t('load_more')}
       />
     </div>

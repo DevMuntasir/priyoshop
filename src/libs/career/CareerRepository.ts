@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb';
 import { revalidatePath } from 'next/cache';
 import { COLLECTIONS, getDb } from '@/libs/db/Mongodb';
 import type { JobLocaleContent, JobPostingCard, JobPostingDoc, ResolvedJobPosting } from './Types';
+import { isJobPastAutoDeleteThreshold, ONE_WEEK_MS } from './jobDeadline';
 
 const collection = () => getDb().collection<JobPostingDoc>(COLLECTIONS.jobPosting);
 
@@ -46,11 +47,48 @@ function toCard(doc: JobPostingDoc, locale: string): JobPostingCard {
 }
 
 /**
+ * Automatically purges job postings whose deadline passed more than 1 week ago.
+ * @param now Reference timestamp (defaults to current system time).
+ * @returns Total count of purged job documents.
+ */
+export async function cleanupExpiredJobPostings(now = new Date()): Promise<number> {
+  const eightDaysAgo = new Date(now.getTime() - ONE_WEEK_MS - 24 * 60 * 60 * 1000);
+  const fastResult = await collection().deleteMany({ deadline: { $lt: eightDaysAgo } });
+
+  const candidates = await collection()
+    .find({
+      deadline: {
+        $gte: eightDaysAgo,
+        $lte: new Date(now.getTime() - ONE_WEEK_MS),
+      },
+    })
+    .toArray();
+
+  const expiredIds = candidates
+    .filter((doc) => isJobPastAutoDeleteThreshold(doc.deadline, now))
+    .map((doc) => doc.jobId);
+
+  let borderlineCount = 0;
+  if (expiredIds.length > 0) {
+    const res = await collection().deleteMany({ jobId: { $in: expiredIds } });
+    borderlineCount = res.deletedCount;
+  }
+
+  const total = fastResult.deletedCount + borderlineCount;
+  if (total > 0) {
+    revalidatePath('/', 'layout');
+  }
+  return total;
+}
+
+/**
  * Fetches all job postings for the admin listing, newest first.
  * @returns Every job posting document regardless of status.
  */
 export async function listJobPostings(): Promise<JobPostingDoc[]> {
-  return await collection().find({}).sort({ publishedAt: -1 }).limit(200).toArray();
+  await cleanupExpiredJobPostings();
+  const docs = await collection().find({}).sort({ publishedAt: -1 }).limit(200).toArray();
+  return docs.filter((doc) => !isJobPastAutoDeleteThreshold(doc.deadline));
 }
 
 /**
@@ -59,7 +97,16 @@ export async function listJobPostings(): Promise<JobPostingDoc[]> {
  * @returns The job posting document, or null when unknown.
  */
 export async function getJobPosting(jobId: string): Promise<JobPostingDoc | null> {
-  return await collection().findOne({ jobId }, { projection: { _id: 0 } });
+  const doc = await collection().findOne({ jobId }, { projection: { _id: 0 } });
+  if (!doc) {
+    return null;
+  }
+  if (isJobPastAutoDeleteThreshold(doc.deadline)) {
+    await collection().deleteOne({ jobId });
+    revalidatePath('/', 'layout');
+    return null;
+  }
+  return doc;
 }
 
 /**
@@ -68,12 +115,15 @@ export async function getJobPosting(jobId: string): Promise<JobPostingDoc | null
  * @returns Locale-resolved cards without job descriptions.
  */
 export async function listPublishedJobPostings(locale: string): Promise<JobPostingCard[]> {
+  await cleanupExpiredJobPostings();
   const docs = await collection()
     .find({ status: 'published' })
     .sort({ publishedAt: -1 })
     .limit(200)
     .toArray();
-  return docs.map((doc) => toCard(doc, locale));
+  return docs
+    .filter((doc) => !isJobPastAutoDeleteThreshold(doc.deadline))
+    .map((doc) => toCard(doc, locale));
 }
 
 /**
@@ -88,6 +138,11 @@ export async function getPublishedJobBySlug(
 ): Promise<ResolvedJobPosting | null> {
   const doc = await collection().findOne({ slug, status: 'published' });
   if (!doc) {
+    return null;
+  }
+  if (isJobPastAutoDeleteThreshold(doc.deadline)) {
+    await collection().deleteOne({ jobId: doc.jobId });
+    revalidatePath('/', 'layout');
     return null;
   }
   const content = resolveLocaleContent(doc, locale);
@@ -110,11 +165,14 @@ export async function getPublishedJobBySlug(
  * @returns The slug and updatedAt of every published job posting, newest first.
  */
 export async function listPublishedJobSlugs(): Promise<{ slug: string; updatedAt: Date }[]> {
+  await cleanupExpiredJobPostings();
   const docs = await collection()
-    .find({ status: 'published' }, { projection: { _id: 0, slug: 1, updatedAt: 1 } })
+    .find({ status: 'published' }, { projection: { _id: 0, slug: 1, deadline: 1, updatedAt: 1 } })
     .sort({ publishedAt: -1 })
     .toArray();
-  return docs.map((doc) => ({ slug: doc.slug, updatedAt: doc.updatedAt }));
+  return docs
+    .filter((doc) => !isJobPastAutoDeleteThreshold(doc.deadline))
+    .map((doc) => ({ slug: doc.slug, updatedAt: doc.updatedAt }));
 }
 
 /**

@@ -38,18 +38,18 @@ export default function AboutStory() {
         </div>
       </div>
 
-      <div className="mt-12 flex flex-col gap-10 sm:mt-16 lg:mt-20 lg:flex-row lg:gap-20">
-        <div className="w-full lg:w-1/2 lg:pr-20">
+      <div className="mt-12 ">
+        <div className="w-full ">
           <SectionHeading
             eyebrow="Our Purpose"
             title="Our Mission & Vision"
 
-            align="left"
+            align="center"
             titleSize="h2"
             titleColor="text-ps-black font-extrabold font-desktop"
           />
         </div>
-        <div className="flex w-full flex-col justify-center gap-6 sm:gap-10 lg:w-1/2">
+        <div className="flex w-full flex justify-center gap-6 sm:gap-10  mt-10 lg:mt-20">
 
           <div className="h-fit rounded-ps-sm border border-ps-grey-200 bg-gray-50 p-5 sm:p-8">
             <Image src="/about/v.svg" alt="Our Vision" width={80} height={80} />
