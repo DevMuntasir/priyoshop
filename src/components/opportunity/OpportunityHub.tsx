@@ -24,9 +24,7 @@ function getGridColSpan(index: number, total: number) {
 }
 
 export function OpportunityHub(props: { data: ResolvedSection }) {
-  const heading = props.data.heading;
-  const style = props.data.style;
-  const items = props.data.items;
+  const { heading, items, style } = props.data;
   const resolved = resolveSectionStyle(style);
   const alignClass
     = resolved.align === 'center' ? 'items-center text-center' : 'items-start text-left';

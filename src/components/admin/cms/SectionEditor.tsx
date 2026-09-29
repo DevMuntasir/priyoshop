@@ -5,6 +5,7 @@ import { AdminBackButton } from '@/components/admin/AdminBackButton';
 import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
 import { SectionEditorPreview } from '@/components/admin/cms/SectionEditorPreview';
+import { DEFAULT_BULLETS } from '@/components/impact/ImpactGreenHub';
 import { adminFetch } from '@/libs/auth/AdminFetch';
 import type { PageKey } from '@/libs/cms/Pages';
 import type {
@@ -420,22 +421,29 @@ function addItemTo(
   locale: string,
 ) {
   const content = contentFor(section, locale);
-  const item: SectionItem =
-    section.itemKind === 'slide'
-      ? {
-        title: 'New slide',
-        slideBackgroundColor: 'bg-hero-gradient',
-        textColor: 'text-ps-ink-700',
-        descriptionColor: 'text-ps-ink-700',
-        textSize: 'text-ps-display',
-        descriptionSize: 'text-ps-body',
-        contentWidth: 'max-w-3xl',
-        slideAlign: 'left',
-        ctaTone: 'dark',
-        ctaSecondaryLabel: 'Watch Our Story',
-        videoAction: 'secondary',
-      }
-      : {};
+  let item: SectionItem = {};
+  if (section.itemKind === 'slide') {
+    item = {
+      title: 'New slide',
+      slideBackgroundColor: 'bg-hero-gradient',
+      textColor: 'text-ps-ink-700',
+      descriptionColor: 'text-ps-ink-700',
+      textSize: 'text-ps-display',
+      descriptionSize: 'text-ps-body',
+      contentWidth: 'max-w-3xl',
+      slideAlign: 'left',
+      ctaTone: 'dark',
+      ctaSecondaryLabel: 'Watch Our Story',
+      videoAction: 'secondary',
+    };
+  } else if (section.editor?.bullets) {
+    item = {
+      title: '',
+      body: '',
+      image: '/impact/n1.png',
+      bullets: [...DEFAULT_BULLETS],
+    };
+  }
   const next = { ...content, items: [...content.items, item] };
   setSection({ ...section, contentByLocale: { ...section.contentByLocale, [locale]: next } });
 }
@@ -1005,12 +1013,82 @@ function EcosystemItemEditor(props: {
   );
 }
 
+// Bullet points editor for section items (e.g. green hub slides).
+function ItemBulletsEditor(props: {
+  bullets?: string[];
+  onChange: (bullets: string[]) => void;
+}) {
+  const bullets = props.bullets ?? [];
+
+  return (
+    <div className="col-span-2 space-y-2 border-t border-gray-100 pt-3">
+      <div className="flex items-center justify-between">
+        <span className={labelClass}>Bullet points</span>
+        <button
+          type="button"
+          className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
+          onClick={() => {
+            props.onChange([...bullets, '']);
+          }}
+        >
+          + Add bullet
+        </button>
+      </div>
+
+      {bullets.length === 0 ? (
+        <div className="flex items-center justify-between rounded-md border border-dashed border-gray-200 p-2.5">
+          <span className="text-xs text-gray-400 italic">No custom bullets (default bullets are used).</span>
+          <button
+            type="button"
+            className="text-xs font-medium text-emerald-600 hover:underline"
+            onClick={() => {
+              props.onChange([...DEFAULT_BULLETS]);
+            }}
+          >
+            Customize defaults
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {bullets.map((bullet, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: bullets are ordered list items
+            <div key={index} className="flex items-center gap-2">
+              <input
+                aria-label={`Bullet point ${index + 1}`}
+                className={inputClass}
+                placeholder={`Bullet point ${index + 1}`}
+                value={bullet}
+                onChange={(event) => {
+                  const updated = [...bullets];
+                  updated[index] = event.target.value;
+                  props.onChange(updated);
+                }}
+              />
+              <button
+                type="button"
+                aria-label={`Remove bullet ${index + 1}`}
+                className="shrink-0 rounded px-2 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 hover:text-red-700"
+                onClick={() => {
+                  props.onChange(bullets.filter((_, i) => i !== index));
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GenericItemEditor(props: {
   item: SectionItem;
   index: number;
   itemKind: ItemKind;
   itemFields: ItemFieldDef[];
-  onField: (field: keyof SectionItem, value: string | boolean) => void;
+  hints?: SectionEditorHints;
+  onField: (field: keyof SectionItem, value: string | boolean | string[]) => void;
   onRemove: () => void;
 }) {
   const label = ITEM_KIND_LABELS[props.itemKind];
@@ -1056,6 +1134,14 @@ function GenericItemEditor(props: {
               }}
             />
           ))}
+          {props.hints?.bullets ? (
+            <ItemBulletsEditor
+              bullets={props.item.bullets}
+              onChange={(bullets) => {
+                props.onField('bullets', bullets);
+              }}
+            />
+          ) : null}
         </div>
         <div className="flex justify-end border-t border-gray-100 pt-4">
           <button
@@ -1077,8 +1163,9 @@ function RepeatedItemEditor(props: {
   itemKind: ItemKind;
   itemFields: ItemFieldDef[];
   device: Device;
+  hints?: SectionEditorHints;
   onDeviceChange: (device: Device) => void;
-  onField: (field: keyof SectionItem, value: string | boolean) => void;
+  onField: (field: keyof SectionItem, value: string | boolean | string[]) => void;
   onStyleChange: (style: ResponsiveCardStyle) => void;
   onRemove: () => void;
 }) {
@@ -1115,6 +1202,7 @@ function RepeatedItemEditor(props: {
       index={props.index}
       itemKind={props.itemKind}
       itemFields={props.itemFields}
+      hints={props.hints}
       onField={props.onField}
       onRemove={props.onRemove}
     />
@@ -1137,7 +1225,7 @@ function ContentPanelBody(props: {
   onDeviceChange: (device: Device) => void;
   onHeading: (field: keyof SectionHeadingContent, value: string) => void;
   onRotatingWords: (value: string) => void;
-  onItemField: (index: number, field: keyof SectionItem, value: string | boolean) => void;
+  onItemField: (index: number, field: keyof SectionItem, value: string | boolean | string[]) => void;
   onItemStyle: (index: number, style: ResponsiveCardStyle) => void;
   onAddItem: () => void;
   onRemoveItem: (index: number) => void;
@@ -1246,7 +1334,7 @@ function ContentPanelBody(props: {
           {hints.backgroundImage && !hints.video ? (
             <details open className="space-y-3 rounded-lg border border-gray-200 bg-gray-50/50 p-3">
               <summary className="cursor-pointer text-xs font-semibold tracking-wide text-gray-700 uppercase">
-                Background image (by device)
+                {hints.backgroundImageLabel ?? 'Background image (by device)'}
               </summary>
               <div className="space-y-3 pt-2">
                 <MediaInput
@@ -1328,6 +1416,7 @@ function ContentPanelBody(props: {
               itemKind={props.itemKind}
               itemFields={props.itemFields}
               device={props.device}
+              hints={props.hints}
               onDeviceChange={props.onDeviceChange}
               onField={(field, value) => {
                 props.onItemField(index, field, value);
@@ -1407,7 +1496,11 @@ export const SectionEditor = (props: { page: PageKey; sectionKey: SectionKey }) 
     patchContent({ ...content, heading: { ...content.heading, rotatingWords } });
   };
 
-  const patchItemField = (index: number, field: keyof SectionItem, value: string | boolean) => {
+  const patchItemField = (
+    index: number,
+    field: keyof SectionItem,
+    value: string | boolean | string[],
+  ) => {
     const items = content.items.map((item, i) =>
       i === index ? { ...item, [field]: value } : item,
     );

@@ -36,7 +36,7 @@ function IconBolt() {
 const CARD_ICONS = [<IconSun key="sun" />, <IconWarehouse key="wh" />, <IconBolt key="bolt" />];
 
 // Default bullet labels when item doesn't supply sub-items
-const DEFAULT_BULLETS = [
+export const DEFAULT_BULLETS = [
   'Sunlight-Friendly Hub Design',
   'Smarter Warehouse Operations',
   'Energy-Efficient Workflow',
@@ -44,42 +44,49 @@ const DEFAULT_BULLETS = [
 
 /** Single hub card in the horizontal slider. */
 function HubCard(props: { item: SectionItem; index: number }) {
-  const { item } = props;
-  const bullets = DEFAULT_BULLETS;
+  const rawBullets =
+    props.item.bullets && props.item.bullets.length > 0
+      ? props.item.bullets
+      : DEFAULT_BULLETS;
+  const bullets = rawBullets.map((bullet) => bullet.trim()).filter((bullet) => bullet.length > 0);
 
   return (
-    <article style={{
-      background: `url(${item.image})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-
-    }} className="relative flex min-w-[calc(100vw-2rem)] snap-center flex-col overflow-hidden rounded-2xl border border-ps-black-100/30 shadow-sm sm:min-w-[600px] lg:min-w-[700px]">
-      <div className=' bg-gradient-to-r from-white via-white to-transparent h-full'>
-        <div className="flex max-w-[400px] h-full flex-col lg:flex-row lg:items-stretch">
+    <article
+      style={{
+        background: `url(${props.item.image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+      className="relative flex min-w-[calc(100vw-2rem)] snap-center flex-col overflow-hidden rounded-2xl border border-ps-black-100/30 shadow-sm sm:min-w-[600px] lg:min-w-[700px]"
+    >
+      <div className="h-full bg-gradient-to-r from-white via-white to-transparent">
+        <div className="flex h-full max-w-[400px] flex-col lg:flex-row lg:items-stretch">
           {/* Text column */}
           <div className="flex flex-1 flex-col gap-4 p-5 sm:p-8">
-            <h3 className="m-0 font-display text-ps-h4 font-bold text-[#1B8A3E]">
-              {item.title ?? `Hub ${props.index + 1}`}
+            <h3 className="m-0 font-display text-ps-h5 font-bold text-[#1B8A3E]">
+              {props.item.imageAlt ?? props.item.title ?? `Hub ${props.index + 1}`}
             </h3>
 
-            <p className="m-0 font-body max-w-[250px] md:max-w-full text-ps-sm leading-relaxed text-ps-black-400 lg:text-ps-body">
-              {item.body}
+            <p className="m-0 max-w-[250px] font-body text-ps-sm leading-relaxed text-ps-black-400 md:max-w-full lg:text-ps-body">
+              {props.item.body}
             </p>
 
             {/* Icon bullet list */}
-            <ul className="mt-auto flex flex-col gap-3 pt-4">
-              {bullets.map((label, i) => (
-                <li key={label} className="flex items-center gap-3">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-[#1B8A3E]/20 bg-[#F0FBF4] text-[#1B8A3E]">
-                    {CARD_ICONS[i % CARD_ICONS.length]}
-                  </span>
-                  <span className="font-body text-ps-sm font-medium leading-snug text-ps-black">
-                    {label}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {bullets.length > 0 && (
+              <ul className="mt-auto flex flex-col gap-3 pt-4">
+                {bullets.map((label, i) => (
+                  <li key={`${label}-${i}`} className="flex items-center gap-3">
+                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-[#1B8A3E]/20 bg-[#F0FBF4] text-[#1B8A3E]">
+                      {CARD_ICONS[i % CARD_ICONS.length]}
+                    </span>
+                    <span className="font-body text-ps-sm font-medium leading-snug text-ps-black">
+                      {label}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Hub image */}

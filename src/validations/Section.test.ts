@@ -92,4 +92,28 @@ describe('sectionUpdateSchema', () => {
     expect(result.error?.issues).toBeUndefined();
     expect(result.success).toBe(true);
   });
+
+  it('accepts item bullets for green hub cards', () => {
+    const section = SECTION_REGISTRY.impactGreenHub;
+    const result = sectionUpdateSchema.safeParse({
+      enabled: true,
+      order: section.defaultOrder,
+      style: section.defaultStyle,
+      locale: 'en',
+      content: {
+        ...section.defaultContent,
+        items: [
+          {
+            title: 'Renewable Hub',
+            body: 'Solar powered warehouse',
+            bullets: ['Sunlight-Friendly Hub Design', 'Smarter Operations'],
+          },
+        ],
+      },
+    });
+
+    expect(result.error?.issues).toBeUndefined();
+    expect(result.success).toBe(true);
+  });
 });
+

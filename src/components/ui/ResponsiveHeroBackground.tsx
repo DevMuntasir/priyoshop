@@ -28,9 +28,9 @@ export function ResponsiveHeroBackground(props: ResponsiveHeroBackgroundProps) {
     return null;
   }
 
-  const resolvedDesktop = props.desktop || props.laptop || props.tablet || props.mobile;
-  const resolvedLaptop = props.laptop || props.tablet || props.mobile;
-  const resolvedTablet = props.tablet || props.mobile;
+  const resolvedDesktop = props.desktop
+  const resolvedLaptop = props.laptop
+  const resolvedTablet = props.tablet
   const resolvedMobile = props.mobile;
 
   return (

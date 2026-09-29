@@ -34,7 +34,7 @@ export function Career(props: { data: ResolvedSection }) {
   const galleryItems = toGalleryItems(props.data.items, props.data.heading.title);
 
   return (
-    <section className={`${resolved.wrapperClass} px-4 sm:px-6 lg:px-8`}>
+    <section className={`${resolved.wrapperClass} px-4 sm:px-6 lg:px-8 mb-10`}>
       <div className="container mx-auto min-w-0">
         <div className="relative overflow-hidden rounded-ps-xl bg-[#f4f6fa] px-5 py-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] sm:rounded-[2rem] sm:px-8 sm:py-10 lg:px-14 lg:py-14">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(221,210,255,0.85),rgba(221,210,255,0)_28%),radial-gradient(circle_at_84%_88%,rgba(208,229,246,0.95),rgba(208,229,246,0)_34%),linear-gradient(135deg,#f8fafc_0%,#f6f1f8_100%)]" />

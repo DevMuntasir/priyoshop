@@ -20,17 +20,19 @@ export function OpportunityServing(props: { data: ResolvedSection }) {
           <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-red-500 blur-3xl" />
         </div> */}
 
-        <div className="relative border-[1px] overflow-hidden z-10 flex flex-col items-start gap-8 px-5 py-10 sm:px-8 lg:flex-row lg:items-center lg:gap-10 lg:px-12 lg:py-14">
+        <div className="relative shadow-accent overflow-hidden z-10 flex flex-col items-start gap-8 px-5 py-10 sm:px-8 lg:flex-row lg:items-center lg:gap-10 lg:px-12 lg:py-14">
           {/* Left Content */}
           <div className="max-w-2xl text-white">
             <SectionHeading
               title={
                 <AccentedTitle
                   text={heading.title}
-                  emClass="text-ps-gold-500"
+                  emClass="text-ps-gold-500 "
                 />
               }
               align="left"
+
+              descriptionClassName='max-w-[500px]'
               description={heading.description}
               titleSize="h2"
 

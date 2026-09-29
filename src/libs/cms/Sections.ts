@@ -204,6 +204,8 @@ export type SectionItem = {
   /** CTA button action that triggers the video modal in hero slides. */
   videoAction?: 'secondary' | 'primary' | 'both';
   groupImages?: string[];
+  /** Bullet points for card slider items (e.g. green hub slides). */
+  bullets?: string[];
   /** Per-item responsive design tokens (ecosystem cards). */
   style?: ResponsiveCardStyle;
 };
@@ -254,6 +256,7 @@ export type SectionEditorHints = {
   sectionCta?: boolean;
   secondaryCta?: boolean;
   backgroundImage?: boolean;
+  backgroundImageLabel?: string;
   rotatingWords?: boolean;
   /** Show text color / size / alignment fields for a section heading. */
   textStyle?: boolean;
@@ -264,6 +267,8 @@ export type SectionEditorHints = {
   video?: boolean;
   /** Treat each line of a card body as one list item. */
   listBody?: boolean;
+  /** Show bullets editor for section items (e.g. green hub card slider). */
+  bullets?: boolean;
 };
 
 export type SectionDef = {
@@ -858,26 +863,26 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     },
   },
   commerceDelivery: {
-    key: 'commerceBenefits',
-    label: 'Benefits',
+    key: 'commerceDelivery',
+    label: 'Nationwide distribution',
     page: 'commerce',
     itemKind: 'card',
-    defaultOrder: 50,
+    defaultOrder: 60,
     defaultStyle: makeDefaultStyle({ align: 'center' }),
     defaultContent: {
       heading: {
         eyebrow: 'Facilities',
         title: '~Empowering Retailers~ Through Nationwide Distribution',
-        description: 'PriyoShop helps neighborhood retailers access products faster, reduce stock gaps, and serve customers better across Bangladesh.'
+        description:
+          'PriyoShop helps neighborhood retailers access products faster, reduce stock gaps, and serve customers better across Bangladesh.',
+        backgroundImage: '/about/village.webp',
       },
-      items: [
-        { title: 'Thousands of Products', body: 'All groceries essentials are available on one platform', image: '/business/f1.png' },
-        { title: 'Best in Quality', body: 'Eliminating intermediaries, connecting 296+ brands to last-mile retailers.', image: '/business/f2.png' },
-        { title: 'Wholesale Pricing', body: 'Retailers get clear, low prices without bargaining or hidden charges.', image: '/business/f3.png' },
-        { title: 'Delivery across Bangladesh', body: 'Retail grocery products are delivered directly to store locations.', image: '/business/f4.png' },
-        { title: 'Easy Credit Access', body: 'Restock confidently with our hassle-free credit facilities for retailers.', image: '/business/f5.png' },
-        { title: 'Helpful Support', body: 'Our dedicated support team is always available to answer your questions.', image: '/business/f6.png' },
-      ],
+      items: [],
+    },
+    editor: {
+      headingOnly: true,
+      backgroundImage: true,
+      backgroundImageLabel: 'Section image (by device)',
     },
   },
   commerceStories: {
@@ -1913,22 +1918,35 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
           body: '(like solar power) and energy-efficient lighting, a green hub significantly cuts greenhouse gas emissions compared to fossil-fuel-reliant traditional warehouses.',
           image: '/impact/n1.png',
           imageAlt: 'PriyoShop green hub with solar panels and EV fleet',
+          bullets: [
+            'Sunlight-Friendly Hub Design',
+            'Smarter Warehouse Operations',
+            'Energy-Efficient Workflow',
+          ],
         },
         {
           title: 'While the initial setup requires investment,',
           image: '/impact/n1.png',
-
           body: 'green hubs utilize smart energy management, eco-friendly packaging, and waste reduction systems that drastically lower long-term utility and material expenses.',
+          bullets: [
+            'Sunlight-Friendly Hub Design',
+            'Smarter Warehouse Operations',
+            'Energy-Efficient Workflow',
+          ],
         },
         {
           image: '/impact/n1.png',
-
           title: 'Green hubs are specifically designed',
           body: 'to seamlessly integrate with electric vehicle (EV) fleets, utilizing specialized charging infrastructure to ensure zero-emission last-mile deliveries.',
+          bullets: [
+            'Sunlight-Friendly Hub Design',
+            'Smarter Warehouse Operations',
+            'Energy-Efficient Workflow',
+          ],
         },
       ],
     },
-    editor: { video: true, backgroundImage: true },
+    editor: { video: true, backgroundImage: true, bullets: true },
   },
   impactSustainability: {
     key: 'impactSustainability',

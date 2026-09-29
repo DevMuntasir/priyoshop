@@ -111,6 +111,7 @@ const itemSchema = z.object({
   slideAlign: z.enum(['left', 'center']).optional(),
   videoPath: z.string().max(500).optional(),
   videoAction: z.enum(['secondary', 'primary', 'both']).optional(),
+  bullets: z.array(z.string().max(200)).max(20).optional(),
   style: responsiveCardStyleSchema.optional(),
 });
 
