@@ -115,7 +115,19 @@ export type ItemKind =
   | 'benefit';
 
 export type LogoItem = { name: string; logo: string };
-export type AwardItem = { name: string; caption: string; logo: string };
+export type AwardItem = {
+  name: string;
+  caption: string;
+  logo: string;
+  slug?: string;
+  coverImage?: string;
+  coverImageAlt?: string;
+  organization?: string;
+  year?: string;
+  category?: string;
+  description?: string;
+  externalUrl?: string;
+};
 export type EcosystemItem = {
   title: string;
   body: string;
@@ -135,6 +147,12 @@ export type SectionItem = {
   name?: string;
   logo?: string;
   caption?: string;
+  slug?: string;
+  coverImage?: string;
+  coverImageAlt?: string;
+  organization?: string;
+  category?: string;
+  externalUrl?: string;
   title?: string;
   body?: string;
   image?: string;
@@ -1716,40 +1734,39 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
       },
       items: [
         {
-          title: 'General Trade / Grocery Stores',
-          body: 'High restocking frequency and wide product assortment around consistent demand.',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
+          title: 'Retail Store',
+          body: 'The primary channel for everyday FMCG products, ensuring wider market reach, product availability, and consistent retailer engagement.',
+          description:
+            'The primary channel for everyday FMCG products, ensuring wider market reach, product availability, and consistent retailer engagement.',
+          image: '',
         },
         {
-          title: 'General Trade / Grocery Stores',
-          body: 'High restocking frequency and wide product assortment around consistent demand.',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
+          title: 'Salon',
+          body: 'A dedicated channel for beauty and personal care products, creating opportunities for product awareness, customer experience, and repeat purchases.',
+          description:
+            'A dedicated channel for beauty and personal care products, creating opportunities for product awareness, customer experience, and repeat purchases.',
+          image: '',
         },
         {
-          title: 'General Trade / Grocery Stores',
-          body: 'High restocking frequency and wide product assortment around consistent demand.',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
+          title: 'Cosmetics Store',
+          body: 'A specialized retail segment for skincare, beauty, and personal care products, helping brands strengthen visibility and consumer preference.',
+          description:
+            'A specialized retail segment for skincare, beauty, and personal care products, helping brands strengthen visibility and consumer preference.',
+          image: '',
         },
         {
-          title: 'General Trade / Grocery Stores',
-          body: 'High restocking frequency and wide product assortment around consistent demand.',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
+          title: 'Telecom',
+          body: 'A high-engagement retail channel for telecom products, recharge, SIM services, and digital solutions with frequent customer interactions.',
+          description:
+            'A high-engagement retail channel for telecom products, recharge, SIM services, and digital solutions with frequent customer interactions.',
+          image: '',
         },
         {
-          title: 'General Trade / Grocery Stores',
-          body: 'High restocking frequency and wide product assortment around consistent demand.',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
-        },
-        {
-          title: 'General Trade / Grocery Stores',
-          body: 'High restocking frequency and wide product assortment around consistent demand.',
-          description: 'High restocking frequency and wide product assortment around consistent demand.',
-          image: '/opportunities/hub.png',
+          title: 'Tea-Stall',
+          body: 'A high-footfall retail touchpoint that enables everyday customer engagement, impulse purchases, and effective local brand visibility.',
+          description:
+            'A high-footfall retail touchpoint that enables everyday customer engagement, impulse purchases, and effective local brand visibility.',
+          image: '',
         },
       ],
     },
@@ -1839,7 +1856,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     key: 'impactHero',
     label: 'Hero',
     page: 'impact',
-    itemKind: 'card',
+    itemKind: 'metric',
     defaultOrder: 10,
     defaultStyle: makeDefaultStyle(),
     defaultContent: {
@@ -1849,12 +1866,14 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
           'From electric vehicles to sustainable hubs, PriyoShop is pioneering eco-friendly logistics in Bangladesh to meet global Sustainable Development Goals.',
         backgroundImage: '/impact/bg.png',
       },
-      items: [{ value: '42', name: 'Hubs' },
-      { value: '16', name: 'Districts' },
-      { value: '1458', name: 'Routes' },
-      { value: '200K+', name: 'Retailers' },],
+      items: [
+        { value: '42', name: 'Hubs' },
+        { value: '16', name: 'Districts' },
+        { value: '1458', name: 'Routes' },
+        { value: '200K+', name: 'Retailers' },
+      ],
     },
-    editor: { headingOnly: true, backgroundImage: true },
+    editor: { backgroundImage: true },
   },
   impactNetwork: {
     key: 'impactNetwork',
@@ -1930,23 +1949,23 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
           title: 'Embedded Finance', body: 'Unlocking working capital for retailers historically excluded from formal credit',
           image: '/impact/1.svg',
           groupImages: [
-            '/impact/1.png',
-            '/impact/2.png'
+            '/impact/1.svg',
+            '/impact/8.svg'
           ]
         },
         {
           body: 'Eliminating intermediaries, connecting 296+ brands to last-mile retailers.',
           groupImages: [
-            '/impact/1.png',
-            '/impact/2.png'
+            '/impact/9.svg',
+
           ],
 
           title: 'Direct Brand Procurement', image: '/impact/2.svg'
         },
         {
           groupImages: [
-            '/impact/1.png',
-            '/impact/2.png',
+            '/impact/9.svg',
+
 
           ],
           body: '43+ hubs and a handful of employees enabling seamless, round-the-clock fulfilment.',
@@ -1954,24 +1973,24 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         },
         {
           groupImages: [
-            '/impact/1.png',
-            '/impact/2.png'
+            '/impact/9.svg',
+            '/impact/12.svg'
           ],
           body: 'Bringing data visibility and predictability to a fragmented ecosystem.', title: 'Retail Intelligence',
           image: '/impact/4.svg'
         },
         {
           groupImages: [
-            '/impact/1.png',
-            '/impact/2.png'
+            '/impact/8.svg',
+            '/impact/1.svg'
           ],
           body: 'Equipping small retailers with payments, ordering, and inventory systems.',
           title: 'Digital Commerce Tools', image: '/impact/5.svg'
         },
         {
           groupImages: [
-            '/impact/1.png',
-            '/impact/2.png'
+            '/impact/13.svg',
+
           ],
           body: 'Delivering through EVs, setting up green hubs across the country to use natural energy efficiently.', title: 'Sustainable Energy Usage', image: '/impact/6.svg'
         },

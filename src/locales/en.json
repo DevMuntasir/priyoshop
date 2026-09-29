@@ -298,5 +298,29 @@
     "time_saver_description": "Automate routine tasks and save valuable time for strategic growth.",
     "price_transparency_title": "Price Transparency",
     "price_transparency_description": "Clear pricing with no hidden charges for better decision-making."
+  },
+  "AwardsPage": {
+    "meta_title": "Awards and recognition — PriyoShop",
+    "meta_description": "Explore the prestigious honors, industry accolades, and global recognitions earned by PriyoShop for driving retail innovation in Bangladesh.",
+    "breadcrumb_home": "Home",
+    "breadcrumb_title": "Awards",
+    "hero_pill": "Honors and milestones",
+    "hero_title": "~Awards and Recognition Moments~",
+    "hero_description": "Celebrating our journey of transforming MSME commerce and supply chains across Bangladesh with global and national accolades.",
+    "all_categories_chip": "All",
+    "load_more": "Load more awards",
+    "empty_message": "No awards found for this selection."
+  },
+  "AwardDetailPage": {
+    "not_found_title": "Award not found — PriyoShop",
+    "back_to_awards": "Back to all awards",
+    "details_title": "Recognition details",
+    "story_title": "The story behind the recognition",
+    "organization_label": "Awarded by",
+    "year_label": "Year",
+    "category_label": "Category",
+    "view_official_button": "View official announcement",
+    "more_awards_title": "Other recognitions",
+    "view_all_button": "View all awards"
   }
 }

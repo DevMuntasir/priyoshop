@@ -4,11 +4,36 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { ResolvedSection } from '@/libs/cms/Sections';
 import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
 
+function getGridColSpan(index: number, total: number) {
+  if (total === 5) {
+    if (index < 3) {
+      return 'md:col-span-1 lg:col-span-2';
+    }
+    return index === 4 ? 'md:col-span-2 lg:col-span-3' : 'md:col-span-1 lg:col-span-3';
+  }
+
+  if (total === 2 || total === 4) {
+    return 'md:col-span-1 lg:col-span-3';
+  }
+
+  if (total === 1) {
+    return 'col-span-1 md:col-span-2 lg:col-span-6';
+  }
+
+  return 'md:col-span-1 lg:col-span-2';
+}
+
 export function OpportunityHub(props: { data: ResolvedSection }) {
-  const { heading, style, items } = props.data;
+  const heading = props.data.heading;
+  const style = props.data.style;
+  const items = props.data.items;
   const resolved = resolveSectionStyle(style);
   const alignClass
     = resolved.align === 'center' ? 'items-center text-center' : 'items-start text-left';
+
+  const validItems = (items ?? []).filter(
+    item => Boolean(item.title || item.body || item.description || item.image),
+  );
 
   return (
     <section className={`overflow-hidden bg-white pt-14 sm:pt-20 ${resolved.wrapperClass}`.trim()}>
@@ -24,30 +49,35 @@ export function OpportunityHub(props: { data: ResolvedSection }) {
           />
         </Reveal>
 
-        <div className="mt-10 flex flex-wrap justify-center gap-6 lg:mt-16 lg:gap-8">
-          {(items ?? []).map((item, index) => {
+        <div className="mt-10 grid w-full grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:mt-16 lg:grid-cols-6 lg:gap-8">
+          {validItems.map((item, index) => {
             const body = item.body ?? item.description;
-            if (!item.title && !body && !item.image) {
-              return null;
-            }
+            const spanClass = getGridColSpan(index, validItems.length);
 
             return (
-              <div key={index} className='min-w-[300px] '>
-                <Reveal direction="up" className="flex   h-full flex-col border-[1px] border-ps-cream-yellow">
-                  {item.image && (
-                    <div className="bg-ps-warm-white">
+              <div key={item.title || index} className={spanClass}>
+                <Reveal direction="up" delay={index * 0.08} className="flex h-full flex-col text-left">
+                  <div className="relative h-48 w-full overflow-hidden rounded-2xl bg-ps-cream sm:h-56 lg:h-64">
+                    {item.image && (
                       <Image
                         src={item.image}
                         alt={item.imageAlt || item.title || 'Hub item'}
-                        width={300}
-                        height={200}
-                        className="w-full object-cover"
+                        fill
+                        className="object-cover"
                       />
-                    </div>
-                  )}
-                  <div className="flex-1 p-4">
-                    {item.title && <h3 className="mt-4 text-lg font-semibold lg:text-2xl">{item.title}</h3>}
-                    {body && <p className="mt-2 text-gray-600">{body}</p>}
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col pt-4">
+                    {item.title && (
+                      <h3 className="text-lg font-bold text-ps-black sm:text-xl lg:text-2xl">
+                        {item.title}
+                      </h3>
+                    )}
+                    {body && (
+                      <p className="mt-2 text-sm leading-relaxed text-gray-600 sm:text-base">
+                        {body}
+                      </p>
+                    )}
                   </div>
                 </Reveal>
               </div>

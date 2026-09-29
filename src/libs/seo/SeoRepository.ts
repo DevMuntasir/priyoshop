@@ -1,3 +1,4 @@
+import { listAwardSlugs } from '@/libs/awards/AwardService';
 import { listPublishedJobSlugs } from '@/libs/career/CareerRepository';
 import { listPublishedSlugs } from '@/libs/media/BlogPostRepository';
 import { listPublishedNewsPublicationSlugs } from '@/libs/news/NewsPublicationRepository';
@@ -48,6 +49,7 @@ export const seoRepository: SeoRepository = {
       { path: '/career', changeFrequency: 'weekly', priority: 0.8 },
       { path: '/contact', changeFrequency: 'monthly', priority: 0.6 },
       { path: '/portfolio', changeFrequency: 'weekly', priority: 0.8 },
+      { path: '/awards', changeFrequency: 'weekly', priority: 0.8 },
     ];
 
     const portfolioRoutes: SeoRoute[] = Array.from({ length: PORTFOLIO_COUNT }, (_, i) => ({
@@ -84,6 +86,13 @@ export const seoRepository: SeoRepository = {
       priority: 0.6,
     }));
 
+    const awardSlugs = await listAwardSlugs();
+    const awardRoutes: SeoRoute[] = awardSlugs.map((slug) => ({
+      path: `/awards/${slug}`,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    }));
+
     return [
       ...staticRoutes,
       ...portfolioRoutes,
@@ -91,6 +100,7 @@ export const seoRepository: SeoRepository = {
       ...newsRoutes,
       ...newsPublicationRoutes,
       ...careerRoutes,
+      ...awardRoutes,
     ];
   },
 };

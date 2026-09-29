@@ -4,12 +4,40 @@ import { ResponsiveHeroBackground } from '@/components/ui/ResponsiveHeroBackgrou
 import { RollingNumber } from '@/components/ui/RollingNumber';
 import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
 
-/* Rolls whole numbers, falls back to plain text for values like "200K+". */
+function parseStatValue(raw: string | undefined): { prefix: string; num: number; suffix: string } | null {
+  if (!raw) {
+    return null;
+  }
+  const match = /^([^\d]*)(\d+)(.*)$/u.exec(raw.trim());
+  if (!match) {
+    return null;
+  }
+  return {
+    prefix: match[1] ?? '',
+    num: Number(match[2]),
+    suffix: match[3] ?? '',
+  };
+}
+
+/* Rolls whole numbers, supports suffixes like "200K+" with consistent size. */
 function statValue(item: SectionItem): React.ReactNode {
-  const numeric = Number(item.value);
-  return Number.isInteger(numeric) && item.value !== ''
-    ? <RollingNumber value={numeric} height={52} />
-    : (item.value ?? '');
+  const parsed = parseStatValue(item.value);
+  if (parsed) {
+    return (
+      <RollingNumber
+        value={parsed.num}
+        prefix={parsed.prefix}
+        suffix={parsed.suffix}
+        height={52}
+      />
+    );
+  }
+
+  return (
+    <span className="text-[34px] lg:text-[52px] leading-none">
+      {item.value ?? ''}
+    </span>
+  );
 }
 
 export function DistributionHero(props: { data: ResolvedSection }) {

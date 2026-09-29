@@ -6,6 +6,9 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import type { ResolvedSection } from '@/libs/cms/Sections';
 import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
 
+import { Link } from '@/libs/I18nNavigation';
+import { normalizeAward } from '@/libs/awards/awardUtils';
+
 export function Awards(props: { data: ResolvedSection }) {
   const { heading, items, style } = props.data;
   const resolved = resolveSectionStyle(style);
@@ -20,14 +23,6 @@ export function Awards(props: { data: ResolvedSection }) {
           >
             {/* oxlint-disable-next-line next/no-img-element -- static decorative laurel mark */}
             <img src="/awards/icon.png" alt="" className="h-24 w-auto sm:h-32 lg:h-37.5" />
-            {/* <h2 className="m-0 font-display leading-[1.4] font-bold tracking-tight text-balance text-ps-h3 lg:text-ps-h2">
-            <span className="bg-linear-to-r from-ps-red-600 to-ps-gold-600 bg-clip-text text-transparent">
-              {heading.title}
-            </span>{' '}
-            {heading.titleTrail ? (
-              <span className={resolved.titleColorClass}>{heading.titleTrail}</span>
-            ) : null}
-          </h2> */}
             <SectionHeading
               title={<AccentedTitle text={heading.title} emClass='bg-linear-to-r from-ps-red-600 to-ps-gold-600 bg-clip-text text-transparent' />}
               description={heading.description}
@@ -43,21 +38,17 @@ export function Awards(props: { data: ResolvedSection }) {
           >
             {items.map((item, index) => (
               <Reveal item direction="up" key={`${item.logo}-${index}`}>
-                <AwardCard
-                  award={{
-                    name: item.name ?? '',
-                    caption: item.caption ?? '',
-                    logo: item.logo ?? '',
-                  }}
-                />
+                <AwardCard award={normalizeAward(item, index)} />
               </Reveal>
             ))}
           </RevealGroup>
 
           <Reveal className="mt-8 flex justify-center sm:mt-11" delay={0.1}>
-            <Button size="md" tone="dark">
-              View More Awards
-            </Button>
+            <Link href="/awards" className="inline-block no-underline">
+              <Button size="md" tone="dark">
+                View More Awards
+              </Button>
+            </Link>
           </Reveal>
         </div>
       </div>

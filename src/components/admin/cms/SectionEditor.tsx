@@ -135,9 +135,16 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
     { field: 'logo', label: 'Image path' },
   ],
   award: [
-    { field: 'name', label: 'Name' },
-    { field: 'logo', label: 'Image path' },
-    { field: 'caption', label: 'Caption' },
+    { field: 'name', label: 'Award Name' },
+    { field: 'slug', label: 'Slug (URL identifier)' },
+    { field: 'organization', label: 'Awarded by / Organization' },
+    { field: 'year', label: 'Year' },
+    { field: 'category', label: 'Category' },
+    { field: 'caption', label: 'Short caption', full: true },
+    { field: 'logo', label: 'Logo mark' },
+    { field: 'coverImage', label: 'Cover image' },
+    { field: 'externalUrl', label: 'Official / Press link' },
+    { field: 'description', label: 'Detailed description / story', type: 'textarea', full: true },
   ],
   ecosystem: [
     { field: 'title', label: 'Title', full: true },
@@ -416,18 +423,18 @@ function addItemTo(
   const item: SectionItem =
     section.itemKind === 'slide'
       ? {
-          title: 'New slide',
-          slideBackgroundColor: 'bg-hero-gradient',
-          textColor: 'text-ps-ink-700',
-          descriptionColor: 'text-ps-ink-700',
-          textSize: 'text-ps-display',
-          descriptionSize: 'text-ps-body',
-          contentWidth: 'max-w-3xl',
-          slideAlign: 'left',
-          ctaTone: 'dark',
-          ctaSecondaryLabel: 'Watch Our Story',
-          videoAction: 'secondary',
-        }
+        title: 'New slide',
+        slideBackgroundColor: 'bg-hero-gradient',
+        textColor: 'text-ps-ink-700',
+        descriptionColor: 'text-ps-ink-700',
+        textSize: 'text-ps-display',
+        descriptionSize: 'text-ps-body',
+        contentWidth: 'max-w-3xl',
+        slideAlign: 'left',
+        ctaTone: 'dark',
+        ctaSecondaryLabel: 'Watch Our Story',
+        videoAction: 'secondary',
+      }
       : {};
   const next = { ...content, items: [...content.items, item] };
   setSection({ ...section, contentByLocale: { ...section.contentByLocale, [locale]: next } });
@@ -586,11 +593,10 @@ function CardStyleEditor(props: {
             key={device}
             type="button"
             aria-pressed={props.device === device}
-            className={`rounded-md px-1.5 py-2 text-xs font-medium transition-colors ${
-              props.device === device
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-500 hover:text-gray-800'
-            }`}
+            className={`rounded-md px-1.5 py-2 text-xs font-medium transition-colors ${props.device === device
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-500 hover:text-gray-800'
+              }`}
             onClick={() => {
               props.onDeviceChange(device);
             }}
@@ -769,6 +775,7 @@ function ItemField(props: {
   const isMediaField =
     props.def.field === 'image' ||
     props.def.field === 'logo' ||
+    props.def.field === 'coverImage' ||
     props.def.field === 'slideBackgroundImage' ||
     props.def.field === 'slideBackgroundImageTablet' ||
     props.def.field === 'slideBackgroundImageLaptop' ||

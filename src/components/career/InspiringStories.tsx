@@ -41,8 +41,8 @@ export function InspiringStories(props: { stories: InspiringStory[] }) {
         onActiveChange={setActiveStoryIndex}
         height={380}
         gap={14}
-        radius={20}
-        expandRatio={0.58}
+        radius={15}
+        expandRatio={.68}
         trigger="hover"
         tilt={7}
         parallax={0.6}
@@ -62,9 +62,8 @@ export function InspiringStories(props: { stories: InspiringStory[] }) {
               setActiveStoryIndex(index);
             }}
             aria-label={story.name}
-            className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 ${
-              activeStory?.id === story.id ? 'w-8 bg-ps-black' : 'w-2 bg-ps-grey-300 hover:bg-ps-grey-400'
-            }`}
+            className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 ${activeStory?.id === story.id ? 'w-8 bg-ps-black' : 'w-2 bg-ps-grey-300 hover:bg-ps-grey-400'
+              }`}
           />
         ))}
       </div>

@@ -59,11 +59,11 @@ function HubCard(props: { item: SectionItem; index: number }) {
         <div className="flex max-w-[400px] h-full flex-col lg:flex-row lg:items-stretch">
           {/* Text column */}
           <div className="flex flex-1 flex-col gap-4 p-5 sm:p-8">
-            <h3 className="m-0 font-display text-ps-h5 font-bold text-[#1B8A3E]">
-              {item.imageAlt ?? item.title ?? `Hub ${props.index + 1}`}
+            <h3 className="m-0 font-display text-ps-h4 font-bold text-[#1B8A3E]">
+              {item.title ?? `Hub ${props.index + 1}`}
             </h3>
 
-            <p className="m-0 font-body text-ps-sm leading-relaxed text-ps-black-400 lg:text-ps-body">
+            <p className="m-0 font-body max-w-[250px] md:max-w-full text-ps-sm leading-relaxed text-ps-black-400 lg:text-ps-body">
               {item.body}
             </p>
 
