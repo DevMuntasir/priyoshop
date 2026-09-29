@@ -1,0 +1,15 @@
+.github
+.storybook
+storybook-static
+tests
+**/*.test.ts
+**/*.test.tsx
+**/*.integ.ts
+**/*.e2e.ts
+playwright-report
+test-results
+coverage
+vitest-test-results
+checkly.config.ts
+.env.local
+.env*.local
