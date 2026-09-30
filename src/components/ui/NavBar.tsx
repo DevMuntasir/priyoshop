@@ -197,18 +197,19 @@ export function NavBar({
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3 lg:gap-5">
           {secondary && (
-            <button
+            <Button
+              size="md"
               type="button"
               onClick={handleSecondary}
               onMouseEnter={() => {
                 setActiveDesktop(null);
               }}
-              className="hidden sm:inline-flex border-none bg-transparent p-2 sm:p-0 font-body text-xs sm:text-ps-sm font-semibold whitespace-nowrap text-ps-black hover:text-ps-ink-600 rounded-lg active:bg-ps-black/5"
+
             >
               {secondary}
-            </button>
+            </Button>
           )}
-          {cta && (
+          {/* {cta && (
             <Button
               size="md"
               onClick={onCta}
@@ -219,7 +220,7 @@ export function NavBar({
             >
               {cta}
             </Button>
-          )}
+          )} */}
         </div>
       </nav>
 

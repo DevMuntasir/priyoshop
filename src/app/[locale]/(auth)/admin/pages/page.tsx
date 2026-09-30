@@ -13,7 +13,7 @@ export default async function AdminPagesPage(props: { params: Promise<{ locale: 
     <div>
       <AdminPageHeader
         title="Pages"
-        description="Select a marketing page to edit the sections that render on it."
+        description=""
       />
       <div className="mt-6 space-y-3 px-8 max-w-4xl">
         {pages.map((page) => (

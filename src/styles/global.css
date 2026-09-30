@@ -74,9 +74,9 @@
   --color-ps-cyan: #cafbff;
   --color-ps-green-tint: #e2f5e8;
 
-  --font-display: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI';
   --font-body:
-    'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Open Sans',
     sans-serif;
   --font-accent: 'Parkinsans', 'Open Sans', sans-serif;
 

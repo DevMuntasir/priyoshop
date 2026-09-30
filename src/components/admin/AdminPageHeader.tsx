@@ -17,7 +17,7 @@ export const AdminPageHeader = (props: {
 
   return (
     <div className="sticky top-[53px] z-[999] flex flex-col gap-3 border-b border-gray-200 bg-white p-6 pb-5 font-display">
-      <AdminBreadcrumb />
+      {/* <AdminBreadcrumb /> */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           {showBack ? (
