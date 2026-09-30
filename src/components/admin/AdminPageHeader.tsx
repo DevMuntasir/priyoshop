@@ -1,6 +1,5 @@
 import type * as React from 'react';
 import { AdminBackButton } from '@/components/admin/AdminBackButton';
-import { AdminBreadcrumb } from '@/components/admin/AdminBreadcrumb';
 
 /**
  * Consistent header for an admin section page: title, back navigation, description, and action slot.

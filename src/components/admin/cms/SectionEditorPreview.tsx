@@ -16,6 +16,7 @@ type DevicePreviewConfig = {
   frameHeight: number;
   screenLeft: number;
   screenTop: number;
+  screenBorderRadius: number;
 };
 
 // These are CSS viewport pixels, which determine responsive breakpoints. The
@@ -30,6 +31,7 @@ const DEVICE_CONFIG: Record<Device, DevicePreviewConfig> = {
     frameHeight: 872,
     screenLeft: 14,
     screenTop: 14,
+    screenBorderRadius: 39;
   },
   tablet: {
     label: 'Tablet',
@@ -40,6 +42,7 @@ const DEVICE_CONFIG: Record<Device, DevicePreviewConfig> = {
     frameHeight: 1056,
     screenLeft: 16,
     screenTop: 16,
+    screenBorderRadius: 22;
   },
   laptop: {
     label: 'Laptop',
@@ -50,6 +53,7 @@ const DEVICE_CONFIG: Record<Device, DevicePreviewConfig> = {
     frameHeight: 706,
     screenLeft: 44,
     screenTop: 18,
+    screenBorderRadius: 2;
   },
   desktop: {
     label: 'Desktop',
@@ -60,6 +64,7 @@ const DEVICE_CONFIG: Record<Device, DevicePreviewConfig> = {
     frameHeight: 1080,
     screenLeft: 22,
     screenTop: 22,
+    screenBorderRadius: 2;
   },
 };
 
@@ -148,7 +153,7 @@ export function SectionEditorPreview(props: {
   useEffect(() => {
     const previewArea = previewAreaRef.current;
     if (!previewArea) {
-      return;
+      return undefined;
     }
 
     const observer = new ResizeObserver(([entry]) => {
@@ -252,7 +257,7 @@ export function SectionEditorPreview(props: {
                 top: config.screenTop,
                 width: config.viewportWidth,
                 height: config.viewportHeight,
-                borderRadius: props.device === 'mobile' ? 39 : props.device === 'tablet' ? 22 : 2,
+                borderRadius: config.screenBorderRadius,
               }}
             >
               <iframe
