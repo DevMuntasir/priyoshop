@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { routing } from '@/libs/I18nRouting';
 import type { PageKey } from '@/libs/cms/Pages';
 import type { ResolvedSection, SectionKey } from '@/libs/cms/Sections';
 import { DEVICES } from '@/libs/cms/StyleTokens';
 import type { Device } from '@/libs/cms/StyleTokens';
+import { routing } from '@/libs/I18nRouting';
 
 type DevicePreviewConfig = {
   label: string;
@@ -31,7 +31,7 @@ const DEVICE_CONFIG: Record<Device, DevicePreviewConfig> = {
     frameHeight: 872,
     screenLeft: 14,
     screenTop: 14,
-    screenBorderRadius: 39;
+    screenBorderRadius: 39,
   },
   tablet: {
     label: 'Tablet',
@@ -42,7 +42,7 @@ const DEVICE_CONFIG: Record<Device, DevicePreviewConfig> = {
     frameHeight: 1056,
     screenLeft: 16,
     screenTop: 16,
-    screenBorderRadius: 22;
+    screenBorderRadius: 22,
   },
   laptop: {
     label: 'Laptop',
@@ -53,7 +53,7 @@ const DEVICE_CONFIG: Record<Device, DevicePreviewConfig> = {
     frameHeight: 706,
     screenLeft: 44,
     screenTop: 18,
-    screenBorderRadius: 2;
+    screenBorderRadius: 2,
   },
   desktop: {
     label: 'Desktop',
@@ -64,7 +64,7 @@ const DEVICE_CONFIG: Record<Device, DevicePreviewConfig> = {
     frameHeight: 1080,
     screenLeft: 22,
     screenTop: 22,
-    screenBorderRadius: 2;
+    screenBorderRadius: 2,
   },
 };
 
@@ -152,9 +152,6 @@ export function SectionEditorPreview(props: {
 
   useEffect(() => {
     const previewArea = previewAreaRef.current;
-    if (!previewArea) {
-      return undefined;
-    }
 
     const observer = new ResizeObserver(([entry]) => {
       if (!entry) {
@@ -164,7 +161,9 @@ export function SectionEditorPreview(props: {
       const heightScale = entry.contentRect.height / config.frameHeight;
       setScale(Math.max(0.1, Math.min(widthScale, heightScale, 1)));
     });
-    observer.observe(previewArea);
+    if (previewArea) {
+      observer.observe(previewArea);
+    }
     return () => {
       observer.disconnect();
     };
