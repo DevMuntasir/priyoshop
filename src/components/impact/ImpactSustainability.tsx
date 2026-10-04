@@ -35,15 +35,16 @@ function PillarCard(props: { item: SectionItem }) {
 
       {/* SDG badge at the bottom */}
       <div className="mt-auto flex flex-wrap w-full gap-2 pt-2 border-t border-ps-black-50">
-        {item.groupImages && item.groupImages.map((src) =>
+        {item.groupImages?.filter(Boolean).map((src, index) => (
           <Image
+            key={`${src}-${index}`}
             src={src}
             alt={item.imageAlt ?? (item.value ? `SDG ${item.value}` : item.title ?? '')}
             width={44}
             height={44}
             className="size-11 rounded object-cover"
           />
-        )}
+        ))}
       </div>
     </div>
   );

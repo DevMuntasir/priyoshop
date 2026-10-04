@@ -1,0 +1,43 @@
+/* ============================================================
+   PriyoShop · Typography tokens
+   Display = Lato  ·  UI/Body = Open Sans  ·  Accent = Parkinsans
+   ============================================================ */
+
+:root {
+  /* ---- Families ------------------------------------------ */
+  --font-display: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body:    'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-accent:  'Parkinsans', 'Open Sans', sans-serif;
+
+  /* ---- Weights ------------------------------------------- */
+  --fw-light:    300; /* @kind font */
+  --fw-regular:  400; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold:     700; /* @kind font */
+  --fw-heavy:    800; /* @kind font */
+  --fw-black:    900; /* @kind font */
+
+  /* ---- Display scale (Lato) ------------------------------
+     Pulled from the Figma hero + section headers.            */
+  --text-hero:      96px;   /* full hero headline              */
+  --text-display:   68px;   /* large hero / section opener     */
+  --text-h1:        56px;   /* section title                   */
+  --text-h2:        44px;
+  --text-h3:        36px;
+  --text-h4:        28px;   /* sub-section / card headline      */
+
+  /* ---- Body / UI scale (Open Sans) ----------------------- */
+  --text-lead:      22px;   /* card body copy                  */
+  --text-body:      18px;   /* default body + button / nav      */
+  --text-sm:        16px;   /* badges, captions, fine print     */
+  --text-xs:        14px;
+
+  /* ---- Line heights -------------------------------------- */
+  --lh-tight:    1.05;   /* @kind font */
+  --lh-snug:     1.34;   /* @kind font */
+  --lh-body:     1.64;   /* @kind font */
+
+  /* ---- Letter spacing ------------------------------------ */
+  --ls-tight:   -0.02em; /* @kind font */
+  --ls-normal:   0;      /* @kind font */
+}

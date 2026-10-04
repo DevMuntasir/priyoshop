@@ -1,0 +1,9 @@
+/* ============================================================
+   PriyoShop Design System — global entry point.
+   Consumers link THIS file. Imports only; no rules here.
+   ============================================================ */
+
+@import './tokens/fonts.css';
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';

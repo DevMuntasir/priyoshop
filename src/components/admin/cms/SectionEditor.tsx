@@ -1082,6 +1082,65 @@ function ItemBulletsEditor(props: {
   );
 }
 
+function ItemGroupImagesEditor(props: {
+  images?: string[];
+  onChange: (images: string[]) => void;
+}) {
+  const images = props.images ?? [];
+
+  return (
+    <div className="col-span-2 space-y-3 border-t border-gray-100 pt-3">
+      <div className="flex items-center justify-between">
+        <span className={labelClass}>Group images</span>
+        <button
+          type="button"
+          className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
+          onClick={() => {
+            props.onChange([...images, '']);
+          }}
+        >
+          + Add image
+        </button>
+      </div>
+
+      {images.length === 0 ? (
+        <p className="rounded-md border border-dashed border-gray-200 p-2.5 text-xs text-gray-400 italic">
+          No group images added.
+        </p>
+      ) : (
+        <div className="space-y-3">
+          {images.map((image, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: group images are stored positionally
+            <div key={index} className="flex items-end gap-2">
+              <MediaInput
+                className="min-w-0 flex-1"
+                label={`Group image ${index + 1}`}
+                value={image}
+                onChange={(value) => {
+                  const updated = [...images];
+                  updated[index] = value;
+                  props.onChange(updated);
+                }}
+                placeholder="Choose or enter an image path"
+              />
+              <button
+                type="button"
+                aria-label={`Remove group image ${index + 1}`}
+                className="mb-1 shrink-0 rounded px-2 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 hover:text-red-700"
+                onClick={() => {
+                  props.onChange(images.filter((_, imageIndex) => imageIndex !== index));
+                }}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function GenericItemEditor(props: {
   item: SectionItem;
   index: number;
@@ -1139,6 +1198,14 @@ function GenericItemEditor(props: {
               bullets={props.item.bullets}
               onChange={(bullets) => {
                 props.onField('bullets', bullets);
+              }}
+            />
+          ) : null}
+          {props.hints?.groupImages ? (
+            <ItemGroupImagesEditor
+              images={props.item.groupImages}
+              onChange={(images) => {
+                props.onField('groupImages', images);
               }}
             />
           ) : null}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Landing Page" description="PriyoShop marketing landing page — gradient hero, stats, ecosystem cards and a closing CTA, built from design-system components." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+</style>
+</helmet>
+
+<div style="background: var(--ps-warm-white); font-family: var(--font-body); color: var(--ps-ink-700); padding: 28px 0 0;">
+
+  <!-- Nav -->
+  <div style="position: sticky; top: 16px; z-index: 50; padding: 0 24px; margin-bottom: 32px;">
+    <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.NavBar" active="Business" hint-size="100%,76px"></x-import>
+  </div>
+
+  <!-- Hero -->
+  <section style="position: relative; margin: 0 24px; border-radius: 48px; background: var(--ps-gradient-hero); overflow: hidden;">
+    <div style="display: flex; align-items: stretch; gap: 40px; padding: 80px 64px; max-width: 1320px; margin: 0 auto;">
+      <div style="flex: 1 1 54%; display: flex; flex-direction: column; gap: 28px;">
+        <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.Badge" tone="ink" hint-size="fit-content,32px">Bangladesh's #1 B2B Commerce Platform</x-import>
+        <h1 style="margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 72px; line-height: 1.04; letter-spacing: -0.025em; color: var(--ps-ink-700); text-wrap: balance;">
+          Sourcing, simplified for every <span style="color: var(--ps-red-600);">shop</span>
+        </h1>
+        <p style="margin: 0; max-width: 520px; font-size: 22px; line-height: 1.55; color: var(--ps-ink-500); text-wrap: pretty;">
+          We connect retailers directly with brands and distributors — fair prices, next-day restocking and a smarter supply chain for 100,000+ MSMEs.
+        </p>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 4px;">
+          <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.Button" size="lg" hint-size="fit-content,56px">Join Us</x-import>
+          <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.Button" variant="outlined" size="lg" hint-size="fit-content,56px">Watch Our Story</x-import>
+        </div>
+      </div>
+      <div style="flex: 1 1 46%; display: flex; align-items: flex-end; justify-content: center;">
+        <img src="../../assets/illustrations/shop-storefront.png" alt="PriyoShop storefront" style="width: 100%; max-width: 520px; object-fit: contain; display: block;" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section style="max-width: 1320px; margin: 0 auto; padding: 64px;">
+    <div style="display: flex; gap: 64px; flex-wrap: wrap; justify-content: space-between;">
+      <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.MetricStat" value="296" label="Brands onboard" hint-size="fit-content,72px"></x-import>
+      <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.MetricStat" value="100K+" label="MSMEs served" hint-size="fit-content,72px"></x-import>
+      <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.MetricStat" value="1,428" label="Route coverage" hint-size="fit-content,72px"></x-import>
+      <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.MetricStat" value="64" label="Districts" hint-size="fit-content,72px"></x-import>
+    </div>
+  </section>
+
+  <!-- Ecosystem -->
+  <section style="max-width: 1320px; margin: 0 auto; padding: 56px 64px 0; display: flex; flex-direction: column; gap: 40px; align-items: center;">
+    <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.SectionHeading" eyebrow="Ecosystem at a Glance" title="Our Business & Ecosystem" align="center" hint-size="100%,160px"></x-import>
+    <div style="display: flex; flex-direction: column; gap: 24px; width: 100%;">
+      <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.EcosystemCard" title="Retail Business" body="A B2B commerce platform empowering MSMEs with faster restocking, fair prices and a smarter supply chain." image="../../assets/illustrations/shop-storefront.png" panelColor="var(--ps-green-tint)" hint-size="100%,348px"></x-import>
+      <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.EcosystemCard" title="Smart Distribution" body="A nationwide logistics network delivering to 1,400+ routes — the right products to the right shop, on time." image="../../assets/illustrations/ecosystem-a.png" panelColor="var(--ps-periwinkle)" reverse="{{ true }}" hint-size="100%,348px"></x-import>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section style="max-width: 1320px; margin: 0 auto; padding: 120px 64px;">
+    <div style="overflow: hidden; border-radius: 40px; padding: 80px 72px; background: var(--ps-gradient-hero); display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center;">
+      <h2 style="margin: 0; max-width: 760px; font-family: var(--font-display); font-weight: 800; font-size: 56px; line-height: 1.06; letter-spacing: -0.02em; color: var(--ps-ink-700); text-wrap: balance;">
+        Grow your business with PriyoShop
+      </h2>
+      <p style="margin: 0; max-width: 560px; font-size: 22px; line-height: 1.5; color: var(--ps-ink-500); text-wrap: pretty;">
+        Whether you run a corner shop or a national brand, our platform helps you reach further and sell more.
+      </p>
+      <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.Button" size="lg" hint-size="fit-content,56px">Join Us Today</x-import>
+    </div>
+  </section>
+
+  <x-import component-from-global-scope="PriyoShopDesignSystem_0fb1f5.Footer" hint-size="100%,600px"></x-import>
+</div>
+</x-dc>
+</body>
+</html>

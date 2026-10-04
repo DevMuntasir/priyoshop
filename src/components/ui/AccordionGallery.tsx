@@ -182,25 +182,39 @@ function AccordionVideoPlayer(props: {
   );
 }
 
-function AccordionPlayOverlay(props: { isActive: boolean }) {
+function AccordionPlayButton(props: {
+  isActive: boolean;
+  label?: string;
+  onPlay: () => void;
+}) {
   if (props.isActive) {
     return (
-      <span className="ag-panel__play-btn group/play" aria-hidden="true">
+      <button
+        type="button"
+        className="ag-panel__play-btn group/play"
+        aria-label={`Play video: ${props.label ?? ''}`}
+        onClick={props.onPlay}
+      >
         <span className="ag-panel__play-icon">
           <svg viewBox="0 0 24 24" className="size-7 translate-x-0.5 fill-current">
             <path d="M8 5v14l11-7z" />
           </svg>
         </span>
-      </span>
+      </button>
     );
   }
 
   return (
-    <span className="ag-panel__video-badge" aria-hidden="true">
+    <button
+      type="button"
+      className="ag-panel__video-badge"
+      aria-label={`Play video: ${props.label ?? ''}`}
+      onClick={props.onPlay}
+    >
       <svg viewBox="0 0 24 24" className="size-3.5 fill-current">
         <path d="M8 5v14l11-7z" />
       </svg>
-    </span>
+    </button>
   );
 }
 
@@ -258,6 +272,7 @@ function AccordionPanel(props: {
   trigger: 'hover' | 'click';
   radius: number;
   isPlaying: boolean;
+  isPlaybackActive: boolean;
   showLabels: boolean;
   showQuoteIcon?: boolean;
   onSelect: (index: number) => void;
@@ -305,50 +320,60 @@ function AccordionPanel(props: {
   };
 
   return (
-    <button
-      type="button"
+    <div
       ref={props.panelRef}
       className={`ag-panel text-left${isActive ? ' ag-panel--active' : ''}`}
       style={{ borderRadius: `${props.radius}px` }}
-      onClick={(e) => {
-        if (!isActive) {
-          e.preventDefault();
-          props.onSelect(props.index);
-        } else if (hasVideo) {
-          props.onPlay(props.index);
-        }
-      }}
       onMouseEnter={() => {
-        if (props.trigger === 'hover') {
+        if (props.trigger === 'hover' && !props.isPlaybackActive) {
           props.onSelect(props.index);
         }
       }}
-      onFocus={() => {
-        props.onSelect(props.index);
-      }}
-      onKeyDown={handleKeyDown}
-      aria-current={isActive ? 'true' : undefined}
-      aria-label={props.item.label}
     >
-      <span className="ag-panel__frame">
-        <span className="ag-panel__media" ref={props.mediaRef}>
-          {/* oxlint-disable-next-line next/no-img-element -- GSAP 3D perspective accordion requires native img with fluid parent scaling */}
-          <img src={poster} alt={props.item.alt || props.item.label || ''} draggable="false" />
+      <button
+        type="button"
+        className="ag-panel__trigger"
+        onClick={() => {
+          props.onSelect(props.index);
+        }}
+        onFocus={() => {
+          props.onSelect(props.index);
+        }}
+        onKeyDown={handleKeyDown}
+        aria-current={isActive ? 'true' : undefined}
+        aria-label={props.item.label}
+      >
+        <span className="ag-panel__frame">
+          <span className="ag-panel__media" ref={props.mediaRef}>
+            {/* oxlint-disable-next-line next/no-img-element -- GSAP 3D perspective accordion requires native img with fluid parent scaling */}
+            <img src={poster} alt={props.item.alt || props.item.label || ''} draggable="false" />
+          </span>
+          <span className="ag-panel__overlay" aria-hidden="true" />
         </span>
-        <span className="ag-panel__overlay" aria-hidden="true" />
-      </span>
 
-      {hasVideo && <AccordionPlayOverlay isActive={isActive} />}
+        {props.showLabels && (
+          <AccordionPanelLabel
+            item={props.item}
+            showQuoteIcon={props.showQuoteIcon}
+            barRef={props.barRef}
+            textRef={props.textRef}
+          />
+        )}
+      </button>
 
-      {props.showLabels && (
-        <AccordionPanelLabel
-          item={props.item}
-          showQuoteIcon={props.showQuoteIcon}
-          barRef={props.barRef}
-          textRef={props.textRef}
+      {hasVideo && (
+        <AccordionPlayButton
+          isActive={isActive}
+          label={props.item.label}
+          onPlay={() => {
+            if (!isActive) {
+              props.onSelect(props.index);
+            }
+            props.onPlay(props.index);
+          }}
         />
       )}
-    </button>
+    </div>
   );
 }
 
@@ -535,7 +560,20 @@ export function AccordionGallery(props: AccordionGalleryProps) {
   useEffect(() => {
     applyLayout(!firstRunRef.current);
     firstRunRef.current = false;
-  }, [active, count, expandRatio, duration, ease, vertical, tilt, parallax, grayscale, showLabels, stagger]);
+  }, [
+    active,
+    count,
+    expandRatio,
+    duration,
+    ease,
+    vertical,
+    tilt,
+    parallax,
+    grayscale,
+    showLabels,
+    stagger,
+    playingIndex,
+  ]);
 
   useEffect(() => () => {
     tlRef.current?.kill();
@@ -567,6 +605,7 @@ export function AccordionGallery(props: AccordionGalleryProps) {
           trigger={trigger}
           radius={radius}
           isPlaying={playingIndex === i}
+          isPlaybackActive={playingIndex !== null}
           showLabels={showLabels}
           showQuoteIcon={props.showQuoteIcon}
           onSelect={updateActive}

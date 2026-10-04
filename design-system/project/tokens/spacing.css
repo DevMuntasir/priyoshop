@@ -1,0 +1,45 @@
+/* ============================================================
+   PriyoShop · Spacing, radii, shadows, layout
+   ============================================================ */
+
+:root {
+  /* ---- Spacing scale (4px base) -------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  40px;
+  --space-8:  48px;
+  --space-9:  64px;
+  --space-10: 80px;
+  --space-12: 120px;   /* page side gutter on desktop          */
+
+  /* ---- Radii --------------------------------------------- */
+  --radius-sm:   6px;    /* store buttons, small chips          */
+  --radius-md:   16px;   /* inputs, small cards                 */
+  --radius-lg:   20px;   /* badges / pills (rectangular)        */
+  --radius-xl:   24px;   /* primary cards, panels               */
+  --radius-hero: 48px;   /* hero container bottom-left cut       */
+  --radius-pill: 999px;  /* buttons, capsule chips              */
+
+  /* ---- Shadows ------------------------------------------- */
+  --shadow-card:  0 12px 32px rgba(0,0,0,0.08);   /* floating stat / glass card */
+  --shadow-soft:  0 4px 16px rgba(0,0,0,0.06);
+  --shadow-pop:   0 20px 48px rgba(0,0,0,0.12);
+
+  /* Cards more often use a hairline border than a shadow */
+  --ring-card:    inset 0 0 0 1px var(--ps-grey-300);
+  --ring-subtle:  inset 0 0 0 1px var(--ps-grey-200);
+
+  /* ---- Layout -------------------------------------------- */
+  --container-max: 1200px;   /* @kind spacing */
+  --page-width:    1440px;   /* @kind spacing */
+
+  /* ---- Motion -------------------------------------------- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --dur-fast:   140ms;  /* @kind other */
+  --dur-base:   220ms;  /* @kind other */
+  --dur-slow:   360ms;  /* @kind other */
+}

@@ -1,0 +1,38 @@
+/* ============================================================
+   PriyoShop · Web fonts
+   Display  → Lato        (local woff2, brand-supplied)
+   UI/Body  → Open Sans   (Google Fonts)
+   Accent   → Parkinsans  (Google Fonts, rare/utility use)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Parkinsans:wght@400;500;600&display=swap');
+
+/* ---- Lato (brand display face) ---------------------------- */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('../assets/fonts/Lato-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/Lato-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../assets/fonts/Lato-Heavy.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../assets/fonts/Lato-Black.woff2') format('woff2');
+}

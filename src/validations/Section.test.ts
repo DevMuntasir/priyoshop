@@ -115,5 +115,26 @@ describe('sectionUpdateSchema', () => {
     expect(result.error?.issues).toBeUndefined();
     expect(result.success).toBe(true);
   });
+
+  it('accepts group images for sustainability cards', () => {
+    const section = SECTION_REGISTRY.impactSustainability;
+    const groupImages = ['/impact/1.svg', '/impact/8.svg'];
+    const result = sectionUpdateSchema.safeParse({
+      enabled: true,
+      order: section.defaultOrder,
+      style: section.defaultStyle,
+      locale: 'en',
+      content: {
+        ...section.defaultContent,
+        items: [{ title: 'Embedded Finance', groupImages }],
+      },
+    });
+
+    expect(result.success).toBe(true);
+    if (!result.success) {
+      throw result.error;
+    }
+    expect(result.data.content.items[0]?.groupImages).toEqual(groupImages);
+  });
 });
 

@@ -1,0 +1,18 @@
+<!-- @dsCard group="Spacing" viewport="700x180" name="Radii & Shadows" subtitle="Corner radii and elevation" -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" /><link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; font-family: var(--font-body); background: var(--ps-grey-100); }
+  .wrap { padding: 28px 32px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .tile { width: 96px; height: 96px; background: #fff; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; box-sizing: border-box; font-size: 11px; font-weight: 600; color: var(--ps-ink-400); }
+  .ring { box-shadow: var(--ring-card); }
+</style></head>
+<body>
+<div class="wrap">
+  <div class="tile ring" style="border-radius:var(--radius-md)">md 16</div>
+  <div class="tile ring" style="border-radius:var(--radius-xl)">xl 24</div>
+  <div class="tile" style="border-radius:var(--radius-pill);box-shadow:var(--shadow-soft)">pill · soft</div>
+  <div class="tile" style="border-radius:var(--radius-xl);box-shadow:var(--shadow-card)">xl · card</div>
+  <div class="tile" style="border-radius:var(--radius-xl);box-shadow:var(--shadow-pop)">xl · pop</div>
+</div>
+</body></html>

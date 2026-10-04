@@ -1,0 +1,85 @@
+/* ============================================================
+   PriyoShop · Color tokens
+   Source of truth: "PS Website Design" Figma (Homepage v2.0)
+   ============================================================ */
+
+:root {
+  /* ---- Brand red (primary) ------------------------------- */
+  --ps-red-50:   #FFF1F3;   /* tint wash on accent surfaces        */
+  --ps-red-100:  #FFE0E4;
+  --ps-red-500:  #EE2F47;   /* logo + brand primary                */
+  --ps-red-600:  #D92B41;   /* headline accent, stat values        */
+  --ps-red-700:  #BE2639;   /* pressed / deep red                  */
+  --ps-red-900:  #A12131;   /* darkest red (faint strokes)         */
+  --ps-red-bright: #FF2626; /* alert / emphasis red                */
+
+  /* ---- Ink / neutrals ------------------------------------ */
+  --ps-black:    #000000;   /* primary buttons, headlines          */
+  --ps-ink-900:  #161616;   /* footer surface cards                */
+  --ps-ink-800:  #1A1A1A;
+  --ps-ink-700:  #292A2E;   /* card titles                         */
+  --ps-ink-600:  #333333;   /* strong body text                    */
+  --ps-ink-500:  #545558;   /* body text                           */
+  --ps-ink-400:  #6B6B6B;   /* muted text                          */
+  --ps-ink-300:  #8A8A8A;   /* placeholder / captions              */
+  --ps-line-dark: #545454;  /* hairlines on black surfaces         */
+
+  /* ---- Greys / borders / surfaces ------------------------ */
+  --ps-grey-100: #F8F8F8;
+  --ps-grey-150: #F5F5F5;
+  --ps-grey-200: #E6E6E6;   /* default border                      */
+  --ps-grey-300: #D2D2D2;   /* card inset border                   */
+  --ps-grey-400: #B5B5B5;
+
+  --ps-white:    #FFFFFF;
+  --ps-warm-white: #FFFCFA; /* warm page / card base               */
+  --ps-cream:    #FFF8F4;   /* soft warm surface                   */
+  --ps-cream-yellow: #FFFDE2;
+
+  /* ---- Gold / amber -------------------------------------- */
+  --ps-gold-500: #FFB700;
+  --ps-gold-600: #FFBF00;
+  --ps-gold-ink: #AE7D16;   /* gold text on cream                  */
+
+  /* ---- Pastel accents (ecosystem / category chips) ------- */
+  --ps-peach:      #FFE4D1;
+  --ps-purple:     #C5A8FF;
+  --ps-lime:       #F1FFC7;
+  --ps-mint:       #CEFFDC;
+  --ps-periwinkle: #C8D6FF;
+  --ps-cyan:       #CAFBFF;
+  --ps-green-tint: #E2F5E8; /* "Retail Business" card panel        */
+
+  /* ---- Signature hero gradient --------------------------- */
+  --ps-gradient-hero: linear-gradient(
+      164.08deg,
+      #FFFCFA 20.36%,
+      #FFE4D1 61.73%,
+      #C5A8FF 103.10%); /* @kind color */
+
+  /* ============================================================
+     SEMANTIC ALIASES
+     ============================================================ */
+  --text-strong:   var(--ps-ink-700);
+  --text-body:     var(--ps-ink-500);
+  --text-muted:    var(--ps-ink-300);
+  --text-on-dark:  var(--ps-white);
+  --text-accent:   var(--ps-red-600);
+
+  --surface-page:  var(--ps-white);
+  --surface-warm:  var(--ps-warm-white);
+  --surface-card:  var(--ps-white);
+  --surface-dark:  var(--ps-black);
+  --surface-dark-card: var(--ps-ink-900);
+
+  --border-default: var(--ps-grey-200);
+  --border-card:    var(--ps-grey-300);
+  --border-on-dark: var(--ps-line-dark);
+
+  --brand:          var(--ps-red-500);
+  --brand-accent:   var(--ps-red-600);
+  --brand-pressed:  var(--ps-red-700);
+
+  --action:         var(--ps-black);     /* default filled button   */
+  --action-on:      var(--ps-white);
+}

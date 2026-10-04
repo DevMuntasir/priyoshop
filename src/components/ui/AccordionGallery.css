@@ -44,6 +44,26 @@
     0 10px 30px -18px rgba(0, 0, 0, 0.8);
 }
 
+.ag-panel__trigger {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ag-panel__trigger:focus-visible {
+  outline: 2px solid var(--ag-accent);
+  outline-offset: -2px;
+}
+
 .ag-panel__frame {
   position: absolute;
   inset: 0;
@@ -210,6 +230,12 @@
   transform: translate(-50%, -50%) scale(1.12);
 }
 
+.ag-panel__play-btn:focus-visible,
+.ag-panel__video-badge:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
 .ag-panel__play-icon {
   display: flex;
   align-items: center;
@@ -249,7 +275,6 @@
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #ffffff;
-  pointer-events: none;
   transition: opacity 0.3s ease;
 }
 

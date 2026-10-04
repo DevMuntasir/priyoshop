@@ -1,19 +1,14 @@
 import { setRequestLocale } from 'next-intl/server';
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { ContentList } from '@/components/admin/content/ContentList';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
-import { Stack } from '@/components/ui/Grid';
-import { Text } from '@/components/ui/Text';
 import { PERMISSIONS } from '@/libs/auth/Permissions';
 import { requirePermission } from '@/libs/auth/Rbac';
 import { listJobPostings } from '@/libs/career/CareerRepository';
 import { getDaysUntilAutoDelete, isJobDeadlinePassed } from '@/libs/career/jobDeadline';
 
-export const metadata = {
-  title: 'Careers',
-};
+export const metadata = { title: 'Careers' };
 
 export default async function AdminCareerPage(props: { params: Promise<{ locale: string }> }) {
   const { locale } = await props.params;
@@ -24,74 +19,46 @@ export default async function AdminCareerPage(props: { params: Promise<{ locale:
     redirect('/');
   }
 
-  const jobs = await listJobPostings();
+  const entries = await listJobPostings();
 
   return (
-    <main className="space-y-6 ">
+    <main>
       <AdminPageHeader
         title="Careers"
-        description="Write, publish and manage the job postings shown on the public Careers page."
-      />
-
-      <div className="px-8  space-y-4">
-        <div>
-          <Link href="/admin/career/new">
-            <Button>New job posting</Button>
-          </Link>
-        </div>
-
-        {jobs.length === 0 ? (
-          <Card padding="lg">
-            <Text size="body" className="text-ps-ink-600">
-              No job postings yet. Create one to get started.
-            </Text>
-          </Card>
-        ) : (
-          <div className="grid gap-4">
-            {jobs.map((job) => (
-              <Link key={job.jobId} href={`/admin/career/${job.jobId}`}>
-                <Card padding="md" border className="cursor-pointer transition-shadow hover:shadow-md">
-                  <Stack gap="sm">
-                    <Stack direction="row" align="center" gap="md" className="flex w-full justify-between">
-                      <div className="flex-1">
-                        <Text size="body" weight="semibold">
-                          {job.content.en?.title || job.slug}
-                        </Text>
-                        <Text size="sm" className="text-ps-ink-600">
-                          /career/{job.slug}
-                        </Text>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {isJobDeadlinePassed(job.deadline) && (
-                          <span className="inline-block rounded-ps-sm bg-amber-100 px-3 py-1 text-ps-xs font-semibold text-amber-900">
-                            Expired ({getDaysUntilAutoDelete(job.deadline)}d left)
-                          </span>
-                        )}
-                        <span
-                          className={`inline-block rounded-ps-sm px-3 py-1 text-ps-xs font-semibold ${job.status === 'published'
-                            ? 'bg-ps-green-tint text-ps-black'
-                            : 'bg-ps-grey-100 text-ps-ink-600'
-                          }`}
-                        >
-                          {job.status === 'published' ? 'Published' : 'Draft'}
-                        </span>
-                      </div>
-                    </Stack>
-                    <Text size="xs" className="text-ps-ink-600">
-                      {job.category || 'No category'} ·{' '}
-                      {new Date(job.deadline).toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
-                    </Text>
-                  </Stack>
-                </Card>
-              </Link>
-            ))}
+        description="Manage opportunities, review drafts and keep your careers page up to date."
+        action={
+          <div className="flex flex-wrap gap-3">
+            <Button href="/admin/career/new" tone="brand">
+              New job posting
+            </Button>
           </div>
-        )}
-      </div>
+        }
+      />
+      <ContentList
+        title="Job postings"
+        description="Manage your latest 200 job postings and keep application deadlines in view."
+        dateHeading="Deadline"
+        createHref="/admin/career/new"
+        createLabel="New job posting"
+        items={entries.map((entry) => ({
+          id: entry.jobId,
+          title: entry.content.en?.title?.trim() ? entry.content.en.title : entry.slug,
+          subtitle: `/career/${entry.slug}`,
+          href: `/admin/career/${entry.jobId}`,
+          categories: entry.category ? [entry.category] : [],
+          status: entry.status,
+          date: entry.deadline.toISOString(),
+          dateLabel: entry.deadline.toLocaleDateString('en-GB', {
+            timeZone: 'UTC',
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+          }),
+          warning: isJobDeadlinePassed(entry.deadline)
+            ? `Expired · Auto-deletes in ${getDaysUntilAutoDelete(entry.deadline)} days`
+            : undefined,
+        }))}
+      />
     </main>
   );
 }

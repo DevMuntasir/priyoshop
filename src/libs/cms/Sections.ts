@@ -269,6 +269,8 @@ export type SectionEditorHints = {
   listBody?: boolean;
   /** Show bullets editor for section items (e.g. green hub card slider). */
   bullets?: boolean;
+  /** Show a repeatable image editor for each section item. */
+  groupImages?: boolean;
 };
 
 export type SectionDef = {
@@ -2014,6 +2016,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         },
       ],
     },
+    editor: { groupImages: true },
   },
   impactWomen: {
     key: 'impactWomen',
