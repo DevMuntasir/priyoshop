@@ -8,7 +8,7 @@ export default async function AdminPortfolioPage(props: { params: Promise<{ loca
 
   return (
     <div>
-      <AdminPageHeader title="Portfolio" description="Add, reorder and update portfolio entries." />
+      <AdminPageHeader title="Portfolio" />
       <AdminPlaceholder message="Portfolio management is not available yet. This is where you will manage portfolio entries." />
     </div>
   );

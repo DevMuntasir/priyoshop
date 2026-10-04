@@ -21,7 +21,7 @@ export default async function AdminPageSectionsPage(props: {
     <div>
       <AdminPageHeader
         title={`${def.label} page`}
-        description=""
+
         backHref="/admin/pages"
         action={(
           <Link

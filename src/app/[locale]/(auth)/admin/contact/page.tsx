@@ -25,7 +25,6 @@ export default async function AdminContactPage(props: { params: Promise<{ locale
     <main>
       <AdminPageHeader
         title="Contact messages"
-        description="Review enquiries from your website and connect with the people behind them."
       />
 
       <ContactInbox

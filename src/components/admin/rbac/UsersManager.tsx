@@ -91,7 +91,7 @@ export const UsersManager = () => {
     <div>
       <AdminPageHeader
         title="Users"
-        description=""
+
         action={
           <Button
             tone="brand"

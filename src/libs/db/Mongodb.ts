@@ -69,6 +69,7 @@ export const COLLECTIONS = {
   builderPage: 'builder_page',
   navMenu: 'nav_menu',
   blogPost: 'blog_post',
+  contentCategory: 'content_category',
   newsPost: 'news_post',
   newsPublication: 'news_publication',
   jobPosting: 'job_posting',

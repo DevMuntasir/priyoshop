@@ -25,7 +25,7 @@ export default async function AdminCareerPage(props: { params: Promise<{ locale:
     <main>
       <AdminPageHeader
         title="Careers"
-        description="Manage opportunities, review drafts and keep your careers page up to date."
+
         action={
           <div className="flex flex-wrap gap-3">
             <Button href="/admin/career/new" tone="brand">

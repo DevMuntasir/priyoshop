@@ -13,7 +13,7 @@ export default async function AdminSeoPage(props: { params: Promise<{ locale: st
     <div>
       <AdminPageHeader
         title="SEO"
-        description="Select a page to override its metadata — title, description and social tags — per locale."
+
       />
       <div className="mt-6 space-y-3">
         {pages.map((page) => (

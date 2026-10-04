@@ -27,7 +27,6 @@ const sections = [
   {
     href: '/admin/portfolio',
     title: 'Portfolio',
-    description: 'Add, reorder and update portfolio entries.',
   },
   {
     href: '/admin/media',
@@ -49,7 +48,7 @@ export default async function AdminOverviewPage(props: { params: Promise<{ local
     <div className=' h-full'>
       <AdminPageHeader
         title="Overview"
-        description="Manage the content, SEO and configuration of the whole site from one place."
+
         showBackButton={false}
       />
 

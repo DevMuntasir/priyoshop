@@ -62,7 +62,7 @@ export default function MenuPage() {
     <main className="space-y-6">
       <AdminPageHeader
         title="Menu Builder"
-        description="Manage your site's navigation menu"
+
         backHref="/admin"
       />
 

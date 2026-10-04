@@ -30,7 +30,7 @@ export default async function AdminNewsPublicationsPage(props: {
     <main className="space-y-6">
       <AdminPageHeader
         title="News publications"
-        description="Manage the publication logos and names used on featured news cards and publication landing pages."
+
         backHref="/admin/news"
       />
 

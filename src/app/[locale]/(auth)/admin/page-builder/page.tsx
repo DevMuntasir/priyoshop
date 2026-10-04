@@ -25,57 +25,58 @@ export default async function PageBuilderListPage() {
     <main className="space-y-6">
       <AdminPageHeader
         title="Page Builder"
-        description="Create and manage custom pages with drag-and-drop blocks"
+
       />
 
-      <div>
+      <div className="max-w-3xl px-8 mx-auto space-y-4">
         <Link href="/admin/page-builder/new">
           <Button>Create New Page</Button>
         </Link>
-      </div>
 
-      {pages.length === 0 ? (
-        <Card padding="lg">
-          <Text size="body" className="text-ps-ink-600">
-            No pages yet. Create one to get started.
-          </Text>
-        </Card>
-      ) : (
-        <div className="grid gap-4">
-          {pages.map((page) => (
-            <Link key={page.pageId} href={`/admin/page-builder/${page.pageId}`}>
-              <Card padding="md" border className="hover:shadow-md transition-shadow cursor-pointer">
-                <Stack gap="sm">
-                  <Stack direction="row" align="center" gap="md">
-                    <div className="flex-1">
-                      <Text size="body" weight="semibold">
-                        {page.title}
+        <div className="mt-6">
+          {pages.length === 0 ? (
+            <Card padding="lg">
+              <Text size="body" className="text-ps-ink-600">
+                No pages yet. Create one to get started.
+              </Text>
+            </Card>
+          ) : (
+            <div className="grid gap-4">
+              {pages.map((page) => (
+                <Link key={page.pageId} href={`/admin/page-builder/${page.pageId}`}>
+                  <Card padding="md" border className="hover:shadow-md transition-shadow cursor-pointer">
+                    <Stack gap="sm">
+                      <Stack direction="row" align="center" gap="md">
+                        <div className="flex-1">
+                          <Text size="body" weight="semibold">
+                            {page.title}
+                          </Text>
+                          <Text size="sm" className="text-ps-ink-600">
+                            /{page.slug}
+                          </Text>
+                        </div>
+                        <div>
+                          <span
+                            className={`inline-block px-3 py-1 rounded-ps-sm text-ps-xs font-semibold ${page.status === 'published'
+                              ? 'bg-ps-green-tint text-ps-black'
+                              : 'bg-ps-grey-100 text-ps-ink-600'
+                              }`}
+                          >
+                            {page.status === 'published' ? 'Published' : 'Draft'}
+                          </span>
+                        </div>
+                      </Stack>
+                      <Text size="xs" className="text-ps-ink-600">
+                        {page.blocks.length} blocks
                       </Text>
-                      <Text size="sm" className="text-ps-ink-600">
-                        /{page.slug}
-                      </Text>
-                    </div>
-                    <div>
-                      <span
-                        className={`inline-block px-3 py-1 rounded-ps-sm text-ps-xs font-semibold ${
-                          page.status === 'published'
-                            ? 'bg-ps-green-tint text-ps-black'
-                            : 'bg-ps-grey-100 text-ps-ink-600'
-                        }`}
-                      >
-                        {page.status === 'published' ? 'Published' : 'Draft'}
-                      </span>
-                    </div>
-                  </Stack>
-                  <Text size="xs" className="text-ps-ink-600">
-                    {page.blocks.length} blocks
-                  </Text>
-                </Stack>
-              </Card>
-            </Link>
-          ))}
+                    </Stack>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </main>
   );
 }

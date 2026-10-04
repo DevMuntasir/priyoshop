@@ -10,7 +10,6 @@ export default async function AdminRolesPage(props: { params: Promise<{ locale: 
     <div>
       <AdminPageHeader
         title="Roles"
-        description="Create roles and assign permissions. The system admin role always has full access."
       />
       <RolesManager />
     </div>

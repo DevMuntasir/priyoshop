@@ -22,7 +22,7 @@ export default async function AdminAssetsPage(props: { params: Promise<{ locale:
     <main className="space-y-6 pb-12">
       <AdminPageHeader
         title="Asset Library"
-        description="Centralized cloud media library. Upload, preview, resize, and organize images and assets."
+
       />
       <div className="px-8">
         <AssetLibrary />

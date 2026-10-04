@@ -24,7 +24,7 @@ export default async function AdminMediaPage(props: { params: Promise<{ locale: 
     <main>
       <AdminPageHeader
         title="Blogs"
-        description="Create, organize and publish stories for your website."
+
         action={
           <div className="flex flex-wrap gap-3">
             <Button href="/admin/media/new" tone="brand">
