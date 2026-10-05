@@ -22,7 +22,7 @@ export const adminNavItems: AdminNavItem[] = [
   { href: '/admin', label: 'Overview', exact: true },
   { href: '/admin/pages', label: 'Pages' },
   { href: '/admin/page-builder', label: 'Page Builder' },
-  { href: '/admin/menu', label: 'Menu' },
+  { href: '/admin/menu', label: 'Menus' },
   { href: '/admin/seo', label: 'SEO' },
   { href: '/admin/assets', label: 'Asset Library' },
   { href: '/admin/portfolio', label: 'Portfolio' },

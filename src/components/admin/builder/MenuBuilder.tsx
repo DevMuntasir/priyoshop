@@ -12,13 +12,14 @@ import type { MenuItem, BuilderPageDoc } from '@/libs/builder/Types';
 export type MenuBuilderProps = {
   items: MenuItem[];
   onItemsChange: (items: MenuItem[]) => void;
+  mode?: 'navigation' | 'footer';
 };
 
 function generateId(): string {
   return Math.random().toString(36).substring(2, 11);
 }
 
-export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
+export function MenuBuilder({ items, onItemsChange, mode = 'navigation' }: MenuBuilderProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [pages, setPages] = useState<BuilderPageDoc[]>([]);
   const [isAddingItem, setIsAddingItem] = useState(false);
@@ -68,7 +69,9 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
       label: newItemLabel,
     };
 
-    if (newItemType === 'url') {
+    if (mode === 'footer') {
+      newItem.children = [];
+    } else if (newItemType === 'url') {
       newItem.href = newItemUrl || '#';
     } else if (newItemType === 'page' && newItemPageId) {
       newItem.pageId = newItemPageId;
@@ -304,13 +307,15 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
                     onChange={(e) => updateItem(item.id, { label: e.target.value }, parentId)}
                     placeholder="Label"
                   />
-                  <Input
-                    type="text"
-                    value={item.href ?? ''}
-                    onChange={(e) => updateItem(item.id, { href: e.target.value }, parentId)}
-                    placeholder="URL"
-                  />
-                  {level > 0 && (
+                  {(mode === 'navigation' || level > 0) && (
+                    <Input
+                      type="text"
+                      value={item.href ?? ''}
+                      onChange={(e) => updateItem(item.id, { href: e.target.value }, parentId)}
+                      placeholder="URL"
+                    />
+                  )}
+                  {mode === 'navigation' && level > 0 && (
                     <>
                       <Input
                         type="text"
@@ -367,7 +372,11 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
                 variant="ghost"
                 onClick={() => setAddingSubMenuFor(addingSubMenuFor === item.id ? null : item.id)}
               >
-                {addingSubMenuFor === item.id ? 'Close' : 'Add Sub'}
+                {addingSubMenuFor === item.id
+                  ? 'Close'
+                  : mode === 'footer'
+                    ? 'Add Link'
+                    : 'Add Sub'}
               </Button>
             )}
 
@@ -389,7 +398,7 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
               type="text"
               value={newSubItemLabel}
               onChange={(e) => setNewSubItemLabel(e.target.value)}
-              placeholder="Sub-menu item label"
+              placeholder={mode === 'footer' ? 'Footer link label' : 'Sub-menu item label'}
             />
 
             <div>
@@ -445,19 +454,23 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
               </div>
             )}
 
-            <Input
-              type="text"
-              value={newSubItemDescription}
-              onChange={(e) => setNewSubItemDescription(e.target.value)}
-              placeholder="Description (optional)"
-            />
+            {mode === 'navigation' && (
+              <>
+                <Input
+                  type="text"
+                  value={newSubItemDescription}
+                  onChange={(e) => setNewSubItemDescription(e.target.value)}
+                  placeholder="Description (optional)"
+                />
 
-            <Input
-              type="text"
-              value={newSubItemImage}
-              onChange={(e) => setNewSubItemImage(e.target.value)}
-              placeholder="Image URL (optional)"
-            />
+                <Input
+                  type="text"
+                  value={newSubItemImage}
+                  onChange={(e) => setNewSubItemImage(e.target.value)}
+                  placeholder="Image URL (optional)"
+                />
+              </>
+            )}
 
             <div className="flex gap-2">
               <Button
@@ -504,7 +517,7 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
             setIsAddingItem(true);
           }}
         >
-          Add Menu Item
+          {mode === 'footer' ? 'Add Footer Column' : 'Add Menu Item'}
         </Button>
       ) : (
         <Card padding="md" border>
@@ -513,28 +526,30 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
               type="text"
               value={newItemLabel}
               onChange={(e) => setNewItemLabel(e.target.value)}
-              placeholder="Menu item label"
+              placeholder={mode === 'footer' ? 'Footer column heading' : 'Menu item label'}
             />
 
-            <div>
-              <label className="block text-ps-sm font-semibold mb-2">
-                Link Type
-              </label>
-              <select
-                className="w-full p-2 border border-ps-grey-300 rounded-ps-sm font-body text-ps-body"
-                value={newItemType}
-                onChange={(e) => {
-                  setNewItemType(e.target.value as 'url' | 'page');
-                  setNewItemUrl('');
-                  setNewItemPageId('');
-                }}
-              >
-                <option value="url">External URL</option>
-                <option value="page">Builder Page</option>
-              </select>
-            </div>
+            {mode === 'navigation' && (
+              <div>
+                <label className="block text-ps-sm font-semibold mb-2">
+                  Link Type
+                </label>
+                <select
+                  className="w-full p-2 border border-ps-grey-300 rounded-ps-sm font-body text-ps-body"
+                  value={newItemType}
+                  onChange={(e) => {
+                    setNewItemType(e.target.value as 'url' | 'page');
+                    setNewItemUrl('');
+                    setNewItemPageId('');
+                  }}
+                >
+                  <option value="url">External URL</option>
+                  <option value="page">Builder Page</option>
+                </select>
+              </div>
+            )}
 
-            {newItemType === 'url' && (
+            {mode === 'navigation' && newItemType === 'url' && (
               <Input
                 type="text"
                 value={newItemUrl}
@@ -543,7 +558,7 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
               />
             )}
 
-            {newItemType === 'page' && (
+            {mode === 'navigation' && newItemType === 'page' && (
               <div>
                 <label className="block text-ps-sm font-semibold mb-2">
                   Select Page
@@ -600,7 +615,9 @@ export function MenuBuilder({ items, onItemsChange }: MenuBuilderProps) {
       {items.length === 0 ? (
         <Card padding="lg">
           <Text size="sm" className="text-ps-ink-600">
-            No menu items. Create one to get started.
+            {mode === 'footer'
+              ? 'No footer columns. Create one to get started.'
+              : 'No menu items. Create one to get started.'}
           </Text>
         </Card>
       ) : (

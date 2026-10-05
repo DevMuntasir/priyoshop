@@ -1,5 +1,10 @@
 import Image from 'next/image';
 import type * as React from 'react';
+import {
+  defaultFooterMenuItems,
+  defaultFooterSettings,
+} from '@/libs/builder/FooterMenuDefaults';
+import type { FooterSettings, MenuItem } from '@/libs/builder/Types';
 import { Icon } from './Icon';
 import { Logo } from './Logo';
 import { TextHoverEffect } from './text-hover-effect';
@@ -14,12 +19,13 @@ const SOCIALS = {
     'M12 0C5.37264 0 0 5.37264 0 12C0 17.6275 3.87456 22.3498 9.10128 23.6467V15.6672H6.62688V12H9.10128V10.4198C9.10128 6.33552 10.9498 4.4424 14.9597 4.4424C15.72 4.4424 17.0318 4.59168 17.5685 4.74048V8.06448C17.2853 8.03472 16.7933 8.01984 16.1822 8.01984C14.2147 8.01984 13.4544 8.76528 13.4544 10.703V12H17.3741L16.7006 15.6672H13.4544V23.9122C19.3963 23.1946 24.0005 18.1354 24.0005 12C24 5.37264 18.6274 0 12 0Z',
 };
 
-function Social({ path, label }: { path: string; label: string }) {
+function Social({ path, label, href }: { path: string; label: string; href: string }) {
   return (
-    // oxlint-disable-next-line jsx-a11y/anchor-is-valid -- placeholder destination until real social URLs are wired up
     <a
-      href="#"
+      href={href}
       aria-label={label}
+      target={href === '#' ? undefined : '_blank'}
+      rel={href === '#' ? undefined : 'noopener noreferrer'}
       className="inline-flex size-11 items-center justify-center rounded-full text-white transition-colors duration-150 ease-in-out hover:bg-white/10 hover:text-ps-red-500"
     >
       <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -40,7 +46,7 @@ function Column({ heading, links }: { heading: string; links: ColumnLink[] }) {
           <a
             key={l.label}
             href={l.href}
-            className="inline-flex min-h-11 items-center font-body text-ps-sm font-normal text-white/78 no-underline transition-colors hover:text-white sm:text-ps-body"
+            className="inline-flex  items-center font-body text-ps-sm font-normal text-white/78 no-underline transition-colors hover:text-white "
           >
             {l.label}
           </a>
@@ -117,9 +123,17 @@ const AI_OPTIONS = [
   },
 ];
 
-export type FooterProps = React.HTMLAttributes<HTMLElement>;
+export type FooterProps = React.HTMLAttributes<HTMLElement> & {
+  items?: MenuItem[];
+  settings?: FooterSettings;
+};
 
-export function Footer({ className = '', ...rest }: FooterProps) {
+export function Footer({
+  className = '',
+  items = defaultFooterMenuItems,
+  settings = defaultFooterSettings,
+  ...rest
+}: FooterProps) {
   return (
     <footer
       className={`overflow-hidden bg-black px-4 pt-14 pb-[max(2.5rem,env(safe-area-inset-bottom))] text-white sm:px-6 md:px-8 lg:px-12 lg:pt-20 xl:px-16 xl:pt-28 ${className}`.trim()}
@@ -128,39 +142,42 @@ export function Footer({ className = '', ...rest }: FooterProps) {
       <div className="container mx-auto">
         <div className="grid gap-12 lg:grid-cols-[minmax(12rem,0.7fr)_minmax(0,1.8fr)] lg:gap-16">
           <div className="flex min-w-0 flex-col">
-            <Logo width={220} tone="light" className="h-auto w-44 sm:w-55" />
+            {settings.logoUrl ? (
+              <Image
+                src={settings.logoUrl}
+                alt={settings.logoAlt}
+                width={220}
+                height={54}
+                unoptimized={settings.logoUrl.toLowerCase().includes('.svg')}
+                className="h-auto w-44 object-contain object-left sm:w-55"
+              />
+            ) : (
+              <Logo width={220} tone="light" className="h-auto w-44 sm:w-55" />
+            )}
             <div className="mt-6 flex flex-wrap gap-2 sm:mt-10 sm:gap-4">
-              <Social path={SOCIALS.x} label="X" />
-              <Social path={SOCIALS.instagram} label="Instagram" />
-              <Social path={SOCIALS.linkedin} label="LinkedIn" />
-              <Social path={SOCIALS.facebook} label="Facebook" />
+              {settings.socialLinks
+                .filter((link) => link.href.trim())
+                .map((link) => (
+                  <Social
+                    key={link.id}
+                    path={SOCIALS[link.platform]}
+                    label={link.label}
+                    href={link.href}
+                  />
+                ))}
             </div>
           </div>
           <div className="grid min-w-0 grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 md:grid-cols-3 lg:gap-12">
-            <Column
-              heading="ABOUT"
-              links={[
-                { label: 'Investor Relations', href: '/pages/investor-relations' },
-                { label: 'Press Release', href: '/news' },
-                { label: 'Career', href: '/career' },
-              ]}
-            />
-            <Column
-              heading="USEFUL LINK"
-              links={[
-                { label: 'Terms of Service', href: '/pages/terms-of-service' },
-                { label: 'Privacy Policy', href: '/pages/privacy-policy' },
-                { label: 'Return Policy', href: '/pages/return-policy' },
-                { label: 'Join Us', href: '/career' },
-              ]}
-            />
-            <Column
-              heading="CONTACT US"
-              links={[
-                { label: 'Phone: 09610989922', href: 'tel:+8809610989922' },
-                { label: 'Email: support@priyoshop.com', href: 'mailto:support@priyoshop.com' },
-              ]}
-            />
+            {items.map((item) => (
+              <Column
+                key={item.id}
+                heading={item.label}
+                links={(item.children ?? []).map((child) => ({
+                  label: child.label,
+                  href: child.href ?? '#',
+                }))}
+              />
+            ))}
           </div>
         </div>
         <div className="-mx-2 overflow-hidden md:-mb-14">

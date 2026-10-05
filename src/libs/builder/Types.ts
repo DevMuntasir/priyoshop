@@ -42,3 +42,26 @@ export type NavMenuDoc = {
   items: MenuItem[];
   updatedAt: Date;
 };
+
+/** A supported social profile displayed in the footer. */
+export type FooterSocialLink = {
+  id: string;
+  platform: 'x' | 'instagram' | 'linkedin' | 'facebook';
+  label: string;
+  href: string;
+};
+
+/** Editable footer branding and social settings. */
+export type FooterSettings = {
+  logoUrl: string;
+  logoAlt: string;
+  socialLinks: FooterSocialLink[];
+};
+
+/** The footer navigation menu document. */
+export type FooterMenuDoc = {
+  menuId: 'footer-nav';
+  items: MenuItem[];
+  settings?: FooterSettings;
+  updatedAt: Date;
+};

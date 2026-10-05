@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { Footer } from '@/components/ui/Footer';
+import { FooterServer } from '@/components/ui/FooterServer';
 import { NavBarServer } from '@/components/ui/NavBarServer';
 import { buildOrganizationJsonLd, buildWebSiteJsonLd } from '@/libs/seo/StructuredData';
 
@@ -22,7 +22,7 @@ export default async function Layout(props: {
       {/* <Preloader /> */}
       <NavBarServer floating />
       <div>{props.children}</div>
-      <Footer />
+      <FooterServer />
     </div>
   );
 }
