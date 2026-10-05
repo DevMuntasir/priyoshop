@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/Button';
 import { CategoryChips } from '@/components/media/CategoryChips';
+import { Button } from '@/components/ui/Button';
 import { NEWS_CATEGORIES } from '@/libs/news/Categories';
 import type { NewsPostCard } from '@/libs/news/Types';
 import { NewsCard } from './NewsCard';
@@ -28,9 +28,9 @@ export function NewsExplorer(props: NewsExplorerProps) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Catalog order, limited to categories actually used by published posts.
-  const usedCategories = NEWS_CATEGORIES.filter((category) =>
-    props.posts.some((post) => post.categories.includes(category)),
-  );
+  const usedCategories = [
+    ...new Set([...NEWS_CATEGORIES, ...props.posts.flatMap((post) => post.categories)]),
+  ].filter((category) => props.posts.some((post) => post.categories.includes(category)));
 
   const filtered = active
     ? props.posts.filter((post) => post.categories.includes(active))
@@ -71,7 +71,9 @@ export function NewsExplorer(props: NewsExplorerProps) {
               variant="filled"
               tone="dark"
               size="md"
-              onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
+              onClick={() => {
+                setVisibleCount((count) => count + PAGE_SIZE);
+              }}
             >
               {props.loadMoreLabel}
             </Button>

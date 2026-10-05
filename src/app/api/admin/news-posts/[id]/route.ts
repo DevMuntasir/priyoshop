@@ -1,12 +1,17 @@
 import { NextResponse } from 'next/server';
 import { PERMISSIONS } from '@/libs/auth/Permissions';
 import { requirePermission } from '@/libs/auth/Rbac';
+import {
+  deleteNewsPost,
+  getNewsPost,
+  isNewsSlugTaken,
+  updateNewsPost,
+} from '@/libs/news/NewsPostRepository';
 import { getNewsPublication } from '@/libs/news/NewsPublicationRepository';
-import type { NewsPostDoc, NewsPostLocaleContent } from '@/libs/news/Types';
-import { deleteNewsPost, getNewsPost, isNewsSlugTaken, updateNewsPost } from '@/libs/news/NewsPostRepository';
 import { validateNewsSlug } from '@/libs/news/newsSlug';
 import { updateNewsPostSchema } from '@/libs/news/newsValidation';
 import { sanitizeNewsHtml } from '@/libs/news/sanitizeNewsHtml';
+import type { NewsPostDoc, NewsPostLocaleContent } from '@/libs/news/Types';
 
 type Context = { params: Promise<{ id: string }> };
 
@@ -35,17 +40,17 @@ export async function PATCH(request: Request, context: Context) {
   const body = await request.json().catch(() => null);
   const parsed = updateNewsPostSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
+    return NextResponse.json(
+      {
+        error: parsed.error.issues
+          .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+          .join('; '),
+      },
+      { status: 400 },
+    );
   }
 
-  const {
-    slug,
-    content,
-    publishedAt,
-    publicationId,
-    newsLink,
-    ...rest
-  } = parsed.data;
+  const { slug, content, publishedAt, publicationId, newsLink, ...rest } = parsed.data;
 
   const updates: Omit<Partial<NewsPostDoc>, 'publicationId'> & {
     publicationId?: string | null;

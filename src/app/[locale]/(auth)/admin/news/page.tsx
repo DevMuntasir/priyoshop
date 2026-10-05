@@ -1,6 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { CreateCategoryButton } from '@/components/admin/categories/CreateCategoryButton';
 import { ContentList } from '@/components/admin/content/ContentList';
 import { Button } from '@/components/ui/Button';
 import { PERMISSIONS } from '@/libs/auth/Permissions';
@@ -24,9 +25,9 @@ export default async function AdminNewsPage(props: { params: Promise<{ locale: s
     <main>
       <AdminPageHeader
         title="News"
-
         action={
           <div className="flex flex-wrap gap-3">
+            <CreateCategoryButton scope="news" />
             <Button href="/admin/news/publications" variant="outlined">
               Manage publications
             </Button>

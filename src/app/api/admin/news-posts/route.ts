@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { PERMISSIONS } from '@/libs/auth/Permissions';
 import { requirePermission } from '@/libs/auth/Rbac';
 import { createNewsPost, isNewsSlugTaken, listNewsPosts } from '@/libs/news/NewsPostRepository';
+import { getNewsPublication } from '@/libs/news/NewsPublicationRepository';
 import { createNewsPostSchema } from '@/libs/news/newsValidation';
 import { validateNewsSlug } from '@/libs/news/newsSlug';
 
@@ -27,7 +28,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
   }
 
-  const { slug, title, newsLink } = parsed.data;
+  const { slug, publicationId } = parsed.data;
 
   const slugError = validateNewsSlug(slug);
   if (slugError) {
@@ -39,6 +40,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Slug already in use' }, { status: 400 });
   }
 
-  const post = await createNewsPost({ slug, title, newsLink }, guard.actor.user.id);
+  if (publicationId && !(await getNewsPublication(publicationId))) {
+    return NextResponse.json({ error: 'Publication not found' }, { status: 400 });
+  }
+
+  const post = await createNewsPost(parsed.data, guard.actor.user.id);
   return NextResponse.json({ post }, { status: 201 });
 }

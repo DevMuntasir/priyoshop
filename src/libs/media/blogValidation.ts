@@ -4,8 +4,18 @@ const localeContentSchema = z.object({
   title: z.string().min(1).max(200),
   excerpt: z.string().max(500),
   contentHtml: z.string().max(200_000),
-  metaTitle: z.string().max(70).optional(),
-  metaDescription: z.string().max(160).optional(),
+  metaTitle: z
+    .string()
+    .max(70)
+    .nullable()
+    .transform((value) => value ?? '')
+    .optional(),
+  metaDescription: z
+    .string()
+    .max(160)
+    .nullable()
+    .transform((value) => value ?? '')
+    .optional(),
 });
 
 export const createBlogPostSchema = z.object({
@@ -19,7 +29,10 @@ export const updateBlogPostSchema = z.object({
   content: z
     .object({
       en: localeContentSchema,
-      bn: localeContentSchema.partial().optional(),
+      bn: localeContentSchema
+        .extend({ title: z.string().max(200) })
+        .partial()
+        .optional(),
     })
     .optional(),
   coverImage: z.string().max(500).optional(),

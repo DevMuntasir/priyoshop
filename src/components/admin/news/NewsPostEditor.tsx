@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
 import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
+import { CategoryPicker } from '@/components/admin/categories/CategoryPicker';
+import { CreateCategoryButton } from '@/components/admin/categories/CreateCategoryButton';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Text } from '@/components/ui/Text';
 import { adminFetch } from '@/libs/auth/AdminFetch';
-import { NEWS_CATEGORIES } from '@/libs/news/Categories';
 import type { NewsPostDoc, NewsPostLocaleContent, NewsPublicationDoc } from '@/libs/news/Types';
 
 const EMPTY_CONTENT: NewsPostLocaleContent = { title: '', excerpt: '', contentHtml: '' };
@@ -33,8 +34,9 @@ function Field(props: { label: string; hint?: string; children: React.ReactNode 
 }
 
 /* News post editor: title, news external link, category, cover image, publication, published date, featured. */
-export function NewsPostEditor(props: { postId: string }) {
+export function NewsPostEditor(props: { postId: string; categories: string[] }) {
   const router = useRouter();
+  const [categories, setCategories] = useState(props.categories);
   const [post, setPost] = useState<NewsPostDoc | null>(null);
   const [publications, setPublications] = useState<NewsPublicationDoc[]>([]);
   const [locale, setLocale] = useState<EditorLocale>('en');
@@ -75,15 +77,26 @@ export function NewsPostEditor(props: { postId: string }) {
   const setContentField = (field: keyof NewsPostLocaleContent, value: string) => {
     setPost({
       ...post,
-      content: { ...post.content, [locale]: { ...EMPTY_CONTENT, ...post.content[locale], [field]: value } },
+      content: {
+        ...post.content,
+        [locale]: { ...EMPTY_CONTENT, ...post.content[locale], [field]: value },
+      },
     });
   };
 
-  const toggleCategory = (category: string) => {
-    const categories = post.categories.includes(category)
-      ? post.categories.filter((entry) => entry !== category)
-      : [...post.categories, category];
-    setPost({ ...post, categories });
+  const categoryCreated = (category: string) => {
+    setCategories((current) => [...new Set([...current, category])]);
+    setPost((current) => {
+      if (!current || current.categories.includes(category) || current.categories.length >= 10) {
+        return current;
+      }
+      return { ...current, categories: [...current.categories, category] };
+    });
+    setStatus(
+      post.categories.length >= 10
+        ? 'Category created. Deselect a category to add it; the limit is 10.'
+        : 'Category selected. Save the post to apply changes.',
+    );
   };
 
   const save = async () => {
@@ -155,6 +168,7 @@ export function NewsPostEditor(props: { postId: string }) {
       <AdminPageHeader
         title={post.content.en?.title || 'Edit post'}
         description={post.newsLink || `/news/${post.slug}`}
+        action={<CreateCategoryButton scope="news" onCreated={categoryCreated} />}
         backHref="/admin/news"
       />
 
@@ -225,7 +239,8 @@ export function NewsPostEditor(props: { postId: string }) {
                 type="text"
                 value={post.slug}
                 onChange={(e) =>
-                  setPost({ ...post, slug: e.target.value.toLowerCase().replaceAll(/\s+/gu, '-') })}
+                  setPost({ ...post, slug: e.target.value.toLowerCase().replaceAll(/\s+/gu, '-') })
+                }
               />
             </Field>
           </Card>
@@ -238,7 +253,8 @@ export function NewsPostEditor(props: { postId: string }) {
                   setPost({
                     ...post,
                     publicationId: event.target.value || undefined,
-                  })}
+                  })
+                }
                 className="w-full rounded-ps-sm border border-ps-grey-200 bg-white px-3 py-2 font-body text-ps-sm outline-none focus:border-ps-black"
               >
                 <option value="">No publication</option>
@@ -250,24 +266,15 @@ export function NewsPostEditor(props: { postId: string }) {
               </select>
             </Field>
 
-            <Field label="Category">
-              <div className="flex flex-wrap gap-2">
-                {NEWS_CATEGORIES.map((category) => (
-                  <button
-                    key={category}
-                    type="button"
-                    onClick={() => toggleCategory(category)}
-                    className={`cursor-pointer rounded-ps-pill px-3 py-1.5 font-body text-ps-xs font-semibold ring-1 ring-inset transition-colors ${
-                      post.categories.includes(category)
-                        ? 'border-none bg-ps-black text-white ring-ps-black'
-                        : 'border-none bg-transparent text-ps-ink-600 ring-ps-grey-300 hover:ring-ps-black'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </Field>
+            <CategoryPicker
+              scope="news"
+              categories={categories}
+              selected={post.categories}
+              onChange={(selected) => {
+                setPost((current) => (current ? { ...current, categories: selected } : current));
+              }}
+              onCreated={categoryCreated}
+            />
 
             <Field label="Cover image" hint="Select from Asset Library or enter URL">
               <MediaInput
@@ -301,7 +308,8 @@ export function NewsPostEditor(props: { postId: string }) {
                 type="date"
                 value={new Date(post.publishedAt).toISOString().slice(0, 10)}
                 onChange={(e) =>
-                  setPost({ ...post, publishedAt: new Date(`${e.target.value}T00:00:00.000Z`) })}
+                  setPost({ ...post, publishedAt: new Date(`${e.target.value}T00:00:00.000Z`) })
+                }
               />
             </Field>
 

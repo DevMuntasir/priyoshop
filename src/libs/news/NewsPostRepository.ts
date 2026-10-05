@@ -245,27 +245,45 @@ export async function listPublishedNewsSlugs(): Promise<{ slug: string; updatedA
 }
 
 /**
- * Creates a draft post skeleton from a title and slug.
- * @param input The English title and the post's slug.
+ * Creates a draft post with all supplied details.
+ * @param input The post details.
  * @param userId The creating admin's user id.
  * @returns The created post document.
  * @throws Error when the insert is not acknowledged.
  */
 export async function createNewsPost(
-  input: { title: string; slug: string; newsLink?: string },
+  input: {
+    title: string;
+    banglaTitle?: string;
+    slug: string;
+    newsLink?: string;
+    categories?: string[];
+    coverImage?: string;
+    coverImageAlt?: string;
+    publicationId?: string | null;
+    featured?: boolean;
+    publishedAt?: string;
+  },
   userId: string,
 ): Promise<NewsPostDoc> {
   const now = new Date();
   const doc: NewsPostDoc = {
     postId: new ObjectId().toHexString(),
     slug: input.slug,
-    categories: [],
-    content: { en: { title: input.title, excerpt: '', contentHtml: '' } },
-    coverImage: '',
-    newsLink: input.newsLink ?? '',
+    categories: input.categories ?? [],
+    content: {
+      en: { title: input.title, excerpt: '', contentHtml: '' },
+      ...(input.banglaTitle
+        ? { bn: { title: input.banglaTitle, excerpt: '', contentHtml: '' } }
+        : {}),
+    },
+    coverImage: input.coverImage ?? '',
+    ...(input.coverImageAlt ? { coverImageAlt: input.coverImageAlt } : {}),
+    ...(input.publicationId ? { publicationId: input.publicationId } : {}),
+    newsLink: input.newsLink?.trim() ?? '',
     status: 'draft',
-    featured: false,
-    publishedAt: now,
+    featured: input.featured ?? false,
+    publishedAt: input.publishedAt ? new Date(input.publishedAt) : now,
     createdAt: now,
     updatedAt: now,
     updatedBy: userId,

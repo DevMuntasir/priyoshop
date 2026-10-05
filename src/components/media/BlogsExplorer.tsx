@@ -28,9 +28,9 @@ export function BlogsExplorer(props: BlogsExplorerProps) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Catalog order, limited to categories actually used by published posts.
-  const usedCategories = BLOG_CATEGORIES.filter((category) =>
-    props.posts.some((post) => post.categories.includes(category)),
-  );
+  const usedCategories = [
+    ...new Set([...BLOG_CATEGORIES, ...props.posts.flatMap((post) => post.categories)]),
+  ].filter((category) => props.posts.some((post) => post.categories.includes(category)));
 
   const filtered = active
     ? props.posts.filter((post) => post.categories.includes(active))
@@ -71,7 +71,9 @@ export function BlogsExplorer(props: BlogsExplorerProps) {
               variant="filled"
               tone="dark"
               size="md"
-              onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
+              onClick={() => {
+                setVisibleCount((count) => count + PAGE_SIZE);
+              }}
             >
               {props.loadMoreLabel}
             </Button>

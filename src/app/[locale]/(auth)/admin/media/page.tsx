@@ -1,6 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
+import { CreateCategoryButton } from '@/components/admin/categories/CreateCategoryButton';
 import { ContentList } from '@/components/admin/content/ContentList';
 import { Button } from '@/components/ui/Button';
 import { PERMISSIONS } from '@/libs/auth/Permissions';
@@ -24,9 +25,9 @@ export default async function AdminMediaPage(props: { params: Promise<{ locale: 
     <main>
       <AdminPageHeader
         title="Blogs"
-
         action={
           <div className="flex flex-wrap gap-3">
+            <CreateCategoryButton scope="blog" />
             <Button href="/admin/media/new" tone="brand">
               New post
             </Button>

@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
 import { PERMISSIONS } from '@/libs/auth/Permissions';
 import { requirePermission } from '@/libs/auth/Rbac';
-import { deleteBlogPost, getBlogPost, isBlogSlugTaken, updateBlogPost } from '@/libs/media/BlogPostRepository';
+import {
+  deleteBlogPost,
+  getBlogPost,
+  isBlogSlugTaken,
+  updateBlogPost,
+} from '@/libs/media/BlogPostRepository';
 import { validateBlogSlug } from '@/libs/media/blogSlug';
 import { updateBlogPostSchema } from '@/libs/media/blogValidation';
 import { sanitizeBlogHtml } from '@/libs/media/sanitizeBlogHtml';
@@ -34,7 +39,14 @@ export async function PATCH(request: Request, context: Context) {
   const body = await request.json().catch(() => null);
   const parsed = updateBlogPostSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
+    return NextResponse.json(
+      {
+        error: parsed.error.issues
+          .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+          .join('; '),
+      },
+      { status: 400 },
+    );
   }
 
   const { slug, content, publishedAt, ...rest } = parsed.data;

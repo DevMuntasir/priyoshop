@@ -9,7 +9,11 @@ const collection = () => getDb().collection<CategoryDoc>(COLLECTIONS.contentCate
 export async function listCategories(scope: CategoryScope) {
   const [saved, used] = await Promise.all([
     collection().find({ scope }).toArray(),
-    getDb().collection(scope === 'blog' ? COLLECTIONS.blogPost : COLLECTIONS.newsPost).distinct<string>('categories'),
+    getDb()
+      .collection<{ categories: string[] }>(
+        scope === 'blog' ? COLLECTIONS.blogPost : COLLECTIONS.newsPost,
+      )
+      .distinct('categories'),
   ]);
   const defaults = scope === 'blog' ? BLOG_CATEGORIES : NEWS_CATEGORIES;
   return [...new Set([...defaults, ...used, ...saved.map((category) => category.name)])].toSorted();

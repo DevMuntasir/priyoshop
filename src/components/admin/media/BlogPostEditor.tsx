@@ -1,17 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { AdminPageHeader } from '@/components/admin/AdminPageHeader';
 import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
+import { CategoryPicker } from '@/components/admin/categories/CategoryPicker';
+import { CreateCategoryButton } from '@/components/admin/categories/CreateCategoryButton';
 import { RichTextEditor } from '@/components/admin/media/RichTextEditor';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Text } from '@/components/ui/Text';
 import { adminFetch } from '@/libs/auth/AdminFetch';
-import { BLOG_CATEGORIES } from '@/libs/media/Categories';
 import type { BlogPostDoc, BlogPostLocaleContent } from '@/libs/media/Types';
 
 const EMPTY_CONTENT: BlogPostLocaleContent = { title: '', excerpt: '', contentHtml: '' };
@@ -35,8 +36,9 @@ function Field(props: { label: string; hint?: string; children: React.ReactNode 
 
 /* Full blog post editor: settings (slug, categories, cover, date, featured),
    per-locale content with a rich text body, save/publish/delete actions. */
-export function BlogPostEditor(props: { postId: string }) {
+export function BlogPostEditor(props: { postId: string; categories: string[] }) {
   const router = useRouter();
+  const [categories, setCategories] = useState(props.categories);
   const [post, setPost] = useState<BlogPostDoc | null>(null);
   const [locale, setLocale] = useState<EditorLocale>('en');
   const [status, setStatus] = useState('');
@@ -67,15 +69,26 @@ export function BlogPostEditor(props: { postId: string }) {
   const setContentField = (field: keyof BlogPostLocaleContent, value: string) => {
     setPost({
       ...post,
-      content: { ...post.content, [locale]: { ...EMPTY_CONTENT, ...post.content[locale], [field]: value } },
+      content: {
+        ...post.content,
+        [locale]: { ...EMPTY_CONTENT, ...post.content[locale], [field]: value },
+      },
     });
   };
 
-  const toggleCategory = (category: string) => {
-    const categories = post.categories.includes(category)
-      ? post.categories.filter((entry) => entry !== category)
-      : [...post.categories, category];
-    setPost({ ...post, categories });
+  const categoryCreated = (category: string) => {
+    setCategories((current) => [...new Set([...current, category])]);
+    setPost((current) => {
+      if (!current || current.categories.includes(category) || current.categories.length >= 10) {
+        return current;
+      }
+      return { ...current, categories: [...current.categories, category] };
+    });
+    setStatus(
+      post.categories.length >= 10
+        ? 'Category created. Deselect a category to add it; the limit is 10.'
+        : 'Category selected. Save the post to apply changes.',
+    );
   };
 
   const save = async () => {
@@ -142,10 +155,11 @@ export function BlogPostEditor(props: { postId: string }) {
       <AdminPageHeader
         title={post.content.en?.title || 'Edit post'}
         description={`/media/${post.slug} — ${post.status === 'published' ? 'Published' : 'Draft'}`}
+        action={<CreateCategoryButton scope="blog" onCreated={categoryCreated} />}
         backHref="/admin/media"
       />
 
-      <div className='px-8 space-y-4'>
+      <div className="space-y-4 px-8">
         <div className="flex flex-wrap items-center gap-2">
           <Button tone="brand" onClick={() => void save()}>
             Save
@@ -177,8 +191,9 @@ export function BlogPostEditor(props: { postId: string }) {
                   key={entry}
                   type="button"
                   onClick={() => setLocale(entry)}
-                  className={`cursor-pointer rounded-ps-pill border-none px-4 py-1.5 font-body text-ps-xs font-semibold ${locale === entry ? 'bg-ps-black text-white' : 'bg-ps-grey-100 text-ps-ink-600'
-                    }`}
+                  className={`cursor-pointer rounded-ps-pill border-none px-4 py-1.5 font-body text-ps-xs font-semibold ${
+                    locale === entry ? 'bg-ps-black text-white' : 'bg-ps-grey-100 text-ps-ink-600'
+                  }`}
                 >
                   {entry === 'en' ? 'English' : 'Bangla'}
                 </button>
@@ -212,7 +227,10 @@ export function BlogPostEditor(props: { postId: string }) {
               />
             </Field>
 
-            <Field label="Meta title (SEO)" hint={`${(content.metaTitle ?? '').length}/70 — falls back to the title.`}>
+            <Field
+              label="Meta title (SEO)"
+              hint={`${(content.metaTitle ?? '').length}/70 — falls back to the title.`}
+            >
               <Input
                 type="text"
                 value={content.metaTitle ?? ''}
@@ -240,27 +258,20 @@ export function BlogPostEditor(props: { postId: string }) {
                 type="text"
                 value={post.slug}
                 onChange={(e) =>
-                  setPost({ ...post, slug: e.target.value.toLowerCase().replaceAll(/\s+/gu, '-') })}
+                  setPost({ ...post, slug: e.target.value.toLowerCase().replaceAll(/\s+/gu, '-') })
+                }
               />
             </Field>
 
-            <Field label="Categories">
-              <div className="flex flex-wrap gap-2">
-                {BLOG_CATEGORIES.map((category) => (
-                  <button
-                    key={category}
-                    type="button"
-                    onClick={() => toggleCategory(category)}
-                    className={`cursor-pointer rounded-ps-pill px-3 py-1.5 font-body text-ps-xs font-semibold ring-1 ring-inset transition-colors ${post.categories.includes(category)
-                      ? 'border-none bg-ps-black text-white ring-ps-black'
-                      : 'border-none bg-transparent text-ps-ink-600 ring-ps-grey-300 hover:ring-ps-black'
-                      }`}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </Field>
+            <CategoryPicker
+              scope="blog"
+              categories={categories}
+              selected={post.categories}
+              onChange={(selected) => {
+                setPost((current) => (current ? { ...current, categories: selected } : current));
+              }}
+              onCreated={categoryCreated}
+            />
 
             <Field label="Cover image" hint="Select from Asset Library or enter URL">
               <MediaInput
@@ -294,7 +305,8 @@ export function BlogPostEditor(props: { postId: string }) {
                 type="date"
                 value={new Date(post.publishedAt).toISOString().slice(0, 10)}
                 onChange={(e) =>
-                  setPost({ ...post, publishedAt: new Date(`${e.target.value}T00:00:00.000Z`) })}
+                  setPost({ ...post, publishedAt: new Date(`${e.target.value}T00:00:00.000Z`) })
+                }
               />
             </Field>
 
