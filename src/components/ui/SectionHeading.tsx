@@ -220,7 +220,7 @@ export function SectionHeading({
         <span
           className={`inline-flex min-h-9 max-w-full items-center rounded-full px-4 py-1 font-body text-ps-sm font-semibold wrap-break-word ring-[1.5px] ring-inset ${eyebrowMode === 'light'
             ? 'text-ps-white ring-white'
-            : 'text-ps-ink-700 ring-black'
+            : 'text-ps-black-500 ring-black'
             }`}
         >
           {eyebrow}

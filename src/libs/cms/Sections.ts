@@ -376,9 +376,10 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     page: 'home',
     itemKind: 'post',
     defaultOrder: 130,
+
     defaultStyle: makeDefaultStyle({ align: 'left' }),
     defaultContent: {
-      heading: { eyebrow: 'Insights', title: 'Read our Blogs', ctaLabel: 'Read All Blogs' },
+      heading: { ctaHref: '/media', eyebrow: 'Insights', title: 'Read our Blogs', ctaLabel: 'Read All Blogs' },
       items: [
         {
           title: "Five ways smart restocking boosts a corner shop's monthly margin",
@@ -413,6 +414,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         description:
           'Get the latest news from PriyoShop, revolutionizing retail in Bangladesh with innovative commerce, logistics, finance, and data solutions.',
         ctaLabel: 'Read All News',
+        ctaHref: '/news',
       },
       items: [
         {

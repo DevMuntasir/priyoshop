@@ -18,6 +18,8 @@ export type BuildPageSectionsOptions = {
   forceIncludeKey?: SectionKey;
   // Non-editable nodes rendered alongside the page's sections (e.g. decorative chrome).
   extra?: Record<string, React.ReactNode>;
+  // Replaces repository data for sections backed by another content source.
+  transformSection?: (key: SectionKey, data: ResolvedSection) => ResolvedSection;
 };
 
 // Composes a marketing page from its CMS layout and section content. Single
@@ -37,7 +39,8 @@ export async function buildPageSections(options: BuildPageSectionsOptions): Prom
 
   const sections: Record<string, React.ReactNode> = { ...options.extra };
   for (const [index, key] of options.keys.entries()) {
-    sections[key] = wrapEditable(key, sectionData[index] as ResolvedSection);
+    const data = sectionData[index] as ResolvedSection;
+    sections[key] = wrapEditable(key, options.transformSection?.(key, data) ?? data);
   }
 
   return layout

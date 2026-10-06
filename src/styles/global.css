@@ -74,16 +74,14 @@
   --color-ps-cyan: #cafbff;
   --color-ps-green-tint: #e2f5e8;
 
-  --font-display: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI';
-  --font-body:
-    'Open Sans',
-    sans-serif;
+  --font-display: var(--font-lato), 'Lato', -apple-system, sans-serif;
+  --font-body: var(--font-open-sans), 'Open Sans', sans-serif;
   --font-accent: 'Parkinsans', 'Open Sans', sans-serif;
 
-  --font-weight-normal: 400;
-  --font-weight-semibold: 500;
-  --font-weight-bold: 600;
-  --font-weight-extrabold: 700;
+  --font-weight-normal: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
 
   --text-ps-hero: clamp(2.75rem, min(2rem + 3.2vw, 2rem + 5.7vh), 6rem);
   --text-ps-display: clamp(2.25rem, min(1.7rem + 2.3vw, 1.7rem + 4.1vh), 4.25rem);

@@ -15,6 +15,7 @@ type NewsItem = {
   ttl: string;
   date: string;
   img: string;
+  imageAlt?: string;
   href?: string;
 };
 
@@ -74,11 +75,43 @@ export function NewsBlock({
     if (!track) {
       return;
     }
-    const card = track.firstElementChild;
-    const step = card instanceof HTMLElement ? card.offsetWidth + 24 : track.clientWidth * 0.8;
-    const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
-    const left = direction === 1 && atEnd ? -track.scrollLeft : direction * step;
-    track.scrollBy({ left, behavior: 'smooth' });
+
+    const cards = [...track.children].filter(
+      (child): child is HTMLElement => child instanceof HTMLElement,
+    );
+    const firstCard = cards[0];
+    if (!firstCard || cards.length < 2) {
+      return;
+    }
+
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    const currentIndex = cards.reduce((closestIndex, card, index) => {
+      const cardLeft = card.offsetLeft - firstCard.offsetLeft;
+      const closestCard = cards[closestIndex] ?? firstCard;
+      const closestDistance = Math.abs(
+        closestCard.offsetLeft - firstCard.offsetLeft - track.scrollLeft,
+      );
+      return Math.abs(cardLeft - track.scrollLeft) < closestDistance ? index : closestIndex;
+    }, 0);
+    const atStart = track.scrollLeft <= 1;
+    const atEnd = track.scrollLeft >= maxScroll - 1;
+    let targetIndex = currentIndex + direction;
+    if (direction === 1) {
+      targetIndex = atEnd ? 0 : Math.min(targetIndex, cards.length - 1);
+    } else {
+      targetIndex = atStart ? cards.length - 1 : Math.max(targetIndex, 0);
+    }
+    const targetCard = cards[targetIndex];
+
+    if (!targetCard) {
+      return;
+    }
+
+    const targetLeft = Math.min(
+      Math.max(targetCard.offsetLeft - firstCard.offsetLeft, 0),
+      maxScroll,
+    );
+    track.scrollLeft = targetLeft;
   };
 
   useEffect(() => {
@@ -132,10 +165,10 @@ export function NewsBlock({
           </div>
         </Reveal>
         <Reveal className="relative" delay={0.1}>
-          <div
+          {/* <div
             aria-hidden
             className="pointer-events-none absolute top-0 left-0 z-10 h-full w-16 bg-linear-to-r from-white to-transparent sm:w-24"
-          />
+          /> */}
 
           <div
             ref={trackRef}
@@ -148,27 +181,30 @@ export function NewsBlock({
             onTouchStart={() => {
               pausedRef.current = true;
             }}
-            className="mr-[calc(50%-50vw)] flex snap-x snap-mandatory scrollbar-none gap-6 overflow-x-auto scroll-smooth pb-4"
+            className="mr-[calc(50%_-_50vw)] flex snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain scroll-smooth pb-4 scrollbar-none"
           >
             {items.map((n) => (
               <MediaCard
                 key={n.ttl}
                 orientation="horizontal"
                 image={`${base}${n.img}`}
+                imageAlt={n.imageAlt ?? n.ttl}
                 source={n.source}
                 sourceLogo={n.logo}
                 sourceLogoAlt={n.source}
                 title={n.ttl}
                 date={n.date}
                 href={n.href ?? '#'}
+                target={n.href && /^https?:\/\//i.test(n.href) ? '_blank' : undefined}
+                rel={n.href && /^https?:\/\//i.test(n.href) ? 'noopener noreferrer' : undefined}
                 onClick={
                   n.href
                     ? undefined
                     : (e) => {
-                        e.preventDefault();
-                      }
+                      e.preventDefault();
+                    }
                 }
-                className="w-[calc((100%-1.5rem)/1.15)] shrink-0 snap-start sm:w-[calc((100%-1.5rem)/1.8)] lg:w-[calc((100%-3rem)/2)]"
+                className="w-[87%] shrink-0 snap-start sm:w-[55%] lg:w-[calc(50%_-_0.75rem)]"
               />
             ))}
           </div>

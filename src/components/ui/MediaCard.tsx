@@ -28,13 +28,13 @@ function SourceMark(props: {
       <img
         src={props.sourceLogo}
         alt={props.sourceLogoAlt ?? ''}
-        className="w-auto self-start object-contain"
+        className="mb-3 max-h-10 w-auto max-w-34 object-contain"
       />
     );
   }
   if (props.source) {
     return (
-      <span className="font-body text-ps-xs font-bold tracking-wide text-ps-red-600 uppercase">
+      <span className="mb-3 inline-block font-body text-ps-xs font-bold tracking-wide text-ps-red-600 uppercase">
         {props.source}
       </span>
     );
@@ -64,7 +64,7 @@ export function MediaCard({
   return (
     <a
       href={href}
-      className={`group flex h-full min-h-[260px] w-full overflow-hidden rounded-ps-xl no-underline transition-transform duration-200 duration-300 ease-out hover:-translate-y-1 hover:shadow-ps-card ${horizontal ? 'flex-col sm:flex-row' : 'flex-col'} ${dark ? 'bg-ps-ink-900 ring-1 ring-ps-line-dark ring-inset' : 'bg-white ring-1 ring-ps-grey-200 ring-inset'} ${className}`.trim()}
+      className={`group flex h-full min-h-[260px] w-full overflow-hidden rounded-ps-md no-underline transition-transform duration-200 duration-300 ease-out hover:-translate-y-1 ${horizontal ? 'flex-col sm:flex-row' : 'flex-col'} ${dark ? 'bg-ps-ink-900 ring-1 ring-ps-line-dark ring-inset' : 'bg-white ring-1 ring-ps-grey-200 ring-inset'} ${className}`.trim()}
       {...rest}
     >
       <div
@@ -80,7 +80,7 @@ export function MediaCard({
         )}
       </div>
       <div
-        className={`relative flex flex-col gap-3 p-6 ${horizontal ? 'sm:w-1/2 sm:justify-between sm:gap-4' : ''}`}
+        className={`relative flex flex-col justify-center gap-3 p-6 ${horizontal ? 'sm:w-1/2 sm:justify-between sm:gap-4' : ''}`}
       >
         {horizontal && (
           <Icon
@@ -88,10 +88,10 @@ export function MediaCard({
             className={`absolute top-6 right-6 size-5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${dark ? 'text-ps-grey-150' : 'text-ps-ink-700'}`}
           />
         )}
-        <SourceMark source={source} sourceLogo={sourceLogo} sourceLogoAlt={sourceLogoAlt} />
         <div>
+          <SourceMark source={source} sourceLogo={sourceLogo} sourceLogoAlt={sourceLogoAlt} />
           <h3
-            className={`mb-4 line-clamp-3 font-body text-ps-body leading-snug font-semibold ${horizontal ? 'pr-8' : ''} ${dark ? 'text-ps-grey-150' : 'text-ps-ink-700'}`}
+            className={`mb-4 mt-4 line-clamp-3 font-body text-ps-body lg:text-ps-h6 leading-snug font-bold ${horizontal ? 'pr-8' : ''} ${dark ? 'text-ps-grey-150' : 'text-ps-ink-700'}`}
           >
             {title}
           </h3>

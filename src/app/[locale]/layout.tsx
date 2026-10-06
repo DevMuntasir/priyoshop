@@ -1,13 +1,28 @@
 import type { Metadata, Viewport } from 'next';
+import { Lato, Open_Sans } from 'next/font/google';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SmoothScrollProvider } from '@/components/ui/SmoothScrollProvider';
 import { routing } from '@/libs/I18nRouting';
 import { AppConfig } from '@/utils/AppConfig';
 import { getBaseUrl } from '@/utils/Helpers';
 import '@/styles/global.css';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+
+const lato = Lato({
+  display: 'swap',
+  subsets: ['latin'],
+  variable: '--font-lato',
+  weight: ['400', '700', '900'],
+});
+
+const openSans = Open_Sans({
+  display: 'swap',
+  subsets: ['latin'],
+  variable: '--font-open-sans',
+});
+
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
@@ -91,7 +106,11 @@ export default async function RootLayout(props: {
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={`${lato.variable} ${openSans.variable}`}
+      suppressHydrationWarning
+    >
       <body suppressHydrationWarning>
         <SpeedInsights />
         <SmoothScrollProvider>

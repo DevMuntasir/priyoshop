@@ -30,6 +30,7 @@ export function Media(props: { data: ResolvedSection }) {
           date: item.date ?? '',
           img: item.image ?? '',
           href: item.href,
+          imageAlt: item.imageAlt,
         }))}
       />
     </div>

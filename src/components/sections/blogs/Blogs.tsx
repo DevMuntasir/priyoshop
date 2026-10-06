@@ -19,6 +19,7 @@ export function Blogs(props: { data: ResolvedSection }) {
           ttl: item.title ?? '',
           date: item.date ?? '',
           img: item.image ?? '',
+          imageAlt: item.imageAlt,
           href: item.href,
         }))}
       />

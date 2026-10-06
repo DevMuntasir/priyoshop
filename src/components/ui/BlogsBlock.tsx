@@ -13,6 +13,7 @@ type Post = {
   ttl: string;
   date: string;
   img: string;
+  imageAlt?: string;
   href?: string;
 };
 
@@ -68,7 +69,7 @@ export function BlogsBlock({
           </Reveal>
           {cta ? (
             <Reveal direction="right" delay={0.15}>
-              <Button variant="ghost" iconRight={<Icon name="arrow-right" />} href={ctaHref}>
+              <Button iconRight={<Icon name="arrow-right" />} href={ctaHref}>
                 {cta}
               </Button>
             </Reveal>
@@ -82,6 +83,7 @@ export function BlogsBlock({
             <Reveal item direction="up" key={b.ttl}>
               <MediaCard
                 image={`${base}${b.img}`}
+                imageAlt={b.imageAlt ?? b.ttl}
                 title={b.ttl}
                 date={b.date}
                 href={b.href ?? '#'}
