@@ -1,5 +1,11 @@
 'use client';
 
+import { AboutCta } from '@/components/about/AboutCTA';
+import { WhatDrivesUs } from '@/components/about/AboutDrives';
+import { AboutHero } from '@/components/about/AboutHero';
+import { AboutStory } from '@/components/about/AboutStory';
+import { Infrastructure as AboutInfrastructure } from '@/components/about/infrastructure/Infrastructure';
+import { Team as AboutTeam } from '@/components/about/team/Team';
 import { CommerceBenifits } from '@/components/business/commerce/CommerceBenefits';
 import { CommerceFaq } from '@/components/business/commerce/CommerceFaq';
 import { CommerceHero } from '@/components/business/commerce/CommerceHero';
@@ -165,6 +171,12 @@ export const EDITABLE_SECTION_RENDERERS: Record<
   careerBenefits: (data) => <Benefits data={data} />,
   careerLife: (data) => <LifeAtPriyoShop data={data} />,
   careerPositions: (data) => <CareerPositions data={data} />,
+  aboutHero: (data) => <AboutHero data={data} />,
+  aboutStory: (data) => <AboutStory data={data} />,
+  aboutInfrastructure: (data) => <AboutInfrastructure data={data} />,
+  aboutTeam: (data) => <AboutTeam data={data} />,
+  aboutDrives: (data) => <WhatDrivesUs data={data} />,
+  aboutCta: (data) => <AboutCta data={data} />,
 };
 
 export const renderEditableSection = (key: SectionKey, data: ResolvedSection): React.ReactNode =>

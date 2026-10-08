@@ -2,6 +2,7 @@ import { AWARDS } from '@/components/sections/awards/data';
 import { BACKERS } from '@/components/sections/backers/data';
 import { BRANDS } from '@/components/sections/brands/data';
 import { ECOSYSTEMS } from '@/components/sections/ecosystems/data';
+import { CAREER_HERO_IMAGES } from '@/constants/Career';
 import { APP_VIDEOS } from '@/constants/Videos';
 import type { PageKey } from './Pages';
 import type { ResponsiveCardStyle, ResponsiveSectionStyle } from './StyleTokens';
@@ -87,6 +88,12 @@ export const SECTION_KEYS = [
   'careerBenefits',
   'careerLife',
   'careerPositions',
+  'aboutHero',
+  'aboutStory',
+  'aboutInfrastructure',
+  'aboutTeam',
+  'aboutDrives',
+  'aboutCta',
 ] as const;
 export type SectionKey = (typeof SECTION_KEYS)[number];
 
@@ -112,7 +119,8 @@ export type ItemKind =
   | 'feature'
   | 'story'
   | 'value'
-  | 'benefit';
+  | 'benefit'
+  | 'wallImage';
 
 export type LogoItem = { name: string; logo: string };
 export type AwardItem = {
@@ -214,6 +222,8 @@ export type SectionHeadingContent = {
   eyebrow?: string;
   title: string;
   titleTrail?: string;
+  secondaryEyebrow?: string;
+  secondaryTitle?: string;
   description?: string;
   ctaLabel?: string;
   ctaHref?: string;
@@ -253,6 +263,7 @@ export type ResolvedSection = {
 
 export type SectionEditorHints = {
   titleTrail?: boolean;
+  secondaryHeading?: boolean;
   sectionCta?: boolean;
   secondaryCta?: boolean;
   backgroundImage?: boolean;
@@ -2106,7 +2117,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     key: 'careerHero',
     label: 'Hero',
     page: 'career',
-    itemKind: 'card',
+    itemKind: 'wallImage',
     defaultOrder: 10,
     defaultStyle: makeDefaultStyle({ align: 'center' }),
     defaultContent: {
@@ -2117,9 +2128,9 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         ctaLabel: 'Explore All Open Positions',
         ctaHref: '#open-positions',
       },
-      items: [],
+      items: CAREER_HERO_IMAGES,
     },
-    editor: { headingOnly: true, sectionCta: true },
+    editor: { sectionCta: true },
   },
   careerVideoBanner: {
     key: 'careerVideoBanner',
@@ -2338,6 +2349,196 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     },
     editor: { headingOnly: true },
   },
+  aboutHero: {
+    key: 'aboutHero',
+    label: 'Hero',
+    page: 'about',
+    itemKind: 'card',
+    defaultOrder: 10,
+    defaultStyle: makeDefaultStyle({ align: 'left' }),
+    defaultContent: {
+      heading: {
+        title: '~PriyoShop~ Retail Distribution',
+        description: 'Infrastructure for MSMEs in Emerging Markets.',
+        backgroundImage: '/about/ab-bg.png',
+      },
+      items: [],
+    },
+    editor: { headingOnly: true, backgroundImage: true },
+  },
+  aboutStory: {
+    key: 'aboutStory',
+    label: 'Story and purpose',
+    page: 'about',
+    itemKind: 'benefit',
+    defaultOrder: 20,
+    defaultStyle: makeDefaultStyle({ align: 'left' }),
+    defaultContent: {
+      heading: {
+        eyebrow: 'About Us',
+        title: 'Our Story',
+        secondaryEyebrow: 'Our Purpose',
+        secondaryTitle: 'Our Mission & Vision',
+        description:
+          'PriyoShop is Bangladesh’s leading retail infrastructure platform, enabling MSME retailers through a combination of supply chain, embedded finance and last-mile logistics.\n\nWith nationwide coverage, PriyoShop connects brands, financial institutions and retailers through a single digital ecosystem.\n\nThe platform offers real-time inventory access, working capital solutions and efficient distribution powered by green logistics.\n\nBuilding the backbone of inclusive commerce in Bangladesh.',
+        backgroundImage: '/about/story.webp',
+      },
+      items: [
+        {
+          title: 'Vision',
+          description:
+            'To build the retail infrastructure layer for Bangladesh and emerging markets, enabling millions of MSME retailers to grow through smarter distribution, inclusive finance, technology and data.',
+          image: '/about/v.svg',
+          imageAlt: 'Our vision',
+        },
+        {
+          title: 'Mission',
+          description:
+            'To empower MSME retailers by simplifying access to products, distribution, digital tools, data, and financial services through a connected retail infrastructure platform.',
+          image: '/about/m.svg',
+          imageAlt: 'Our mission',
+        },
+      ],
+    },
+    editor: {
+      secondaryHeading: true,
+      backgroundImage: true,
+      backgroundImageLabel: 'Story image',
+    },
+  },
+  aboutInfrastructure: {
+    key: 'aboutInfrastructure',
+    label: 'Infrastructure',
+    page: 'about',
+    itemKind: 'video',
+    defaultOrder: 30,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        eyebrow: 'Business Model',
+        title: 'PriyoShop Infrastructure',
+        description: 'Platform and Technology-Based',
+        videoPath: APP_VIDEOS.about.infrastructure.src,
+        backgroundImage: APP_VIDEOS.about.infrastructure.poster,
+      },
+      items: [],
+    },
+    editor: { headingOnly: true, video: true },
+  },
+  aboutTeam: {
+    key: 'aboutTeam',
+    label: 'Team',
+    page: 'about',
+    itemKind: 'ecosystem',
+    defaultOrder: 40,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        eyebrow: 'Our Founders',
+        title: 'Meet the Team',
+        description:
+          'PriyoShop was founded to build the retail infrastructure layer that empowers MSMEs and transforms how brands and retailers grow across Bangladesh.',
+      },
+      items: [
+        {
+          title: 'Ashikul Alam Khan',
+          body: 'Founder & CEO',
+          image: '/team/p1.png',
+          imageAlt: 'Ashikul Alam Khan',
+          ctaLabel: 'LinkedIn',
+          href: 'https://www.linkedin.com/in/asikulalamkhan/',
+        },
+        {
+          title: 'Dipty Mandal',
+          body: 'Co-founder & CMO',
+          image: '/team/p2.png',
+          imageAlt: 'Dipty Mandal',
+          ctaLabel: 'LinkedIn',
+          href: 'https://www.linkedin.com/in/dipty-mandal/',
+        },
+      ],
+    },
+  },
+  aboutDrives: {
+    key: 'aboutDrives',
+    label: 'What drives us',
+    page: 'about',
+    itemKind: 'benefit',
+    defaultOrder: 50,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        eyebrow: 'What Drives Us',
+        title: 'What Drives Us',
+        description:
+          'We pinpoint major market challenges and provide focused solutions that empower businesses at every stage.',
+      },
+      items: [
+        {
+          title: 'Retailer First',
+          description:
+            'Small retailers are at the center of everything we build. We work to make their sourcing easier, shelves fuller, and businesses stronger.',
+          image: '/about/10.png',
+          imageAlt: 'Retailer first',
+        },
+        {
+          title: 'Stronger Brand Access',
+          description:
+            'We help brands reach deeper into Bangladesh’s retail market through structured distribution, reliable execution and stronger retailer relationships.',
+          image: '/about/11.png',
+          imageAlt: 'Stronger brand access',
+        },
+        {
+          title: 'Smart Distribution',
+          description:
+            'We believe distribution should be faster, more visible, and more efficient powered by hubs, routes, data and technology.',
+          image: '/about/12.png',
+          imageAlt: 'Smart distribution',
+        },
+        {
+          title: 'Embedded Finance',
+          description:
+            'We enable retailers with working capital access so they can buy more, avoid stock-outs and grow without cash-flow pressure.',
+          image: '/about/13.png',
+          imageAlt: 'Embedded finance',
+        },
+        {
+          title: 'Data Intelligence',
+          description:
+            'We turn retail activity into actionable insights that help brands, retailers and partners make smarter business decisions.',
+          image: '/about/14.png',
+          imageAlt: 'Data intelligence',
+        },
+        {
+          title: 'Inclusive Growth',
+          description:
+            'We are building for millions of MSMEs, creating opportunities for retailers, employees, brands and local communities.',
+          image: '/about/15.png',
+          imageAlt: 'Inclusive growth',
+        },
+      ],
+    },
+  },
+  aboutCta: {
+    key: 'aboutCta',
+    label: 'Partner call to action',
+    page: 'about',
+    itemKind: 'card',
+    defaultOrder: 60,
+    defaultStyle: makeDefaultStyle({ align: 'center' }),
+    defaultContent: {
+      heading: {
+        title: 'Wants to partner with us?',
+        description:
+          "Interested in partnering? Join us to unlock exclusive benefits and grow together. Let's achieve great results as partners.",
+        ctaLabel: 'Contact Us',
+        ctaHref: '/contact',
+        backgroundImage: '/about/p.png',
+      },
+      items: [],
+    },
+    editor: { headingOnly: true, sectionCta: true, backgroundImage: true },
+  },
 };
 
 export const getSectionDef = (key: SectionKey): SectionDef => SECTION_REGISTRY[key];
@@ -2352,6 +2553,10 @@ export const normalizeSectionContent = (
   key: SectionKey,
   content: SectionContent,
 ): SectionContent => {
+  if (key === 'careerHero' && content.items.length === 0) {
+    return { ...content, items: CAREER_HERO_IMAGES };
+  }
+
   if (key === 'ecosystems') {
     return {
       ...content,

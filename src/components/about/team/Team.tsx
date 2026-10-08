@@ -1,19 +1,18 @@
-import { Reveal, RevealGroup } from '@/components/ui/Reveal';
-import { SectionHeading } from '@/components/ui/SectionHeading';
-import type { TeamConfig, TeamMember } from './data';
-import { TEAM_CONFIG } from './data';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { Reveal, RevealGroup } from '@/components/ui/Reveal';
+import { SectionHeading } from '@/components/ui/SectionHeading';
 import { TiltedCard } from '@/components/ui/TiltedCard';
+import type { ResolvedSection, SectionItem } from '@/libs/cms/Sections';
+import { resolveSectionStyle } from '@/libs/cms/StyleTokens';
 
-function TeamMemberCard(props: { member: TeamMember }) {
+function TeamMemberCard(props: { member: SectionItem }) {
   return (
     <div className="flex flex-col items-center">
       <TiltedCard
-        imageSrc={props.member.image}
-        altText={props.member.name}
-        captionText={`${props.member.name} • ${props.member.role}`}
+        imageSrc={props.member.image || '/team/s1.png'}
+        altText={props.member.imageAlt ?? props.member.title ?? ''}
+        captionText={`${props.member.title ?? ''} • ${props.member.body ?? ''}`}
         containerHeight="330px"
         containerWidth="400px"
         imageHeight="450px"
@@ -30,28 +29,28 @@ function TeamMemberCard(props: { member: TeamMember }) {
         borderRadius="20px"
       />
 
-      <div className="w-full  text-center">
+      <div className="w-full text-center">
         <SectionHeading
-          title={props.member.name}
-          description={props.member.role}
+          title={props.member.title ?? ''}
+          description={props.member.body}
           descriptionFontClass="m-0 text-zinc-600"
           titleClassName="m-0 block !font-bold !w-full text-zinc-900"
           titleSize="h5"
           className="w-full !gap-1"
           align="center"
         />
-        {props.member.ctaHref && (
+        {props.member.href && (
           <Link
-            href={props.member.ctaHref}
-            className="w-full block"
+            href={props.member.href}
+            className="block w-full"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Image
               src="/team/l.png"
-              alt={props.member.name}
+              alt={props.member.ctaLabel ?? props.member.title ?? ''}
               width={60}
-              className="mx-auto mt-4 cursor-pointer hover:opacity-80 transition-opacity"
+              className="mx-auto mt-4 cursor-pointer transition-opacity hover:opacity-80"
               height={20}
             />
           </Link>
@@ -61,19 +60,20 @@ function TeamMemberCard(props: { member: TeamMember }) {
   );
 }
 
-export function Team(props: {
-  config?: TeamConfig;
-}) {
-  const config = props.config ?? TEAM_CONFIG;
+export function Team(props: { data: ResolvedSection }) {
+  const resolved = resolveSectionStyle(props.data.style);
+
   return (
-    <section className="flex my-10 lg:my-20 px-6 w-full justify-center bg-white">
+    <section
+      className={`${resolved.wrapperClass} my-10 flex w-full justify-center bg-white px-6 lg:my-20`}
+    >
       <div className="container">
         {/* Header */}
         <Reveal direction="up" distance={40}>
           <SectionHeading
-            title={config.title}
-            eyebrow={config.badge}
-            description={config.description}
+            title={props.data.heading.title}
+            eyebrow={props.data.heading.eyebrow}
+            description={props.data.heading.description}
             align="center"
           />
         </Reveal>
@@ -82,9 +82,9 @@ export function Team(props: {
         <div className="mt-12">
           {/* Team Members Grid with staggered reveal */}
           <RevealGroup stagger={0.1} delayChildren={0.3}>
-            <div className="flex flex-wrap justify-center my-14 gap-10">
-              {config.members.map((member) => (
-                <Reveal key={member.id} direction="up" distance={48} item>
+            <div className="my-14 flex flex-wrap justify-center gap-10">
+              {props.data.items.map((member) => (
+                <Reveal key={member.title} direction="up" distance={48} item>
                   <TeamMemberCard member={member} />
                 </Reveal>
               ))}

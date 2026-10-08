@@ -308,6 +308,12 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
     { field: 'imageAlt', label: 'Image alt' },
     { field: 'description', label: 'Description', type: 'textarea', full: true },
   ],
+  wallImage: [
+    { field: 'image', label: 'Image' },
+    { field: 'imageAlt', label: 'Image alt' },
+    { field: 'title', label: 'Title' },
+    { field: 'href', label: 'Link' },
+  ],
 };
 
 const ITEM_KIND_LABELS: Record<ItemKind, string> = {
@@ -330,6 +336,7 @@ const ITEM_KIND_LABELS: Record<ItemKind, string> = {
   story: 'Story',
   value: 'Value',
   benefit: 'Benefit',
+  wallImage: 'Wall image',
 };
 
 type ItemFieldGroup = {
@@ -1348,6 +1355,27 @@ function ContentPanelBody(props: {
                 props.onHeading('titleTrail', value);
               }}
             />
+          ) : null}
+          {hints.secondaryHeading ? (
+            <div className="space-y-3 rounded-lg border border-gray-200 bg-gray-50/50 p-3">
+              <p className="text-xs font-semibold tracking-wide text-gray-700 uppercase">
+                Secondary heading
+              </p>
+              <HeadingInput
+                label="Eyebrow"
+                value={heading.secondaryEyebrow ?? ''}
+                onChange={(value) => {
+                  props.onHeading('secondaryEyebrow', value);
+                }}
+              />
+              <HeadingInput
+                label="Title"
+                value={heading.secondaryTitle ?? ''}
+                onChange={(value) => {
+                  props.onHeading('secondaryTitle', value);
+                }}
+              />
+            </div>
           ) : null}
           <HeadingInput
             label="Description"

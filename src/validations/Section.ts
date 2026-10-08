@@ -56,6 +56,8 @@ const headingSchema = z.object({
   eyebrow: z.string().max(80).optional(),
   title: z.string().min(1).max(160),
   titleTrail: z.string().max(80).optional(),
+  secondaryEyebrow: z.string().max(80).optional(),
+  secondaryTitle: z.string().max(160).optional(),
   description: z.string().max(1000).optional(),
   ctaLabel: z.string().max(80).optional(),
   ctaHref: z.string().max(300).optional(),

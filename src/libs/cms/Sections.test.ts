@@ -41,4 +41,17 @@ describe(normalizeSectionContent, () => {
 
     expect(normalizeSectionContent('hero', current)).toBe(current);
   });
+
+  it('adds editable images to legacy career heroes', () => {
+    const content = normalizeSectionContent('careerHero', {
+      heading: { title: 'Careers' },
+      items: [],
+    });
+
+    expect(content.items.length).toBeGreaterThan(0);
+    expect(content.items[0]).toMatchObject({
+      image: '/career/1.png',
+      title: 'Commerce & Retail',
+    });
+  });
 });

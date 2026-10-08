@@ -101,7 +101,7 @@ export function FeaturedPostCarousel(props: FeaturedPostCarouselProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
+    <div className="container mx-auto px-4 pb-12  sm:pb-16 ">
       <div
         ref={trackRef}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 scrollbar-none sm:gap-6"

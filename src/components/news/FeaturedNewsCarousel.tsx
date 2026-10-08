@@ -3,6 +3,7 @@
 import { formatPostDate } from '@/components/media/formatPostDate';
 import { Link } from '@/libs/I18nNavigation';
 import type { NewsPostCard } from '@/libs/news/Types';
+import { Button } from '../ui/Button';
 
 export type FeaturedNewsCarouselProps = {
   posts: NewsPostCard[];
@@ -30,11 +31,11 @@ function LeadFeaturedCard(props: {
   readLabel: string;
 }) {
   const link = resolveNewsHref(props.post);
-  const cardClassName = 'group grid h-full min-w-0 overflow-hidden rounded-ps-xl bg-ps-black no-underline ring-1 ring-ps-black/10 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft lg:grid-cols-[1.2fr_0.95fr]';
+  const cardClassName = 'group  max-h-[300px] min-w-0 overflow-hidden rounded-ps-xl bg-ps-black no-underline ring-1 ring-ps-black/10 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft ';
 
   const cardContent = (
     <>
-      <div className="aspect-[16/10] min-h-0 overflow-hidden bg-ps-grey-100 sm:aspect-video lg:aspect-auto lg:min-h-96">
+      <div className=" relative min-h-0 overflow-hidden bg-ps-grey-100 ">
         {props.post.coverImage && (
           // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
           <img
@@ -43,32 +44,47 @@ function LeadFeaturedCard(props: {
             className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         )}
-      </div>
-      <div className="flex min-w-0 flex-col gap-4 bg-ps-black p-5 text-white sm:p-8">
-        <span className="font-body text-ps-xs font-semibold text-white/70">
-          {formatPostDate(props.post.publishedAt, props.locale)}
-        </span>
-        <div className="space-y-3">
-          {props.post.publication && (
-            <div className="inline-flex w-fit rounded-ps-sm bg-white px-3 py-2">
-              {/* oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns */}
-              <img
-                src={props.post.publication.logo}
-                alt={props.post.publication.logoAlt ?? props.post.publication.name}
-                className="h-7 w-auto object-contain"
-              />
+        <div className=' absolute h-full flex items-center w-full top-0 bg-gradient-to-l from-20% to-85% from-black/80 to-transparent'>
+          <div className="flex max-w-1/2 ml-auto flex-col gap-4   text-white sm:p-8">
+            <span className="font-body text-ps-xs font-semibold text-white/70">
+              {formatPostDate(props.post.publishedAt, props.locale)}
+            </span>
+            <div className="space-y-3">
+
+              {props.post.publication && (
+                <div className="inline-flex w-fit rounded-ps-sm bg-white px-3 py-1">
+                  {/* oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns */}
+                  <img
+                    src={props.post.publication.logo}
+                    alt={props.post.publication.logoAlt ?? props.post.publication.name}
+                    className="h-5 max-w-[100px] w-auto object-contain"
+                  />
+                </div>
+              )}
+              <h2 className="m-0 max-w-sm font-display text-ps-h6 lg:text-[25px] leading-snug font-bold wrap-break-word text-white line-clamp-5">
+                {props.post.title}
+              </h2>
+
+              {/* <Button tone='light' size='sm' className=' !py-1' href={link.href} >
+
+                {props.readLabel}
+              </Button> */}
+
             </div>
-          )}
-          <h2 className="m-0 max-w-sm font-display text-ps-h6 leading-snug font-bold wrap-break-word text-white line-clamp-5">
-            {props.post.title}
-          </h2>
-          <span className="inline-flex md:mt-6 w-fit items-center rounded-full bg-white px-5 py-2 font-body text-ps-sm font-semibold text-ps-black transition-colors group-hover:bg-ps-grey-100">
-            {props.readLabel}
-          </span>
+          </div>
         </div>
+
       </div>
+
     </>
   );
+
+
+
+
+
+
+
 
   if (link.isExternal) {
     return (
@@ -92,11 +108,11 @@ function LeadFeaturedCard(props: {
 
 function CompactFeaturedCard(props: { post: NewsPostCard; locale: string }) {
   const link = resolveNewsHref(props.post);
-  const cardClassName = 'group grid min-w-0 overflow-hidden rounded-ps-md bg-white no-underline ring-1 ring-ps-grey-200 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft sm:min-h-44 sm:grid-cols-[164px_minmax(0,1fr)]';
+  const cardClassName = 'group grid min-w-0 overflow-hidden rounded-ps-md bg-white no-underline ring-1 ring-ps-grey-200 ring-inset transition-transform duration-200 hover:-translate-y-1 hover:shadow-ps-soft max-h-[150px] sm:grid-cols-[164px_minmax(0,1fr)]';
 
   const cardContent = (
     <>
-      <div className="aspect-video overflow-hidden bg-ps-grey-100 sm:h-full sm:aspect-auto">
+      <div className=" overflow-hidden bg-ps-grey-100 ">
         {props.post.coverImage && (
           // oxlint-disable-next-line next/no-img-element -- admin-provided arbitrary URL; next/image needs remotePatterns
           <img
@@ -113,13 +129,13 @@ function CompactFeaturedCard(props: { post: NewsPostCard; locale: string }) {
             <img
               src={props.post.publication.logo}
               alt={props.post.publication.logoAlt ?? props.post.publication.name}
-              className="h-7 w-auto max-w-28 object-contain"
+              className="h-5 w-auto max-w-28 object-contain"
             />
           </div>
         ) : (
-          <div className="h-7" />
+          <div className="h-3" />
         )}
-        <h3 className="m-0 line-clamp-3 font-body text-ps-body leading-snug font-semibold wrap-break-word text-ps-black sm:line-clamp-2">
+        <h3 className="m-0 line-clamp-3 font-body text-ps-xs  leading-snug font-semibold wrap-break-word text-ps-black sm:line-clamp-2">
           {props.post.title}
         </h3>
         <span className="font-body text-ps-xs font-semibold text-ps-ink-300">
@@ -160,7 +176,7 @@ export function FeaturedNewsCarousel(props: FeaturedNewsCarouselProps) {
   const extraPosts = props.posts.slice(3);
 
   return (
-    <div className="container mx-auto px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
+    <div className="container mx-auto  pb-12  sm:pb-16 ">
       <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1.7fr)_minmax(18rem,0.9fr)]">
         {leadPost && (
           <LeadFeaturedCard post={leadPost} locale={props.locale} readLabel={props.readLabel} />

@@ -2,6 +2,7 @@
 
 import type * as React from 'react';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { CAREER_HERO_IMAGES } from '@/constants/Career';
 
 import './DriftWall.css';
 
@@ -37,24 +38,6 @@ export type DriftWallProps = {
   style?: React.CSSProperties;
 };
 
-const DEFAULT_ITEMS: DriftWallItem[] = [
-  { image: '/career/1.png', title: 'Commerce & Retail' },
-  { image: '/career/2.png', title: 'Logistics Network' },
-  { image: '/career/3.png', title: 'Fintech Innovations' },
-  { image: '/career/4.png', title: 'Data Intelligence' },
-  { image: '/career/5.png', title: 'Team Awards' },
-  { image: '/career/6.png', title: 'Collaboration' },
-  { image: '/career/7.png', title: 'Annual Gathering' },
-  { image: '/career/8.png', title: 'Office Culture' },
-  { image: '/career/all.png', title: 'PriyoShop Team' },
-  { image: '/career/a.webp', title: 'Innovation' },
-  { image: '/career/aa.png', title: 'Retail Growth' },
-  { image: '/career/b.jpeg', title: 'Leadership' },
-  { image: '/career/bg.jpg', title: 'Modern Workspace' },
-  { image: '/about/1.png', title: 'Impact' },
-  { image: '/about/people.png', title: 'Community' },
-];
-
 function prefersReducedMotion(): boolean {
   return (
     typeof window !== 'undefined' &&
@@ -67,6 +50,25 @@ function columnFactor(index: number, variance: number): number {
   return 1 + variance * pseudo;
 }
 
+function shuffleForColumn(items: DriftWallItem[], columnIndex: number): DriftWallItem[] {
+  const shuffled = [...items];
+  let seed = Math.imul(columnIndex + 1, 2_654_435_761) >>> 0;
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    seed = (Math.imul(seed, 1_664_525) + 1_013_904_223) >>> 0;
+    const targetIndex = seed % (index + 1);
+    const current = shuffled[index];
+    const target = shuffled[targetIndex];
+
+    if (current && target) {
+      shuffled[index] = target;
+      shuffled[targetIndex] = current;
+    }
+  }
+
+  return shuffled;
+}
+
 /**
  * 3D perspective drifting wall of media tiles with smooth physics, mouse parallax, and hover lift.
  *
@@ -74,7 +76,7 @@ function columnFactor(index: number, variance: number): number {
  * @returns An interactive 3D media wall component.
  */
 export function DriftWall(props: DriftWallProps) {
-  const items = props.items ?? DEFAULT_ITEMS;
+  const items = props.items ?? CAREER_HERO_IMAGES;
   const columns = props.columns ?? 5;
   const tileWidth = props.tileWidth ?? 200;
   const tileHeight = props.tileHeight ?? 132;
@@ -129,14 +131,7 @@ export function DriftWall(props: DriftWallProps) {
   }, []);
 
   const columnItems = useMemo(() => {
-    const cols: DriftWallItem[][] = Array.from({ length: columns }, () => []);
-    for (const [i, item] of items.entries()) {
-      const target = cols[i % columns];
-      if (target) {
-        target.push(item);
-      }
-    }
-    return cols.map((col) => (col.length ? col : items.slice(0, 1)));
+    return Array.from({ length: columns }, (_, index) => shuffleForColumn(items, index));
   }, [items, columns]);
 
   const columnMeta = useMemo(() => {

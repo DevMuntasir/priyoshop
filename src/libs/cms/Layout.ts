@@ -31,7 +31,14 @@ export const PAGE_LAYOUT: Record<PageKey, LayoutEntry[]> = {
     { key: 'career', label: 'Career', defaultOrder: 150, contentEditable: true },
     { key: 'scrollVan', label: 'Delivery van', defaultOrder: 160, contentEditable: false },
   ],
-  about: [],
+  about: [
+    { key: 'aboutHero', label: 'Hero', defaultOrder: 10, contentEditable: true },
+    { key: 'aboutStory', label: 'Story and purpose', defaultOrder: 20, contentEditable: true },
+    { key: 'aboutInfrastructure', label: 'Infrastructure', defaultOrder: 30, contentEditable: true },
+    { key: 'aboutTeam', label: 'Team', defaultOrder: 40, contentEditable: true },
+    { key: 'aboutDrives', label: 'What drives us', defaultOrder: 50, contentEditable: true },
+    { key: 'aboutCta', label: 'Partner call to action', defaultOrder: 60, contentEditable: true },
+  ],
   business: [],
   commerce: [
     { key: 'commerceHero', label: 'Hero', defaultOrder: 10, contentEditable: true },
