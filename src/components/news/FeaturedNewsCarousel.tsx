@@ -3,7 +3,6 @@
 import { formatPostDate } from '@/components/media/formatPostDate';
 import { Link } from '@/libs/I18nNavigation';
 import type { NewsPostCard } from '@/libs/news/Types';
-import { Button } from '../ui/Button';
 
 export type FeaturedNewsCarouselProps = {
   posts: NewsPostCard[];
