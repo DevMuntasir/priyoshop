@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Text } from '@/components/ui/Text';
-import { adminFetch } from '@/libs/auth/AdminFetch';
+import { getAssetList, invalidateAssetListCache } from '@/libs/assets/AssetClientCache';
 import type { AssetFolderCount, AssetListResult, MediaAssetDoc } from '@/libs/assets/Types';
 import { AssetDetailsModal } from './AssetDetailsModal';
 import { AssetUploader } from './AssetUploader';
@@ -34,7 +34,7 @@ export function AssetLibrary(props: AssetLibraryProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const fetchAssets = async () => {
+  const fetchAssets = async (options?: { force?: boolean }) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -50,15 +50,15 @@ export function AssetLibrary(props: AssetLibraryProps) {
       params.set('page', String(page));
       params.set('limit', '24');
 
-      const response = await adminFetch(`/api/admin/assets?${params.toString()}`);
-      if (response.ok) {
-        const data = (await response.json()) as AssetListResult;
-        setAssets(data.assets);
-        setTotalPages(data.totalPages);
-        setTotalAssets(data.total);
-        setFolderCounts(data.folderCounts);
-        setTotalStorageBytes(data.totalStorageBytes);
-      }
+      const data: AssetListResult = await getAssetList(
+        `/api/admin/assets?${params.toString()}`,
+        options,
+      );
+      setAssets(data.assets);
+      setTotalPages(data.totalPages);
+      setTotalAssets(data.total);
+      setFolderCounts(data.folderCounts);
+      setTotalStorageBytes(data.totalStorageBytes);
     } catch {
       // ignore
     } finally {
@@ -150,7 +150,7 @@ export function AssetLibrary(props: AssetLibraryProps) {
         <Card padding="lg" className="border-gray-300 bg-white">
           <AssetUploader
             defaultFolder={selectedFolder !== 'All' ? selectedFolder : 'General'}
-            onUploadSuccess={() => void fetchAssets()}
+            onUploadSuccess={() => void fetchAssets({ force: true })}
             onClose={() => setShowUploader(false)}
           />
         </Card>
@@ -429,13 +429,15 @@ export function AssetLibrary(props: AssetLibraryProps) {
           asset={activeAsset}
           onClose={() => setActiveAsset(null)}
           onUpdate={(updated) => {
+            invalidateAssetListCache();
             setAssets((prev) => prev.map((a) => (a.assetId === updated.assetId ? updated : a)));
             setActiveAsset(updated);
           }}
           onDelete={(deletedId) => {
+            invalidateAssetListCache();
             setAssets((prev) => prev.filter((a) => a.assetId !== deletedId));
             setActiveAsset(null);
-            void fetchAssets();
+            void fetchAssets({ force: true });
           }}
           onSelect={props.onSelect}
         />

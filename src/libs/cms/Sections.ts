@@ -276,8 +276,10 @@ export type SectionEditorHints = {
   itemsOnly?: boolean;
   /** Show YouTube-id and local-video-path fields (distribution video blocks). */
   video?: boolean;
-  /** Treat each line of a card body as one list item. */
-  listBody?: boolean;
+  /** Edit card descriptions with rich text formatting. */
+  richTextBody?: boolean;
+  /** Edit the section heading description with rich text formatting. */
+  richTextDescription?: boolean;
   /** Show bullets editor for section items (e.g. green hub card slider). */
   bullets?: boolean;
   /** Show a repeatable image editor for each section item. */
@@ -477,6 +479,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
   impact: {
     key: 'impact',
     label: 'Impact',
+    editor: { richTextDescription: true },
     page: 'home',
     itemKind: 'goal',
     defaultOrder: 70,
@@ -717,7 +720,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         },
       ],
     },
-    editor: { listBody: true, sectionCta: true },
+    editor: { richTextBody: true, sectionCta: true },
   },
   distributionVideoA: {
     key: 'distributionVideoA',
@@ -1042,6 +1045,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
     label: 'Distribution process flow',
     page: 'distribution',
     itemKind: 'card',
+    editor: { richTextBody: true },
     defaultOrder: 35,
     defaultStyle: makeDefaultStyle({ align: 'left' }),
     defaultContent: {

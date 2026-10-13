@@ -1,8 +1,11 @@
 import { revalidatePath } from 'next/cache';
 import { COLLECTIONS, getDb } from '@/libs/db/Mongodb';
 import type { SectionUpdateInput } from '@/validations/Section';
+import { toDescriptionHtml } from './DescriptionHtml';
 import type { SectionDoc } from './ContentRepository';
+import { SECTION_REGISTRY } from './Sections';
 import type { SectionKey } from './Sections';
+import { toStepBodyHtml } from './StepBodyHtml';
 
 /**
  * Updates a section with new content and metadata.
@@ -15,6 +18,26 @@ export const updateSection = async (
   input: SectionUpdateInput,
   userId: string,
 ): Promise<void> => {
+  const content = SECTION_REGISTRY[key].editor?.richTextBody
+    ? {
+        ...input.content,
+        items: input.content.items.map((item) => ({
+          ...item,
+          body: toStepBodyHtml(item.body ?? ''),
+        })),
+      }
+    : input.content;
+
+  const sanitizedContent = SECTION_REGISTRY[key].editor?.richTextDescription
+    ? {
+        ...content,
+        heading: {
+          ...content.heading,
+          description: toDescriptionHtml(content.heading.description ?? ''),
+        },
+      }
+    : content;
+
   await getDb()
     .collection<SectionDoc>(COLLECTIONS.sectionContent)
     .updateOne(
@@ -24,7 +47,7 @@ export const updateSection = async (
           enabled: input.enabled,
           order: input.order,
           style: input.style,
-          [`content.${input.locale}`]: input.content,
+          [`content.${input.locale}`]: sanitizedContent,
           updatedAt: new Date(),
           updatedBy: userId,
         },

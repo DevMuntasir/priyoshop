@@ -5,8 +5,10 @@ import { AdminBackButton } from '@/components/admin/AdminBackButton';
 import { AdminSpinner } from '@/components/admin/AdminSpinner';
 import { MediaInput } from '@/components/admin/assets/MediaInput';
 import { SectionEditorPreview } from '@/components/admin/cms/SectionEditorPreview';
+import { RichTextEditor } from '@/components/admin/media/RichTextEditor';
 import { DEFAULT_BULLETS } from '@/components/impact/ImpactGreenHub';
 import { adminFetch } from '@/libs/auth/AdminFetch';
+import { toDescriptionHtml } from '@/libs/cms/DescriptionHtml';
 import type { PageKey } from '@/libs/cms/Pages';
 import type {
   ItemKind,
@@ -42,6 +44,7 @@ import {
   TITLE_SIZE_OPTIONS,
   VISIBILITY_OPTIONS,
 } from '@/libs/cms/StyleTokens';
+import { toStepBodyHtml } from '@/libs/cms/StepBodyHtml';
 import { routing } from '@/libs/I18nRouting';
 import { Link } from '@/libs/I18nNavigation';
 
@@ -121,7 +124,7 @@ const INHERIT = '__inherit__';
 
 // Declarative item fields per kind: the editor renders one row from this config,
 // so a new section is a config entry rather than bespoke JSX.
-type ItemFieldType = 'text' | 'textarea' | 'color' | 'bool' | 'select';
+type ItemFieldType = 'text' | 'textarea' | 'richtext' | 'color' | 'bool' | 'select';
 type ItemFieldDef = {
   field: keyof SectionItem;
   label: string;
@@ -740,6 +743,17 @@ function ItemField(props: {
           ))}
         </select>
       </label>
+    );
+  }
+  if (props.def.type === 'richtext') {
+    return (
+      <div className="col-span-2 block w-full">
+        <span className={labelClass}>{props.def.label}</span>
+        <RichTextEditor
+          value={toStepBodyHtml(typeof raw === 'string' ? raw : '')}
+          onChange={props.onChange}
+        />
+      </div>
     );
   }
   if (props.def.type === 'textarea') {
@@ -1377,14 +1391,26 @@ function ContentPanelBody(props: {
               />
             </div>
           ) : null}
-          <HeadingInput
-            label="Description"
-            multiline
-            value={heading.description ?? ''}
-            onChange={(value) => {
-              props.onHeading('description', value);
-            }}
-          />
+          {hints.richTextDescription ? (
+            <div className="space-y-1">
+              <span className={labelClass}>Description</span>
+              <RichTextEditor
+                value={toDescriptionHtml(heading.description ?? '')}
+                onChange={(value) => {
+                  props.onHeading('description', value);
+                }}
+              />
+            </div>
+          ) : (
+            <HeadingInput
+              label="Description"
+              multiline
+              value={heading.description ?? ''}
+              onChange={(value) => {
+                props.onHeading('description', value);
+              }}
+            />
+          )}
           {hints.rotatingWords ? (
             <HeadingInput
               label="Rotating words (comma-separated)"
@@ -1692,9 +1718,9 @@ export const SectionEditor = (props: { page: PageKey; sectionKey: SectionKey }) 
     items: content.items,
   };
 
-  const itemFields = ITEM_FIELDS[current.itemKind].map((field) =>
-    hints.listBody && field.field === 'body'
-      ? { ...field, label: 'Caption (one bullet per line)' }
+  const itemFields: ItemFieldDef[] = ITEM_FIELDS[current.itemKind].map((field) =>
+    hints.richTextBody && field.field === 'body'
+      ? { ...field, label: 'Description', type: 'richtext' }
       : field,
   );
 

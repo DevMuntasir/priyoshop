@@ -4,6 +4,7 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'mo
 import type { MotionValue } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { toStepBodyHtml } from '@/libs/cms/StepBodyHtml';
 import { SectionHeading } from './SectionHeading';
 
 /**
@@ -127,39 +128,19 @@ function ImageSlot({
   );
 }
 
-const getListItems = (body: ReactNode): string[] => {
-  if (typeof body !== 'string') {
-    return [];
-  }
+function StepBody(props: { body: React.ReactNode; className?: string }) {
+  const className = `m-0 max-w-sm font-body text-ps-sm leading-relaxed text-ps-black-50 sm:text-base [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1 [&_h2]:my-3 [&_h2]:text-xl [&_h2]:font-bold [&_h3]:my-3 [&_h3]:text-lg [&_h3]:font-bold [&_a]:underline [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:pl-4 [&_blockquote]:italic [&_img]:my-3 [&_img]:max-w-full [&_img]:rounded-ps-sm [&>:first-child]:mt-0 [&>:last-child]:mb-0 ${props.className ?? ''}`.trim();
 
-  return body
-    .split(/\r?\n/u)
-    .map((line) => line.trim().replace(/^(?:[-*•]|\d+[.)])\s*/u, ''))
-    .filter(Boolean);
-};
-
-function StepBody(props: { body: ReactNode; className?: string }) {
-  const items = getListItems(props.body);
-
-  if (items.length > 1) {
+  if (typeof props.body === 'string') {
     return (
-      <ul
-        className={`m-0 max-w-sm list-disc space-y-1 pl-5 font-body text-ps-sm leading-relaxed text-ps-black-50 sm:text-base ${props.className ?? ''}`.trim()}
-      >
-        {items.map((item, index) => (
-          <li key={`${index}-${item}`}>{item}</li>
-        ))}
-      </ul>
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: toStepBodyHtml(props.body) }}
+      />
     );
   }
 
-  return (
-    <p
-      className={`m-0 max-w-sm font-body text-ps-sm leading-relaxed text-ps-black-50 sm:text-base ${props.className ?? ''}`.trim()}
-    >
-      {props.body}
-    </p>
-  );
+  return <div className={className}>{props.body}</div>;
 }
 
 function StepItem({

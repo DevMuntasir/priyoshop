@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { invalidateAssetListCache } from '@/libs/assets/AssetClientCache';
 import { adminFetch } from '@/libs/auth/AdminFetch';
 import type { AssetFolder, MediaAssetDoc } from '@/libs/assets/Types';
 import { ASSET_FOLDERS } from '@/libs/assets/Types';
@@ -60,6 +61,7 @@ export function AssetUploader(props: AssetUploaderProps) {
 
         if (response.ok) {
           const data = (await response.json()) as { asset: MediaAssetDoc };
+          invalidateAssetListCache();
           setItems((prev) =>
             prev.map((it) => (it.id === item.id ? { ...it, status: 'done' } : it)),
           );
