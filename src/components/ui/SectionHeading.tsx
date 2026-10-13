@@ -1,7 +1,7 @@
 import type * as React from 'react';
 import { FlipTitle } from '@/components/ui/FlipHeadline';
 import type { FlipLine } from '@/components/ui/FlipHeadline';
-import { ScrollFloat } from './ScrollFloat';
+import { BlurText } from './BlurText';
 
 export type SectionHeadingProps = {
   eyebrow?: React.ReactNode;
@@ -55,20 +55,16 @@ export type SectionHeadingProps = {
   descriptionClassName?: string;
   descriptionFontClass?: string;
 
-  /** Enables or disables the scroll-float character animation on scroll. Defaults to true. */
+  /** Enables or disables the blur text reveal on scroll. Defaults to true. */
   scrollFloat?: boolean;
-  /** Explicitly marks this heading as a hero heading (disabling scroll-float). */
+  /** Explicitly marks this heading as a hero heading (disabling the blur reveal). */
   isHero?: boolean;
-  /** ScrollTrigger start position for scroll-float. Defaults to 'center bottom+=50%'. */
-  scrollStart?: string;
-  /** ScrollTrigger end position for scroll-float. Defaults to 'bottom bottom-=40%'. */
-  scrollEnd?: string;
-  /** Duration in seconds for scroll-float animation. Defaults to 1. */
-  animationDuration?: number;
-  /** Easing function for scroll-float animation. Defaults to 'back.inOut(2)'. */
-  ease?: string;
-  /** Delay between each character in scroll-float animation. Defaults to 0.03. */
-  stagger?: number;
+  /** Delay in milliseconds between words. Defaults to 150. */
+  delay?: number;
+  /** Duration in seconds for each blur animation step. Defaults to 0.35. */
+  stepDuration?: number;
+  animateBy?: 'words' | 'letters';
+  direction?: 'top' | 'bottom';
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'title'>;
 
 const TITLE_TEXT_CLASSES: Record<
@@ -141,11 +137,10 @@ export function SectionHeading({
   className = '',
   scrollFloat = true,
   isHero = false,
-  scrollStart,
-  scrollEnd,
-  animationDuration,
-  ease,
-  stagger,
+  delay = 150,
+  stepDuration,
+  animateBy,
+  direction,
   ...rest
 }: SectionHeadingProps) {
   const centered = align === 'center';
@@ -228,18 +223,17 @@ export function SectionHeading({
       )}
 
       {scrollFloat && !isHero && !flip ? (
-        <ScrollFloat
+        <BlurText
           as={TitleTag}
           className={`m-0 max-w-full font-display font-bold leading-[1.25] tracking-tight wrap-break-word sm:leading-[1.3] ${resolvedTitleColor.className} ${TITLE_TEXT_CLASSES[titleSize]} ${titleClassName}`}
           style={resolvedTitleColor.style}
-          scrollStart={scrollStart}
-          scrollEnd={scrollEnd}
-          animationDuration={animationDuration}
-          ease={ease}
-          stagger={stagger}
+          delay={delay}
+          stepDuration={stepDuration}
+          animateBy={animateBy}
+          direction={direction}
         >
           {titleNode}
-        </ScrollFloat>
+        </BlurText>
       ) : (
         <TitleTag
           className={`m-0 max-w-full font-display font-bold leading-[1.25] tracking-tight  wrap-break-word sm:leading-[1.3] ${resolvedTitleColor.className} ${TITLE_TEXT_CLASSES[titleSize]} ${titleClassName}`}
