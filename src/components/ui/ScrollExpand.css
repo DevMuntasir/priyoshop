@@ -110,3 +110,25 @@
   pointer-events: none;
   will-change: opacity, transform;
 }
+
+@media (max-width: 767px) {
+  .scroll-expand__stage {
+    top: 6rem;
+    height: clamp(240px, 75vw, 440px);
+  }
+
+  .scroll-expand--scroller .scroll-expand__stage {
+    top: 0;
+  }
+
+  .scroll-expand__frame {
+    width: 90%;
+    height: 85%;
+    border-radius: 24px;
+  }
+
+  .scroll-expand__hint {
+    bottom: 0.25rem;
+    font-size: 0.75rem;
+  }
+}

@@ -90,6 +90,7 @@ export function ScrollExpand(props: ScrollExpandProps) {
   };
 
   const lastAppliedRef = useRef(-1);
+  const compactRef = useRef(false);
 
   const applyProgress = (p: number) => {
     if (Math.abs(p - lastAppliedRef.current) < 0.0002) {
@@ -106,15 +107,18 @@ export function ScrollExpand(props: ScrollExpandProps) {
 
     const e = smoothstep(0, 1, p);
 
-    const w = c.startWidth + (100 - c.startWidth) * e;
-    const h = c.startHeight + (100 - c.startHeight) * e;
+    const initialWidth = compactRef.current ? Math.max(90, c.startWidth) : c.startWidth;
+    const initialHeight = compactRef.current ? Math.max(85, c.startHeight) : c.startHeight;
+    const w = initialWidth + (100 - initialWidth) * e;
+    const h = initialHeight + (100 - initialHeight) * e;
     const r = c.startRadius + (c.endRadius - c.startRadius) * e;
 
     frame.style.width = `${w}%`;
     frame.style.height = `${h}%`;
     frame.style.borderRadius = `${r}px`;
 
-    const zoom = c.mediaZoom + (1 - c.mediaZoom) * e;
+    const initialZoom = compactRef.current ? Math.min(1.05, c.mediaZoom) : c.mediaZoom;
+    const zoom = initialZoom + (1 - initialZoom) * e;
     media.style.transform = `translate3d(-50%, -50%, 0) scale(${zoom})`;
 
     if (scrimRef.current) {
@@ -155,21 +159,31 @@ export function ScrollExpand(props: ScrollExpandProps) {
     let target = 0;
     let stageH = 0;
     let stageW = 0;
+    let scrollSpan = 0;
+    let stickyTop = 0;
     let cachedTrackTop = 0;
     let running = false;
     let isIntersecting = false;
 
     const measure = () => {
       const c = propsRef.current;
-      stageH = c.useWindowScroll ? window.innerHeight : root.clientHeight;
-      stageW = c.useWindowScroll ? window.innerWidth : root.clientWidth;
+      compactRef.current = window.matchMedia('(max-width: 767px)').matches;
+      stageW = root.clientWidth;
+      stageH = c.useWindowScroll
+        ? compactRef.current ? clamp(stageW * 0.75, 240, 440) : window.innerHeight
+        : root.clientHeight;
       if (stageH <= 0) {
         return;
       }
       stage.style.height = `${stageH}px`;
       stage.style.setProperty('--se-stage-w', `${stageW}px`);
       stage.style.setProperty('--se-stage-h', `${stageH}px`);
-      track.style.height = `${stageH * (1 + Math.max(0, c.scrollDistance) + Math.max(0, c.holdDistance))}px`;
+      const distance = compactRef.current ? Math.min(c.scrollDistance, 0.55) : c.scrollDistance;
+      const hold = compactRef.current ? Math.min(c.holdDistance, 0.1) : c.holdDistance;
+      scrollSpan = stageH * Math.max(0.01, distance);
+      stickyTop = Number.parseFloat(getComputedStyle(stage).top) || 0;
+      track.style.height = `${stageH * (1 + Math.max(0, distance) + Math.max(0, hold))}px`;
+      lastAppliedRef.current = -1;
 
       const w = root.clientWidth || stageW;
       stage.style.setProperty('--se-title-size', `${clamp(w * 0.075, 20, 84)}px`);
@@ -184,12 +198,11 @@ export function ScrollExpand(props: ScrollExpandProps) {
       if (!c.enabled) {
         return 1;
       }
-      const span = stageH * Math.max(0.01, c.scrollDistance);
       if (c.useWindowScroll) {
-        const top = cachedTrackTop - window.scrollY;
-        return clamp(-top / span, 0, 1);
+        const top = cachedTrackTop - window.scrollY - stickyTop;
+        return clamp(-top / scrollSpan, 0, 1);
       }
-      return clamp(root.scrollTop / span, 0, 1);
+      return clamp(root.scrollTop / scrollSpan, 0, 1);
     };
 
     const tick = () => {
