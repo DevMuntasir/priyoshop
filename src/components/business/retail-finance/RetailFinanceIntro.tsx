@@ -20,13 +20,13 @@ export function RetailFinanceIntro(props: { data: ResolvedSection }) {
         />
       </div>
 
-      <div className="w-full">
+      <div className="w-full container">
         {props.data.heading.backgroundImage && (
           <Image
             src={props.data.heading.backgroundImage}
             width={400}
             height={400}
-            className="mx-auto h-auto w-full max-w-md object-contain"
+            className="mx-auto h-auto w-full  object-contain"
             alt=""
           />
         )}
