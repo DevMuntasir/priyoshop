@@ -68,6 +68,7 @@ export const PAGE_LAYOUT: Record<PageKey, LayoutEntry[]> = {
     { key: 'retailFinanceHero', label: 'Hero', defaultOrder: 10, contentEditable: true },
     { key: 'retailFinanceIntro', label: 'Intro', defaultOrder: 20, contentEditable: true },
     { key: 'retailFinancePartners', label: 'Credit partners', defaultOrder: 30, contentEditable: true },
+    { key: 'retailFinanceCedit', label: 'Why credit matters', defaultOrder: 35, contentEditable: true },
     { key: 'retailFinanceHowWork', label: 'How it works', defaultOrder: 40, contentEditable: true },
     { key: 'retailFinanceFaq', label: 'FAQ', defaultOrder: 60, contentEditable: true },
     { key: 'retailFinanceStories', label: 'Success stories', defaultOrder: 70, contentEditable: true },

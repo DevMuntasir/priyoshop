@@ -11,7 +11,7 @@ function CreditCard(props: { item: SectionItem; iconRight?: boolean }) {
         className={`flex items-start gap-4 ${iconRight ? 'flex-row' : 'flex-col'}`}
       >
         <div className="flex-1">
-          <h3 className="font-display text-ps-h4 font-bold leading-snug text-ps-black">
+          <h3 className="font-display text-ps-h5  font-bold leading-snug text-ps-black">
             {item.title}
           </h3>
           {item.body && (
@@ -23,9 +23,8 @@ function CreditCard(props: { item: SectionItem; iconRight?: boolean }) {
 
         {item.image && (
           <div
-            className={`shrink-0 overflow-hidden rounded-xl bg-[#FFF0EC] ${
-              iconRight ? 'h-20 w-20' : 'h-16 w-16'
-            }`}
+            className={`shrink-0 overflow-hidden rounded-xl bg-[#FFF0EC] ${iconRight ? 'h-20 w-20' : 'order-first h-16 w-16'
+              }`}
           >
             <Image
               src={item.image}
