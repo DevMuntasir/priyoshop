@@ -293,6 +293,7 @@ const ITEM_FIELDS: Record<ItemKind, ItemFieldDef[]> = {
     { field: 'title', label: 'Title' },
     { field: 'description', label: 'Detail headline', type: 'textarea', full: true },
     { field: 'body', label: 'Detail body', type: 'textarea', full: true },
+    { field: 'image', label: 'Image path' },
   ],
   story: [
     { field: 'name', label: 'Name' },
@@ -1411,6 +1412,16 @@ function ContentPanelBody(props: {
               }}
             />
           )}
+          {hints.contentImage ? (
+            <MediaInput
+              label="Image below description"
+              value={heading.backgroundImage ?? ''}
+              onChange={(value) => {
+                props.onHeading('backgroundImage', value);
+              }}
+              placeholder="Choose or upload an image"
+            />
+          ) : null}
           {hints.rotatingWords ? (
             <HeadingInput
               label="Rotating words (comma-separated)"

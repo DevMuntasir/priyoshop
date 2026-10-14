@@ -268,6 +268,8 @@ export type SectionEditorHints = {
   secondaryCta?: boolean;
   backgroundImage?: boolean;
   backgroundImageLabel?: string;
+  /** Edit the image displayed below the section description. */
+  contentImage?: boolean;
   rotatingWords?: boolean;
   /** Show text color / size / alignment fields for a section heading. */
   textStyle?: boolean;
@@ -1264,7 +1266,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
       },
       items: [],
     },
-    editor: { headingOnly: true, video: true, backgroundImage: true },
+    editor: { headingOnly: true, contentImage: true },
   },
   retailFinancePartners: {
     key: 'retailFinancePartners',
