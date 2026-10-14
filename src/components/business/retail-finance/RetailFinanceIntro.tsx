@@ -23,20 +23,20 @@ export function RetailFinanceIntro(props: { data: ResolvedSection }) {
           eyebrow={props.data.heading.eyebrow}
           align="left"
         />
-        <div className="w-full lg:w-1/2">
-          {props.data.heading.backgroundImage && (
-            <Image
-              src={props.data.heading.backgroundImage}
-              width={400}
-              height={400}
-              className="mx-auto h-auto w-full max-w-md object-contain"
-              alt=""
-            />
-          )}
-        </div>
       </div>
 
-      <div className="w-full">
+      <div className="w-full ">
+        {props.data.heading.backgroundImage && (
+          <Image
+            src={props.data.heading.backgroundImage}
+            width={400}
+            height={400}
+            className="mx-auto h-auto w-full max-w-md object-contain"
+            alt=""
+          />
+        )}
+      </div>
+      {/* <div className="w-full">
         <ScrollExpand
           src={videoSource}
           mediaType="video"
@@ -53,23 +53,9 @@ export function RetailFinanceIntro(props: { data: ResolvedSection }) {
           holdDistance={0.3}
           overlayScrim={0.45}
         >
-          {/* <div className="max-w-2xl px-4 text-center">
-            <h3 className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl">{props.data.heading.title}</h3>
-            {props.data.heading.description ? (
-              <p className="mt-3 text-sm text-ps-white/90 sm:text-base lg:text-lg">
-                {props.data.heading.description}
-              </p>
-            ) : null}
-            {props.data.heading.ctaLabel ? (
-              <div className="mt-6 flex justify-center">
-                <Button href={props.data.heading.ctaHref} variant="filled" tone="light">
-                  {props.data.heading.ctaLabel}
-                </Button>
-              </div>
-            ) : null}
-          </div> */}
+
         </ScrollExpand>
-      </div>
+      </div> */}
     </section>
   );
 }
