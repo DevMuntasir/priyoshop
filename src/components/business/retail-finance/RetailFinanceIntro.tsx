@@ -5,8 +5,8 @@ import type { ResolvedSection } from '@/libs/cms/Sections';
 
 export function RetailFinanceIntro(props: { data: ResolvedSection }) {
   return (
-    <section className="relative w-full space-y-14 py-14 sm:space-y-20 sm:py-20 lg:space-y-28 lg:py-32">
-      <div className="container flex flex-col gap-10 px-4 sm:px-6 lg:flex-row lg:items-center lg:gap-14 lg:px-8">
+    <section className="relative md:mt-10 w-full space-y-14 py-14 sm:space-y-14 sm:py-20  lg:py-32">
+      <div className="container flex flex-col gap-10   lg:flex-row lg:items-center lg:gap-14 ">
         <SectionHeading
           title={
             <AccentedTitle
