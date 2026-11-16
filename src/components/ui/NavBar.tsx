@@ -7,6 +7,7 @@ import { Menu, MenuItem, ProductItem, HoveredLink } from './navbar-menu';
 import { Button } from './Button';
 import { Logo } from './Logo';
 import type { MenuItem as MenuItemType } from '@/libs/builder/Types';
+import { usePathname } from '@/libs/I18nNavigation';
 
 function MenuIcon(props: { open: boolean }) {
   return (
@@ -40,6 +41,15 @@ function toAbsoluteHref(href?: string): string {
   return `/${href}`;
 }
 
+function isActiveHref(pathname: string, href?: string) {
+  if (!href || href === '#' || /^(https?:\/\/|mailto:|tel:)/u.test(href)) {
+    return false;
+  }
+
+  const normalizedHref = toAbsoluteHref(href).replace(/\/$/u, '') || '/';
+  return pathname === normalizedHref || pathname.startsWith(`${normalizedHref}/`);
+}
+
 function ChevronDown() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -69,6 +79,7 @@ export function NavBar({
   className = '',
   ...rest
 }: NavBarProps) {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [activeDesktop, setActiveDesktop] = useState<string | null>(null);
   const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null);
@@ -162,6 +173,10 @@ export function NavBar({
                 setActive={setActiveDesktop}
                 active={activeDesktop}
                 item={item.label}
+                selected={
+                  isActiveHref(pathname, item.href) ||
+                  item.children.some((child) => isActiveHref(pathname, child.href))
+                }
               >
                 <div className="grid grid-cols-2 gap-4 sm:gap-6 p-3 sm:p-4 ">
                   {item.children.map((child) => (
@@ -182,6 +197,8 @@ export function NavBar({
               <HoveredLink
                 key={item.id}
                 href={toAbsoluteHref(item.href)}
+                aria-current={isActiveHref(pathname, item.href) ? 'page' : undefined}
+                className={isActiveHref(pathname, item.href) ? 'font-bold text-ps-black' : undefined}
                 onMouseEnter={() => {
                   setActiveDesktop(null);
                 }}

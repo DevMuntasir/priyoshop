@@ -167,7 +167,6 @@ export function ScrollFocusStack<T>({
     target: trackRef,
     offset: ['start start', 'end end'],
   });
-
   const target = useTransform(scrollYProgress, (p) => {
     const raw = clamp(p, 0, 1) * Math.max(n - 1, 0);
     return cfg.snap ? Math.round(raw) : raw;
@@ -182,7 +181,7 @@ export function ScrollFocusStack<T>({
       aria-roledescription="carousel"
       aria-label="Ecosystem cards"
     >
-      <div className="sticky top-10  lg:top-5 flex  w-full flex-col items-center md:justify-center overflow-hidden">
+      <div className="sticky top-[calc(50vh-174px)] flex w-full flex-col items-center overflow-hidden">
         <Stage>
           {header}
           <div className={gridClassName} style={{ height: cfg.itemHeight }}>

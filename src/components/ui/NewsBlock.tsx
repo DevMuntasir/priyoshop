@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import type { Align } from '@/libs/cms/StyleTokens';
 import { Button } from './Button';
 import { Icon } from './Icon';
@@ -68,7 +68,6 @@ export function NewsBlock({
   ctaHref,
 }: NewsBlockProps) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
 
   const scrollByCard = (direction: 1 | -1) => {
     const track = trackRef.current;
@@ -113,17 +112,6 @@ export function NewsBlock({
     );
     track.scrollLeft = targetLeft;
   };
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      if (!pausedRef.current) {
-        scrollByCard(1);
-      }
-    }, 3500);
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
 
   return (
     <Section>
@@ -172,15 +160,6 @@ export function NewsBlock({
 
           <div
             ref={trackRef}
-            onMouseEnter={() => {
-              pausedRef.current = true;
-            }}
-            onMouseLeave={() => {
-              pausedRef.current = false;
-            }}
-            onTouchStart={() => {
-              pausedRef.current = true;
-            }}
             className="mr-[calc(50%_-_50vw)] flex snap-x snap-mandatory gap-6 overflow-x-auto overscroll-x-contain scroll-smooth pb-4 scrollbar-none"
           >
             {items.map((n) => (

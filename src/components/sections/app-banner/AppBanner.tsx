@@ -34,11 +34,11 @@ export function AppBanner(props: { data: ResolvedSection }) {
                 item.image && (
                   <Image
                     key={`${item.image}-${index}`}
-                    width={120}
-                    height={40}
-                    alt=""
+                    width={192}
+                    height={64}
+                    alt={item.imageAlt ?? item.ctaLabel ?? ''}
                     src={item.image}
-                    className="h-auto w-auto max-w-full"
+                    className="h-auto w-40 max-w-full lg:w-48"
                   />
                 ),
             )}

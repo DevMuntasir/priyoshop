@@ -110,6 +110,7 @@ export default async function RootLayout(props: {
       lang={locale}
       className={`${lato.variable} ${openSans.variable}`}
       suppressHydrationWarning
+
     >
       <body suppressHydrationWarning>
         <SpeedInsights />
@@ -117,6 +118,13 @@ export default async function RootLayout(props: {
           <NextIntlClientProvider>{props.children}</NextIntlClientProvider>
         </SmoothScrollProvider>
       </body>
+      <script
+        src="https://priyo-ai.vercel.app/widget.js"
+        data-site-id="main-store"
+        data-title="Customer Support"
+        data-primary-color="#dc2626"
+        data-position="bottom-right">
+      </script>
     </html>
   );
 }

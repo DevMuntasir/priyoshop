@@ -58,11 +58,8 @@ export function Ecosystems(props: { data: ResolvedSection }) {
     }));
 
   return (
-    <ScrollFocusStack
-      className={`bg-ps-gray-100 w-full pb-10 ${resolved.wrapperClass}`.trim()}
-      items={cards}
-      stage={Section}
-      header={
+    <section className={`w-full bg-ps-gray-100 ${resolved.wrapperClass}`.trim()}>
+      <Section>
         <>
           {props.data.heading.eyebrow && (
             <Badge className="mx-auto mb-4" variant="outline">
@@ -78,18 +75,23 @@ export function Ecosystems(props: { data: ResolvedSection }) {
             titleColor={resolved.titleColorClass}
           />
         </>
-      }
-      renderItem={(card) => <EcosystemCard {...card} />}
-      getKey={(card, i) => (typeof card.title === 'string' ? card.title : i)}
-      // Tune feel without touching any UI:
-      config={{
-        itemHeight: 348, // keep equal to EcosystemCard height
-        vhPerItem: 60, // ~1 scroll = 1 card with snap
-        spacing: 285, // peek at next/prev cards
-        // maxBlur: 6,
-        spring: { stiffness: 80, damping: 18, mass: 0.5 }, // snappier response to scroll
-      }}
-    />
+      </Section>
+      <ScrollFocusStack
+        className="w-full pb-10"
+        items={cards}
+        gridClassName="relative mx-auto w-full px-4 sm:px-6"
+        renderItem={(card) => <EcosystemCard {...card} />}
+        getKey={(card, i) => (typeof card.title === 'string' ? card.title : i)}
+        // Tune feel without touching any UI:
+        config={{
+          itemHeight: 348, // keep equal to EcosystemCard height
+          vhPerItem: 60, // ~1 scroll = 1 card with snap
+          spacing: 285, // peek at next/prev cards
+          // maxBlur: 6,
+          spring: { stiffness: 80, damping: 18, mass: 0.5 }, // snappier response to scroll
+        }}
+      />
+    </section>
   );
 }
 

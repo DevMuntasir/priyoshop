@@ -325,18 +325,17 @@ function ScrollStepsDesktop({ steps, heading, config, className = '' }: ScrollSt
   });
 
   return (
-    <section
-      ref={trackRef}
-      style={{ height: `${trackHeight}vh` }}
-      className={`hidden md:block ${className} `}
-      aria-roledescription="scroll story"
-    >
-      <div className="sticky top-20 ">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <StoryHeading heading={heading} />
-        </div>
-
-        <div className="container mx-auto mt-8 grid grid-cols-1 gap-8 px-4 sm:mt-14 sm:px-6 md:grid-cols-2 md:gap-12 lg:px-8">
+    <div className={`hidden md:block ${className}`}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <StoryHeading heading={heading} />
+      </div>
+      <section
+        ref={trackRef}
+        style={{ height: `${trackHeight}vh` }}
+        aria-roledescription="scroll story"
+      >
+        <div className="sticky top-28">
+          <div className="container mx-auto mt-8 grid grid-cols-1 gap-8 px-4 sm:mt-14 sm:px-6 md:grid-cols-2 md:gap-12 lg:px-8">
           {/* LEFT — heading + steps */}
           <motion.div className="overflow-hidden" style={{ height: viewportH }}>
             <motion.ol
@@ -366,9 +365,10 @@ function ScrollStepsDesktop({ steps, heading, config, className = '' }: ScrollSt
               <ImageSlot key={s.id ?? i} i={i} step={s} active={activeImage} cfg={cfg} />
             ))}
           </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
 

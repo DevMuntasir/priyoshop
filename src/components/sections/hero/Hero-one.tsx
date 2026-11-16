@@ -182,6 +182,7 @@ function HeroSlide(props: {
           tablet={props.slide.slideBackgroundImageTablet}
           laptop={props.slide.slideBackgroundImageLaptop}
           desktop={props.slide.slideBackgroundImageDesktop}
+          imgClassName="object-top"
         />
       ) : null}
 

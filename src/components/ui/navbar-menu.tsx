@@ -17,11 +17,13 @@ export const MenuItem = ({
   setActive,
   active,
   item,
+  selected = false,
   children,
 }: {
   setActive: (item: string) => void;
   active: string | null;
   item: string;
+  selected?: boolean;
   children?: React.ReactNode;
 }) => {
   const hasChildren = !!children;
@@ -35,7 +37,7 @@ export const MenuItem = ({
     >
       <motion.div
         transition={{ duration: 0.3 }}
-        className="cursor-pointer  text-ps-black hover:opacity-90 dark:text-ps-white flex items-center gap-1"
+        className={`flex cursor-pointer items-center gap-1 transition-colors hover:text-ps-black dark:text-ps-white ${selected ? 'font-bold text-ps-black' : 'font-normal text-ps-ink-600'}`}
       >
         <span>{item}</span>
         {hasChildren && (
@@ -92,7 +94,7 @@ export const Menu = ({
     onMouseLeave={() => {
       setActive(null);
     }}
-    className="relative flex justify-center h-full items-center gap-6 mx-auto font-display font-semibold text-ps-sm"
+    className="relative mx-auto flex h-full items-center justify-center gap-6 font-display text-ps-sm"
   >
     {children}
   </nav>
