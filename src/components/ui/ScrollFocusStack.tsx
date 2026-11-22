@@ -181,7 +181,7 @@ export function ScrollFocusStack<T>({
       aria-roledescription="carousel"
       aria-label="Ecosystem cards"
     >
-      <div className="sticky top-[calc(50vh-174px)] flex w-full flex-col items-center overflow-hidden">
+      <div className="sticky top-[calc(50vh-174px)] flex w-full flex-col items-center overflow-hidden h-[60dvh] justify-center">
         <Stage>
           {header}
           <div className={gridClassName} style={{ height: cfg.itemHeight }}>

@@ -90,10 +90,25 @@ export function RichTextToolbar(props: { editor: Editor }) {
         </ToolbarButton>
         <ToolbarButton
           label="Numbered list"
-          active={editor.isActive('orderedList')}
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          active={editor.isActive('orderedList', { type: '1' })}
+          onClick={() => editor.isActive('orderedList', { type: '1' })
+            ? editor.chain().focus().toggleOrderedList().run()
+            : editor.isActive('orderedList')
+              ? editor.chain().focus().updateAttributes('orderedList', { type: '1' }).run()
+              : editor.chain().focus().toggleOrderedList().run()}
         >
           1. List
+        </ToolbarButton>
+        <ToolbarButton
+          label="Roman numeral list"
+          active={editor.isActive('orderedList', { type: 'I' })}
+          onClick={() => editor.isActive('orderedList', { type: 'I' })
+            ? editor.chain().focus().toggleOrderedList().run()
+            : editor.isActive('orderedList')
+              ? editor.chain().focus().updateAttributes('orderedList', { type: 'I' }).run()
+              : editor.chain().focus().toggleOrderedList().updateAttributes('orderedList', { type: 'I' }).run()}
+        >
+          I. List
         </ToolbarButton>
         <ToolbarButton
           label="Blockquote"

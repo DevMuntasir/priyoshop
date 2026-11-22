@@ -330,6 +330,9 @@
   .prose-blog ol {
     @apply my-4 list-decimal space-y-1.5 pl-6;
   }
+  .prose-blog ol[type='I'] {
+    list-style-type: upper-roman;
+  }
   .prose-blog blockquote {
     @apply my-6 border-l-4 border-ps-red-500 pl-4 italic text-ps-black;
   }

@@ -14,6 +14,7 @@ export function sanitizeBlogHtml(html: string): string {
     allowedAttributes: {
       a: ['href', 'target', 'rel'],
       img: ['src', 'alt'],
+      ol: ['type', 'start'],
     },
     allowedSchemes: ['http', 'https', 'mailto'],
     allowedSchemesAppliedToAttributes: ['href', 'src'],

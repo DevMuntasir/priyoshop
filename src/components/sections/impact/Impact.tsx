@@ -28,7 +28,7 @@ export function Impact(props: { data: ResolvedSection }) {
             />
             {heading.description ? (
               <div
-                className={`mt-4 max-w-180 font-body leading-relaxed text-pretty text-ps-black-400 wrap-break-word sm:mt-5 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_h2]:my-3 [&_h2]:text-xl [&_h2]:font-bold [&_h3]:my-3 [&_h3]:text-lg [&_h3]:font-bold [&_a]:underline [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:pl-4 [&_blockquote]:italic [&_img]:my-3 [&_img]:max-w-full [&>:first-child]:mt-0 [&>:last-child]:mb-0 ${style.base.align === 'center' ? 'mx-auto text-center' : 'text-left'}`}
+                className={`mt-4 max-w-180 font-body leading-relaxed text-pretty text-ps-black-400 wrap-break-word sm:mt-5 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol[type='I']]:list-[upper-roman] [&_h2]:my-3 [&_h2]:text-xl [&_h2]:font-bold [&_h3]:my-3 [&_h3]:text-lg [&_h3]:font-bold [&_a]:underline [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:pl-4 [&_blockquote]:italic [&_img]:my-3 [&_img]:max-w-full [&>:first-child]:mt-0 [&>:last-child]:mb-0 ${style.base.align === 'center' ? 'mx-auto text-center' : 'text-left'}`}
                 dangerouslySetInnerHTML={{ __html: toDescriptionHtml(heading.description) }}
               />
             ) : null}
