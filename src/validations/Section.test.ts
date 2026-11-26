@@ -5,6 +5,19 @@ import { DEFAULT_RESPONSIVE_CARD_STYLE, normalizeCardStyle } from '@/libs/cms/St
 import { sectionUpdateSchema } from './Section';
 
 describe('sectionUpdateSchema', () => {
+  it('accepts unnamed strategic partner logos', () => {
+    const section = SECTION_REGISTRY.embeddedPartners;
+    const result = sectionUpdateSchema.safeParse({
+      enabled: true,
+      order: section.defaultOrder,
+      style: section.defaultStyle,
+      locale: 'en',
+      content: section.defaultContent,
+    });
+
+    expect(result.success).toBe(true);
+  });
+
   it('accepts ecosystem card design settings', () => {
     const section = SECTION_REGISTRY.ecosystems;
     const result = sectionUpdateSchema.safeParse({

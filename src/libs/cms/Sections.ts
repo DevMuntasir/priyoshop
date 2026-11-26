@@ -637,6 +637,7 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionDef> = {
         title: 'Embedded\nFinance',
         description: 'Unlock Growth & Smart Retail Finance',
         ctaLabel: 'Learn More',
+        
       },
       items: [],
     },

@@ -76,7 +76,7 @@ const headingSchema = z.object({
 });
 
 const itemSchema = z.object({
-  name: z.string().min(1).max(120).optional(),
+  name: z.string().max(120).optional(),
   logo: z.string().min(1).max(300).optional(),
   caption: z.string().max(200).optional(),
   title: z.string().max(160).optional(),
